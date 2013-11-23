@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = MovieDB::VERSION
   spec.authors       = ["Albert_McKeever"]
   spec.email         = ["kotn_ep1@hotmail.com"]
-  spec.description   = %q{Collect Movie information And Analyse Data}
+  spec.description   = %q{Collect Movie Information. Perform Data Analysis}
   spec.summary       = %q{Movie Statistic and Data Analysis}
   spec.homepage      = ""
   spec.license       = "MIT"
