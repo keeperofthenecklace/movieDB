@@ -55,10 +55,10 @@ describe MovieDB do
 
   context "#capture" do
     let!(:newCap){ MovieDB::Movie.new()}
-    
+
     it "should accept new synopsis argument" do
       newCap.capture( synopsis:  "Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze.").should === {:synopsis=>"Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze."} 
-      
+
     end
   end 
 end
