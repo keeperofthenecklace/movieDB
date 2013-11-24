@@ -9,10 +9,10 @@ require 'time'
   #   # actor_name = actor.map(&:name) #=> ["Brittany Murphy"]
   #
   #   # Alive?
-  #   # actor_name = actor.map(&:alive?) #=> [false, true] 
+  #   # actor_name = actor.map(&:alive?) #=> [false, true]
   #
   #   # Age
-  #   # actor_name = actor.map(&:age) #=> [32, 52] 
+  #   # actor_name = actor.map(&:age) #=> [32, 52]
   #
 
 module MovieDB
@@ -56,6 +56,17 @@ module MovieDB
        attr = attr.to_sym
        raise ArgumentError, "#{attr} can only be name or age" if !attr == :age && :name
        return @person_DS.select{|s| s.alive?}.map(&attr)
+      end
+
+  ##
+  # Returns a random parameter integer between min to max, 
+  # rather than a float between min to max.(Ruby 2.0.0)
+  #
+
+      def sample_attr(attr)
+        randgen = Object.new
+        attr_array = self.instance_eval{filter_person(attr)}
+        attr_array.sample(random: randgen)
       end
     end
     private_class_method :create_with_info, :filter_person
@@ -122,3 +133,12 @@ module MovieDB
 
   end
 end
+
+##
+ MovieDB::Person.instance_eval{create_with_info("George Clooney", "M", "1961-05-06", "")}
+ MovieDB::Person.instance_eval{create_with_info("Brittany Murphy", "F", "1977-11-10", "2009-12-20")}
+  MovieDB::Person.instance_eval{create_with_info("Alec Baldwin", "M", "1971-05-06", "")}
+
+
+ p age = MovieDB::Person.instance_eval{filter_person('age')}
+ p sample =  MovieDB::Person.instance_eval{sample_attr('age')}
