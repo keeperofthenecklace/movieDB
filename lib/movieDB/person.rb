@@ -133,12 +133,3 @@ module MovieDB
 
   end
 end
-
-##
- MovieDB::Person.instance_eval{create_with_info("George Clooney", "M", "1961-05-06", "")}
- MovieDB::Person.instance_eval{create_with_info("Brittany Murphy", "F", "1977-11-10", "2009-12-20")}
-  MovieDB::Person.instance_eval{create_with_info("Alec Baldwin", "M", "1971-05-06", "")}
-
-
- p age = MovieDB::Person.instance_eval{filter_person('age')}
- p sample =  MovieDB::Person.instance_eval{sample_attr('age')}

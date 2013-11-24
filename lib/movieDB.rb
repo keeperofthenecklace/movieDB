@@ -14,7 +14,7 @@ require "movieDB/version"
   # Example
   # movie = Movie.new()
   # movie.title = "When Sally Met Harry"
-unless defined? MovieDB
+unless defined? MovieDB::Movie
   module MovieDB
      class Movie < MovieDB::Base
 
@@ -135,3 +135,4 @@ unless defined? MovieDB
         end
     end
 end
+
