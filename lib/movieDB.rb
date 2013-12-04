@@ -14,11 +14,17 @@ require "movieDB/version"
   # Example
   # movie = Movie.new()
   # movie.title = "When Sally Met Harry"
+
 unless defined? MovieDB::Movie
   module MovieDB
      class Movie < MovieDB::Base
 
           prepend StatusChecker
+
+          # Use example
+          # raise MovieError unless Movie.title_present?
+
+          const_set("MovieError",  Class.new(StandardError))
 
           attr_accessor :title, :cast, :director, :released_date, :released_date, :film_release, :writer,
                         :unique_id, :genre, :academy_award_nomination, :academy_award_wins, :golden_globe_nominations, :golden_globe_wins,
@@ -106,7 +112,7 @@ unless defined? MovieDB::Movie
             def filter_movie_attr(attr)
               attr_raw = attr
               attr_sym = attr.to_sym
-   
+
               raise ArgumentError, "#{attr_sym} is not a valid attribute." if !attr_sym == :director && :cast
               filtered = @movie_DS.select{|ds| ds.attr_title?}.map(&attr_sym).flatten
               attr_raw == 'title' ? filtered : filtered.uniq
@@ -125,6 +131,7 @@ unless defined? MovieDB::Movie
     # Example
     #
     # capture(synopsis: "Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze.")
+
           def capture(**opts)
             @synopsis = opts
           end
