@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'simple_bdd'
 
 describe MovieDB do
   let(:defaultMovie){ MovieDB::Movie.new() }
@@ -58,7 +59,7 @@ describe MovieDB do
 
     it "should accept new synopsis argument" do
       newCap.capture( synopsis:  "Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze.").should === {:synopsis=>"Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze."} 
-
     end
   end 
+
 end

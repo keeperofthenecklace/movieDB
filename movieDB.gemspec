@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency 'fakeweb'
   spec.add_dependency "activesupport", ">= 4.0.0"
+  spec.add_dependency "simple_bdd"
 end
