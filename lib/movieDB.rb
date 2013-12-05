@@ -47,7 +47,7 @@ unless defined? MovieDB::Movie
           DEFAULT_BAFTA_WINS = 1
           DEFAULT_WORLDWIDE_GROSS = "$9750 Million"
 
-          def initialize(attributes={})
+          def initialize(attributes = {})
             movie_attr = %w(title cast director released_date film_release writer unique_id 
                       genre academy_award_nomination academy_award_wins golden_globe_nominations
                       golden_globe_wins bafta_nomination bafta_wins worldwide_gross)
