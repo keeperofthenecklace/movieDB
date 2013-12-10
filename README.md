@@ -1,13 +1,16 @@
-# MovieDB - Open Source Movie Data Analysis Tool
+# MovieDB - Movie Data Analysis Tool
 
 ## Description
 
-A Simple Ruby Movie/Film library that data store.
+A ruby wrapper that inspects, cleans, transform and model imdb data and provides useful information, suggesting conclusion. 
+The objective is to help movie/film producers make decisions based on archival data.
 
-Basic functions:
-* Allows a user to create, read, update and delete movie items from the data store via API.
-* Raises an error and perform validations on film titles
-* Allows a user to search for actors, actresses, directors, writers etc.
+Basic functions and Data Analysis:
+* Data mining
+* Business Intelligence
+* Descriptive Satistics
+* Exploratory Data Analysis
+* Confirmatory Data Analysis
 
 ## Installation
 
@@ -17,7 +20,7 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -25,3 +28,4 @@ Or install it yourself as:
 
 ## Usage
 
+  work-in-progress

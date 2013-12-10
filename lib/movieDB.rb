@@ -2,7 +2,10 @@ require 'rubygems'
 require 'active_support/all'
 require 'time'
 require 'MovieDB/base'
-require 'MovieDB/Person'
+require "open-uri"
+require 'nokogiri'
+require "imdb"
+require "MovieDB/Person"
 require "movieDB/version"
 
   ##
