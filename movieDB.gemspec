@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["kotn_ep1@hotmail.com"]
   spec.description   = %q{Collect Movie Information. Perform Data Analysis}
   spec.summary       = %q{Movie Statistic and Data Analysis}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/keeperofthenecklace/movieDB"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -21,6 +21,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
+  spec.add_development_dependency 'imdb'
+  spec.add_development_dependency 'highline'
+  spec.add_development_dependency 'yaml'
   spec.add_development_dependency 'fakeweb'
   spec.add_dependency "activesupport", ">= 4.0.0"
   spec.add_dependency "simple_bdd"

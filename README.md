@@ -23,4 +23,5 @@ Or install it yourself as:
 
     $ gem install movieDB
 
+## Usage
 
