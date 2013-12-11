@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'simple_bdd'
 
 describe MovieDB do
   let(:defaultMovie){ MovieDB::Movie.new() }

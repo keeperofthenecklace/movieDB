@@ -1,14 +1,12 @@
 $:.unshift File.expand_path('..', __FILE__)
 $:.unshift File.expand_path('../../lib/', __FILE__)
-
+require 'movieDB'
 require 'MovieDB/base'
+require "MovieDB/person"
 require 'MovieDB/status_checker'
 require 'MovieDB/movie_error'
-require 'MovieDB/person'
-require 'movieDB'
-
-require 'simple_bdd'
+require "MovieDB/data_analysis"
 
 RSpec.configure do |config|
-  config.include SimpleBdd
+#  config.include SimpleBdd
 end

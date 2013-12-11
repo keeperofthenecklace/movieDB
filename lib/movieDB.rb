@@ -1,12 +1,11 @@
-require 'rubygems'
-require 'active_support/all'
-require 'time'
-require 'MovieDB/base'
+require "rubygems"
+require "time"
 require "open-uri"
-require 'nokogiri'
+require "nokogiri"
 require "imdb"
-require "MovieDB/Person"
-require "movieDB/version"
+require "spreadsheet"
+require "MovieDB/base"
+require "MovieDB/data_analysis"
 
   ##
   # Create a new movie record. The values are stored in the key-value data store.
@@ -29,7 +28,7 @@ unless defined? MovieDB::Movie
 
           const_set("MovieError",  Class.new(StandardError))
 
-          attr_accessor :title, :cast, :director, :released_date, :released_date, :film_release, :writer,
+          attr_accessor :title, :cast, :director, :released_date, :film_release, :writer,
                         :unique_id, :genre, :academy_award_nomination, :academy_award_wins, :golden_globe_nominations, :golden_globe_wins,
                         :bafta_nomination, :bafta_wins, :worldwide_gross
           alias :released? :film_release
@@ -51,7 +50,7 @@ unless defined? MovieDB::Movie
           DEFAULT_WORLDWIDE_GROSS = "$9750 Million"
 
           def initialize(attributes = {})
-            movie_attr = %w(title cast director released_date film_release writer unique_id 
+            movie_attr = %w(title cast director re                                                                                                             leased_date film_release writer unique_id 
                       genre academy_award_nomination academy_award_wins golden_globe_nominations
                       golden_globe_wins bafta_nomination bafta_wins worldwide_gross)
             movie_attr.each do |attr|
