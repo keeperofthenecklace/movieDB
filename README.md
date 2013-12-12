@@ -1,4 +1,4 @@
-# MovieDB - Movie Data Analysis Tool
+ MovieDB - Movie Data Analysis Tool
 
 ## Description
 
@@ -9,6 +9,10 @@ Basic functions and Data Analysis:
 * Data Analysis
 * Exploratory Data Analysis
 * Confirmatory Data Analysis
+
+## Requirements
+  
+  ruby 1.9.x
 
 ## Installation
 

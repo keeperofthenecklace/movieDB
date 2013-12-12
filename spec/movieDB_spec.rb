@@ -1,64 +1,62 @@
 require 'spec_helper'
+require 'imdb' 
+require "zimdb"
+
 
 describe MovieDB do
-  let(:defaultMovie){ MovieDB::Movie.new() }
 
-  describe "Initialize" do
-    it "should create a default list of movie attributes" do
-      defaultMovie.title.should ==  "Method Missing"
-      defaultMovie.cast.should ==  ['David Black', "Paola Perotta", "Obie Fernandez", "David Chelimsky"]
-      defaultMovie.director.should ==  "Yukihiro 'Matz' Matsumoto"
-      defaultMovie.released_date.should ==  "2005-12-13"
-      defaultMovie.film_release.should ==  ['theatrical', 'video', 'television', 'internet', 'print']
-      defaultMovie.writer.should ==  'David Heinemeier Hansson'
-      defaultMovie.genre.should ==  ["Bromantic", "Syfy"]
-      defaultMovie.academy_award_nomination.should ==  4
-      defaultMovie.academy_award_wins.should ==  3
-      defaultMovie.golden_globe_nominations.should ==  4
-      defaultMovie.golden_globe_wins.should ==  2
-      defaultMovie.bafta_nomination.should ==  3
-      defaultMovie.bafta_wins.should ==  1
-      defaultMovie.worldwide_gross.should ==  "$9750 Million"
+  describe "#get_imdb_movie_data" do
+    let(:movie_info){ MovieDB::Movie.send(:get_imdb_movie_data, "1951264") }
+
+    context  "query imdb" do
+      it "returns movie data from imdb" do
+        movie_info.title.should == "The Hunger Games: Catching Fire"
+        movie_info.cast_members[0, 4].should == ["Jennifer Lawrence", "Liam Hemsworth", "Jack Quaid", "Taylor St. Clair"]
+        movie_info.cast_member_ids[0, 4].should == ["nm2225369", "nm2955013", "nm4425051", "nm1193262"] 
+        movie_info.cast_characters[0, 4].should == ["Katniss Everdeen", "Gale Hawthorne", "Marvel", "Ripper"]
+        movie_info.cast_members_characters[0, 4].should == ["Jennifer Lawrence => Katniss Everdeen", "Liam Hemsworth => Gale Hawthorne", "Jack Quaid => Marvel", "Taylor St. Clair => Ripper"] 
+        movie_info.trailer_url.should == "http://imdb.com/video/screenplay/vi365471769/"
+        movie_info.director.should == ["Francis Lawrence"]
+        #movie_info.writer.should == "Simon Beaufoy, Michael Arndt"
+        movie_info.filming_locations[0, 2].should == ["Oakland, New Jersey, USA", "O'ahu, Hawaii, USA"]
+        movie_info.company.should == "Color Force"
+        movie_info.genres.should == ["Action", "Adventure", "Sci-Fi", "Thriller"]
+        movie_info.languages.should == ["English"]
+        movie_info.countries.should == ["USA"]
+        movie_info.length.should == 146
+        movie_info.plot.should == "Katniss Everdeen and Peeta Mellark become targets of the Capitol after their victory in the 74th Hunger Games sparks a rebellion in the Districts of Panem."
+        movie_info.poster.should == "http://ia.media-imdb.com/images/M/MV5BMTAyMjQ3OTAxMzNeQTJeQWpwZ15BbWU4MDU0NzA1MzAx.jpg"
+        movie_info.rating.should == 8.2
+        movie_info.votes.should == 110636
+        movie_info.mpaa_rating.should == "Rated PG-13 for intense sequences of violence and action, some frightening images, thematic elements, a suggestive situation and language"
+        movie_info.tagline.should == "Every revolution begins with a spark.  »"
+        movie_info.year.should == 2013
+        movie_info.release_date.should == "22 November 2013 (USA)"
+      end
     end
 
-    it "should allow you to update title" do
-      defaultMovie.title =  "Rails 4: Turbolinks Reloaded!"
-      defaultMovie.title.should ==  "Rails 4: Turbolinks Reloaded!"
+    it "allows you to update attributes" do
+      movie_info.title =  "Rails 4 Games: Turbolinks Reloaded!"
+      movie_info.title.should ==  "Rails 4 Games: Turbolinks Reloaded!"
     end
   end
 
-  describe "Adding movies to data store" do
+  describe "Adding multiple movies to data store" do
     before :each do 
-      movie_DS = MovieDB::Movie.instance_eval{create_movie_info('Thor', %w(Chris_Hemsworth Natalie_Portman Tom_Hiddleston), 'Jon Turteltaub', 
-                           '2013-10-30', ['theatrical', 'print'], ["Christopher_Yost", "Christopher Markus"], ['Action', 'Adventure', 'Fantasy'], "", 
-                            "",  "", "", "", "", "", '$86.1 Million')}
-      movie_DS = MovieDB::Movie.instance_eval{create_movie_info('Last Vegas',  %w(Morgan Freeman', 'Robert De Niro', 'Michael Douglas', 'Kevin Kline', 'Mary Steenburgen'), 'Alan Taylor', 
-                           '2013-10-30', ['theatrical', 'print'], ["Dan Fogelman"], ['Comedy'], "", 
-                            "",  "", "", "", "", "", '$11.2 Million')}
-
+      movie_DS = MovieDB::Movie.instance_eval{create_movie_info("2024544")}
+      movie_DS = MovieDB::Movie.instance_eval{create_movie_info("1800241")}
     end
 
     it "Should return names of all titles" do
-       MovieDB::Movie.instance_eval{filter_movie_attr("title")}.should == ["Thor", "Last Vegas"]
+       MovieDB::Movie.instance_eval{filter_movie_attr("title")}.should == ["12 Years a Slave", "American Hustle"] 
     end
 
     it "Should return names of all directors" do
-       MovieDB::Movie.instance_eval{filter_movie_attr("director")}.should == ["Jon Turteltaub", "Alan Taylor"]
+       MovieDB::Movie.instance_eval{filter_movie_attr("director")}.should == ["Steve McQueen", "David O. Russell"]
+    end
+
+    it "Should return names of all writers" do
+       MovieDB::Movie.instance_eval{filter_movie_attr("writer")}.should == ["John Ridley, Solomon Northup", "Eric Singer, David O. Russell"]
     end
   end
-
-  describe "Raise an Error" do
-      it "should raise an error if title already exists" do
-       expect { movie_DS }.to raise_error
-    end
-  end
-
-  context "#capture" do
-    let!(:newCap){ MovieDB::Movie.new()}
-
-    it "should accept new synopsis argument" do
-      newCap.capture( synopsis:  "Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze.").should === {:synopsis=>"Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze."} 
-    end
-  end 
-
 end
