@@ -28,7 +28,7 @@ module MovieDB
       end
     end
 
-    module EstimationOfDensit
+    module EstimationOfDensity
       module Cluster_Weighted_Modeling; end
       module Density_Estimation; end
       module Discretization_Of_Continuous_Features; end
@@ -97,31 +97,41 @@ module MovieDB
   end
 
   ##
-  #TODO: Add all more analysis
+  #TODO: All Mathetical Calculations go here.
+
   class ExportData
-    def printout (data, data_analysis_name)
+    def write_spreadsheet (data, data_analysis_name)
     
       begin data_analysis.is_a? String
-        data_analysis_name = data_analysis_name.split.join.gsub('_', ' ').downcase.to_s
-
+        @data_analysis_name = data_analysis_name.split.join.gsub('_', ' ').downcase.to_s
         case data_analysis_name
-        when "coefficient of determination"
-          book = Spreadsheet::Workbook.new
-          sheet1 = book.create_worksheet name: "Data Analysis: #{data_analysis_name}" 
-          sheet1.row(0).concat %w{title released_date worldwide_gross}
-
-          # Loop through the data to collect  all values. 
-          # Then values into array
-
-            data.each_with_index do |value, index|
-              sheet1[1, index] = "#{value}"
-            end
-        when  "discrete least squares meshless method"
-        else
-        end
+          when "coefficient of determination"
+            write_coefficient_of_determination 
+          when  "discrete least squares meshless method"
+            write_discrete_least_squares_meshless_method
+          when "discrete least squares meshless method"
+            write_discrete_least_squares_meshless_method
+          else
+          end
       rescue
         raise ArgumentError, 'invalid attribute'
       end
     end
+
+    def write_coefficient_of_determination
+      book = Spreadsheet::Workbook.new
+      sheet1 = book.create_worksheet name: "Data Analysis: #{@data_analysis_name}"
+      sheet1.row(0).concat %w{title released_date worldwide_gross}
+
+      # Loop through the data to collect  all values. 
+      # Then values into array
+
+      data.each_with_index do |value, index|
+        sheet1[1, index] = "#{value}"
+      end
+    end
+
+    def write_discrete_least_squares_meshless_method; end
+    def write_discrete_least_squares_meshless_method; end
   end
 end
