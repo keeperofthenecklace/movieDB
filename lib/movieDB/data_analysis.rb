@@ -1,12 +1,19 @@
+require 'MovieDB'
+
 module MovieDB
 
   ##
   # Analysing, inspecting, cleaning, transforming and modeling data.
 
-  class DataAnalysis
+  class DataAnalysis < MovieDB
     module AnalysisOfVariance
       module LeastSquares
-        module Coefficient_Of_Determination; end
+        module Coefficient_Of_Determination
+         def test
+          #puts $data_analysis_headers
+           'my coefficiency'
+         end
+        end
         module Discrete_Least_Squares_Meshless_Method; end
         module Explained_Sum_Of_Squares; end
         module Fraction_Of_Variance_Unexplained; end

@@ -5,7 +5,11 @@ describe MovieDB::DataAnalysis do
   describe "#AnalysisOfVariance" do
    describe "#LeastSquares" do
      describe "#Coefficient_Of_Determination" do
-      pending
+        let(:cof) {MovieDB::DataAnalysis::AnalysisOfVariance::LeastSquares::Coefficient_Of_Determination.cod}
+      
+        it "should return the cof" do
+         cof.send(:cod).should == []
+        end 
      end
      
      describe "#Discrete_Least_Squares_Meshless_Method" do

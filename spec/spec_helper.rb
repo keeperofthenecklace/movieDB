@@ -6,6 +6,7 @@ require "MovieDB/person"
 require 'MovieDB/status_checker'
 require 'MovieDB/movie_error'
 require "MovieDB/data_analysis"
+require "MovieDB/data_export"
 
 RSpec.configure do |config|
 #  config.include SimpleBdd

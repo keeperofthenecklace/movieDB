@@ -96,7 +96,7 @@ unless defined? MovieDB::Movie
           DEFAULT_WORLDWIDE_GROSS = "$124.6M" # Not provided by imdb api. 
 
           def initialize(attributes = {})
-            $data_headers = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters 
+            $data_analysis_headers = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters 
                             trailer_url director writer filming_locations company genres languages countries  
                             length plot poster rating votes mpaa_rating tagline year release_date unique_id
                             academy_award_nomination academy_award_wins golden_globe_nominations golden_globe_wins
@@ -139,6 +139,8 @@ unless defined? MovieDB::Movie
               @movie_search = Imdb::Movie.search(name.to_s)
             end
 
+            ##
+            #add *args
             def create_movie_info(value)
               get_imdb_movie_data(value)
               @movie_DS ||=[]

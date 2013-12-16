@@ -18,7 +18,7 @@ describe MovieDB do
         movie_info.trailer_url.should == "http://imdb.com/video/screenplay/vi365471769/"
         movie_info.director.should == ["Francis Lawrence"]
         #movie_info.writer.should == "Simon Beaufoy, Michael Arndt"
-        movie_info.filming_locations[0, 2].should == ["Oakland, New Jersey, USA", "O'ahu, Hawaii, USA"]
+        movie_info.filming_locations[0, 2].should == ["O'ahu, Hawaii, USA", "Oakland, New Jersey, USA"] 
         movie_info.company.should == "Color Force"
         movie_info.genres.should == ["Action", "Adventure", "Sci-Fi", "Thriller"]
         movie_info.languages.should == ["English"]
@@ -27,7 +27,7 @@ describe MovieDB do
         movie_info.plot.should == "Katniss Everdeen and Peeta Mellark become targets of the Capitol after their victory in the 74th Hunger Games sparks a rebellion in the Districts of Panem."
         movie_info.poster.should == "http://ia.media-imdb.com/images/M/MV5BMTAyMjQ3OTAxMzNeQTJeQWpwZ15BbWU4MDU0NzA1MzAx.jpg"
         movie_info.rating.should == 8.2
-        movie_info.votes.should == 110636
+        movie_info.votes.should == 116346
         movie_info.mpaa_rating.should == "Rated PG-13 for intense sequences of violence and action, some frightening images, thematic elements, a suggestive situation and language"
         movie_info.tagline.should == "Every revolution begins with a spark.  »"
         movie_info.year.should == 2013
