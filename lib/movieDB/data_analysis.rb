@@ -5,13 +5,14 @@ module MovieDB
   ##
   # Analysing, inspecting, cleaning, transforming and modeling data.
 
-  class DataAnalysis < MovieDB
+  class DataAnalysis < MovieDB::Movie
     module AnalysisOfVariance
       module LeastSquares
         module Coefficient_Of_Determination
-         def test
-          #puts $data_analysis_headers
-           'my coefficiency'
+         def cod
+           @headers = %w(title x_value y_value)
+           #return @headers
+           #'my coefficiency'
          end
         end
         module Discrete_Least_Squares_Meshless_Method; end

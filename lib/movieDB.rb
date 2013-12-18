@@ -96,7 +96,7 @@ unless defined? MovieDB::Movie
           DEFAULT_WORLDWIDE_GROSS = "$124.6M" # Not provided by imdb api. 
 
           def initialize(attributes = {})
-            $data_analysis_headers = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters 
+            $IMDB_ATTRIBUTES_HEADERS = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters 
                             trailer_url director writer filming_locations company genres languages countries  
                             length plot poster rating votes mpaa_rating tagline year release_date unique_id
                             academy_award_nomination academy_award_wins golden_globe_nominations golden_globe_wins
@@ -125,7 +125,9 @@ unless defined? MovieDB::Movie
           class << self
 
             ##
-            # Get the data from imdb
+            # Get the single data from imdb
+            #
+            # TODO: This method should be deprecated in the next version release.
 
             def get_imdb_movie_data(value)
               puts  zimdb_value = "tt" << value.to_s
@@ -139,49 +141,68 @@ unless defined? MovieDB::Movie
               @movie_search = Imdb::Movie.search(name.to_s)
             end
 
+            def global_movie_data_store
+              return  $GLOBAL_MOVIE_DS 
+            end
+
+
             ##
-            #add *args
-            def create_movie_info(value)
-              get_imdb_movie_data(value)
-              @movie_DS ||=[]
-              movie_info = Movie.new
-              movie_info.title = @movie_data.title
-              movie_info.cast_members = @movie_data.cast_members 
-              movie_info.cast_member_ids = @movie_data.cast_member_ids              
-              movie_info.cast_characters = @movie_data.cast_characters
-              movie_info.cast_members_characters = @movie_data.cast_members_characters
-              movie_info.trailer_url = @movie_data.trailer_url
-              movie_info.director = @movie_data.director
-              movie_info.writer = Array.new << @zimdb_data.writer
-              movie_info.filming_locations = @movie_data.filming_locations
-              movie_info.company = Array.new << @movie_data.company
-              movie_info.genres =@movie_data.genres
-              movie_info.languages = @movie_data.languages
-              movie_info.countries = @movie_data.countries
-              movie_info.length = Array.new << @movie_data
-              movie_info.plot = Array.new << @movie_data.plot
-              movie_info.poster = Array.new << @movie_data.poster
-              movie_info.rating = Array.new << @movie_data.rating
-              movie_info.votes = @movie_data.votes
-              movie_info.mpaa_rating = Array.new <<  @movie_data.mpaa_rating
-              movie_info.tagline = Array.new << @movie_data.tagline
-              movie_info.year = Array.new << @movie_data.year
-              movie_info.release_date = Array.new << @movie_data.release_date
-              movie_info.unique_id =  @unique_id
+            # You can add multiple Imdb ids
+            #
+            # USAGE # MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241")
+            #       #
+            #       # Example: You can collect the arrays of the title attributes
+            #       #
+            #       # MovieDB::Movie.instance_eval{filter_movie_attr("title")}
 
-              ##
-              # TODO: Write API for the AMPAS.
+            def get_multiple_imdb_movie_data(*args)
+              begin
+                args.each do |value| 
+                  get_imdb_movie_data(value)
+                  @movie_DS ||=[]
+                  movie_info = Movie.new
+                  movie_info.title = Array.new << @movie_data.title
+                  movie_info.cast_members =  @movie_data.cast_members.flatten
+                  movie_info.cast_characters = @movie_data.cast_characters
+                  movie_info.cast_member_ids = @movie_data.cast_member_ids
+                  movie_info.cast_members_characters = @movie_data.cast_members_characters
+                  movie_info.trailer_url =  @movie_data.trailer_url.nil? ? 'No Trailer' : @movie_data.trailer_url
+                  movie_info.director =  @movie_data.director.flatten
+                  movie_info.writer = Array.new << @zimdb_data.writer
+                  movie_info.filming_locations = @movie_data.filming_locations.flatten.join(', ')
+                  movie_info.company = Array.new << @movie_data.company
+                  movie_info.genres = @movie_data.genres.flatten.join(' ').sub(' ' , ', ')
+                  movie_info.languages = Array.new << @movie_data.languages.flatten.join(' ').sub(' ' , ', ')
+                  movie_info.countries = Array.new << @movie_data.countries.flatten.join(' ').sub(' ' , ', ')
+                  movie_info.length = Array.new << @movie_data.length
+                  movie_info.plot = Array.new << @movie_data.plot
+                  movie_info.poster = Array.new << @movie_data.poster
+                  movie_info.rating = Array.new << @movie_data.rating
+                  movie_info.votes = Array.new << @movie_data.votes
+                  movie_info.mpaa_rating = Array.new << @movie_data.mpaa_rating == [nil] ? ["No Ratings"] : [@movie_data.mpaa_rating]
+                  movie_info.tagline = Array.new << @movie_data.tagline
+                  movie_info.year = Array.new << @movie_data.year
+                  movie_info.release_date = Array.new << @movie_data.release_date
+                  movie_info.unique_id =  @unique_id
 
-              #movie_info.academy_award_nomination = academy_award_nomination
-              #movie_info.academy_award_wins = academy_award_wins
-              #movie_info.golden_globe_nominations = golden_globe_nominations
-              #movie_info.golden_globe_wins = golden_globe_wins
-              #movie_info.bafta_nomination = bafta_nomination 
-              #movie_info.bafta_wins = bafta_wins
-              #movie_info.worldwide_gross = worldwide_gross
-              @movie_DS << movie_info
-              return @movieDS
-              
+                  ##
+                  # TODO: Write API to request data from AMPAS.
+
+                  #movie_info.academy_award_nomination = academy_award_nomination
+                  #movie_info.academy_award_wins = academy_award_wins
+                  #movie_info.golden_globe_nominations = golden_globe_nominations
+                  #movie_info.golden_globe_wins = golden_globe_wins
+                  #movie_info.bafta_nomination = bafta_nomination 
+                  #movie_info.bafta_wins = bafta_wins
+                  #movie_info.worldwide_gross = worldwide_gross
+                  $GLOBAL_MOVIE_DS = @movie_DS << movie_info
+                end
+              rescue
+                raise ArgumentError, 'invalid imbd id'
+              end
+
+              return @movie_DS
+
               ##
               #TODO: Include this for later data analysis computation
 
@@ -191,6 +212,14 @@ unless defined? MovieDB::Movie
                  #return @movie_DS
                #end
 
+            end
+
+            # Empty the data store
+            # Reset to nil
+
+            def clear_data_store
+              @movie_DS = []
+              return @movie_DS
             end
 
     ##
@@ -204,11 +233,11 @@ unless defined? MovieDB::Movie
               attr_sym = attr.to_sym
 
               raise ArgumentError, "#{attr_sym} is not a valid attribute." if !attr_sym == :director && :cast_members
-              filtered = @movie_DS.select{|ds| ds.attr_title?}.map(&attr_sym).flatten
-              attr_raw == 'title' ? filtered : filtered.uniq
+              filtered = @movie_DS.select{|ds| ds.attr_title?}.map(&attr_sym)#.flatten
+              attr_raw == ('languages' && 'title') ? filtered : filtered#.uniq
             end
           end
-          private_class_method :create_movie_info, :filter_movie_attr
+          private_class_method :get_multiple_imdb_movie_data, :filter_movie_attr, :get_imdb_movie_data
 
           def attr_title
             !@title.nil?
