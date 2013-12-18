@@ -2,7 +2,7 @@
 
 ## Description
 
-Although the name suggests a datastore gem, MovieDB is actually a ruby wrapper that inspects, cleans, transform and model imdb data and provides useful data analysis information, suggesting conclusion.  The objective is provide a tool that will help movie/film producers make decisions based on archival imdb data.
+Although the name suggests a datastore gem, MovieDB is actually a ruby wrapper that inspects, cleans, transform and model imdb data and provides useful data analysis information, suggesting conclusion.  The objective and usage is to provide a tool that can aide movie/film producers make statistical decisions based off archival imdb data.
 
 Basic functions and Data Analysis:
 * Data Analysis
