@@ -3,9 +3,9 @@ require 'MovieDB/status_checker'
 require 'MovieDB/movie_error'
 
 module MovieDB #:nodoc
-# MoviesDB v0.1.x is not a datastore gem. Rather, it is a high-level is statistical sftware that performs
-# mathematical computations for analyzing film data from imdb. #  
-# It is a solution to the common problem of deducing logical hypothesis based off data sets.
+# MoviesDB v0.1.x is not a datastore gem. Rather, it is a high-level statistical sftware that performs
+# mathematical computations for analyzing film data from imdb.  
+# In a nut shell, it is a solution to the common problem of deducing logical hypothesis based off data sets.
   
   class Base
     include StatusChecker
