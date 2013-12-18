@@ -27,7 +27,7 @@ Or install it yourself as:
 
     $ gem install movieDB
 
-## Usage
+## Usage - Collecting Movie Data From IMDb
 
     $ irb
 
@@ -37,9 +37,13 @@ Or install it yourself as:
 
     > MovieDB::DataExport.export_movie_data
 
-## Document
+## Exported Document
 
-All extracted data are written to the reports directory.
+The excel document is stored in the reports directory.
 
-  $ /reports/data_analysis_20131203.xls
+  $ cd /reports/data_analysis_20131203.xls
+
+## Usage - Data Analysis
+
+  $ wip
 
