@@ -126,13 +126,14 @@ module MovieDB
       end
 
       def report_name
-        name = "Example_Coeffiecient_Of_Determination_".to_s.downcase
+        name = "imdb_raw_data_".to_s.downcase
         name << "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..9].join}"
       end
 
       def write_xls_file
         filename = ("#{report_name}.xls")
         @book.write File.join('reports', filename)
+        return filename
       end
 
     end

@@ -1,18 +1,17 @@
 require 'spec_helper'
 
 describe MovieDB::DataExport do
-  describe "#generate" do
-    let(:data_export) { MovieDB::DataExport.new}
-    let(:generate) { MovieDB::DataExport.generate}
-    #de =  MovieDB::DataExport.generate('data_analysis')
-    it "hould return a call form inherited" do
-      data_export.send(:cod).should == []
-    end 
+  
+  describe "#export_movie_data" do
+      MovieDB::Movie.send(:clear_data_store)
+      MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")
+      MovieDB::DataExport.export_movie_data
 
-    it "generate" do
-     # generate.should ==  []
+      let(:file_name) {MovieDB::DataExport.write_xls_file}
+
+    it 'writes the exported data as an xls file to the reports directory' do
+     File.exist?(File.join('reports', file_name)).should == true
     end
 
   end
-  
 end

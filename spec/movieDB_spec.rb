@@ -6,7 +6,8 @@ require "zimdb"
 describe MovieDB do
 
   describe "#get_imdb_movie_data" do
-     context  "Get multiple movie data from IMDb" do
+     
+    context  "Get multiple movie data from IMDb" do
     #
       MovieDB::Movie.send(:clear_data_store)
       MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")
@@ -24,6 +25,7 @@ describe MovieDB do
   end
 
   describe "validation" do
+
     context "invalid id number" do
 
       it "should raise an error" do
