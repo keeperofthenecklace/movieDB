@@ -35,7 +35,7 @@ Or install it yourself as:
    
     > require 'MovieDB/data_export'
 
-    > MovieDB::Movie.clear_data_store  #IMPORTANT: Returns and empty array
+    > MovieDB::Movie.clear_data_store  **ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY)
   
     > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")
 
@@ -43,9 +43,9 @@ Or install it yourself as:
 
 ## Exported Document
 
-The excel document is stored in the reports directory.
+The exported movie data is stored in your reports directory.
 
-    $ cd /reports/data_analysis_20131203.xls
+    $ cd /reports/imdb_raw_data_20131216.xls
 
 ## Usage - Data Analysis
 
