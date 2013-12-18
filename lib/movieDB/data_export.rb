@@ -28,7 +28,7 @@ module MovieDB
     include PATH_AOV::Total_Sum_Of_Squares
 
     class  << self 
-      #TODO: Check the data analysis type and input inot generate method as an attribute
+      #TODO: Check the data analysis(DA) name. Write a define_method and include the DA.
 
       def export_movie_data
        create_spreadsheet_file

@@ -32,6 +32,10 @@ Or install it yourself as:
     $ irb
 
     > require 'movieDB'
+   
+    > require 'MovieDB/data_export'
+
+    > MovieDB::Movie.clear_data_store  #IMPORTANT: Returns and empty array
   
     > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")
 
@@ -41,9 +45,12 @@ Or install it yourself as:
 
 The excel document is stored in the reports directory.
 
-  $ cd /reports/data_analysis_20131203.xls
+    $ cd /reports/data_analysis_20131203.xls
 
 ## Usage - Data Analysis
 
-  $ wip
+    $ irb
 
+    > require 'MovieDB/data_analysis'
+
+    > "work-in-progress"
