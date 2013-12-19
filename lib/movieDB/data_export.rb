@@ -1,5 +1,4 @@
 require "spreadsheet"
-require "MovieDB/data_analysis"
 require "MovieDB"
   
   # This module will write xls document to file
@@ -57,10 +56,15 @@ module MovieDB
       def create_spreadsheet_header
         @sheet.row(0).concat $IMDB_ATTRIBUTES_HEADERS
 
-        format = Spreadsheet::Format.new :color => :blue,
-                         :weight => :bold,
-                         :size => 18
-        @sheet.row(0).default_format = format
+        title_format = Spreadsheet::Format.new :color => :blue,
+                                         :weight => :bold,
+                                         :size => 13
+
+        float_format = Spreadsheet::Format.new :number_format => "0.00"
+
+        @sheet.row(0).default_format = title_format
+        @sheet.column(1).default_format = float_format
+        @sheet.column(16).default_format = float_format
       end
 
       # Loop through array of and array imbd data. Each row has the 
@@ -90,8 +94,10 @@ module MovieDB
           when 'rating' then spreadsheet_body_numeric_data("rating")
           when 'votes' then spreadsheet_body_numeric_data("votes")
           when 'mpaa_rating' then spreadsheet_body_numeric_data("mpaa_rating")
+          when 'tagline' then spreadsheet_body_text_data("tagline")
           when 'year' then spreadsheet_body_numeric_data("year")
           when 'release_date' then spreadsheet_body_numeric_data("release_date")
+          else
           end
         end
       end
@@ -99,7 +105,7 @@ module MovieDB
       def spreadsheet_body_text_data(header_title)
         @e_t = element_title = MovieDB::Movie.instance_eval{filter_movie_attr(header_title)}.flatten
 
-        element_title.each_with_index do |element2,i|
+        element_title.each_with_index do |element2, i|
           element_array = element_title[(i)].split('   ',)
           @sheet.row(1 + i).concat element_array 
         end
@@ -119,10 +125,14 @@ module MovieDB
       def spreadsheet_body_numeric_data(header_title)
         @e_t = element_title = MovieDB::Movie.instance_eval{filter_movie_attr(header_title)}
 
-        element_title.each_with_index do |element2,i|
+        element_title.each_with_index do |element2, i|
           element_array = element_title[(i)]
           @sheet.row(1 + i).concat element_array
         end
+      end
+
+      def sum_total
+        @sheet.row(4).push "Grand Totals", 'sum of 2.00'
       end
 
       def report_name

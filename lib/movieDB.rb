@@ -179,7 +179,7 @@ unless defined? MovieDB::Movie
                   movie_info.poster = Array.new << @movie_data.poster
                   movie_info.rating = Array.new << @movie_data.rating
                   movie_info.votes = Array.new << @movie_data.votes
-                  movie_info.mpaa_rating = Array.new << @movie_data.mpaa_rating == [nil] ? ["No Ratings"] : [@movie_data.mpaa_rating]
+                  movie_info.mpaa_rating = Array.new << @movie_data.mpaa_rating == [nil] ? ["Not Rated"] : [@movie_data.mpaa_rating]
                   movie_info.tagline = Array.new << @movie_data.tagline
                   movie_info.year = Array.new << @movie_data.year
                   movie_info.release_date = Array.new << @movie_data.release_date

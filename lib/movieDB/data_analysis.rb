@@ -9,11 +9,40 @@ module MovieDB
     module AnalysisOfVariance
       module LeastSquares
         module Coefficient_Of_Determination
-         def cod
-           @headers = %w(title x_value y_value)
-           #return @headers
-           #'my coefficiency'
-         end
+
+          def coefficient_of_determination (directory_name)
+            open_spreadsheet(directory_name)
+            process_data_analysis
+            write_cod_xls_file
+          end
+
+           def open_spreadsheet(directory_name)
+            @book = Spreadsheet.open File.join('reports', directory_name)
+           end
+
+           def process_data_analysis
+            @sheet = @book.worksheet 0
+            @sheet.each do |row|
+             # row[1] *= 2
+            end
+           end
+
+          def report_name
+            module_nesting = Module.nesting[0].to_s.gsub('::', ' ').split()
+            count = module_nesting.size
+            @data_analysis_name = module_nesting[count - 1]
+            @data_analysis_name << '_' <<  "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..9].join}"
+          end
+
+           def write_cod_xls_file
+            Spreadsheet.client_encoding = 'UTF-8'
+            @cod = Spreadsheet::Workbook.new
+            @sheet = @cod.create_worksheet name: "Data Analysis: #{@data_analysis_name}" # the analysis nameshould be an input
+
+            filename = ("#{report_name}.xls")
+            @cod.write File.join('reports', filename)
+            return filename   
+           end
         end
         module Discrete_Least_Squares_Meshless_Method; end
         module Explained_Sum_Of_Squares; end
@@ -23,7 +52,7 @@ module MovieDB
         module Lack_Of_Fit_Sum_Of_Squares; end
         module Least_Squares_Support_Vector_Machine; end
         module Mean_Squared_Error; end
-        module Moving_Least_Squares; end
+        module Moving_Least_Sqares; end
         module Non_Linear_Iterative_Partial_Least_Squares; end
         module Non_Linear_Least_Squares; end
         module Ordinary_Least_Squares; end
