@@ -7,25 +7,6 @@ require "MovieDB"
 
 module MovieDB
   class DataExport < MovieDB::Movie
-    PATH_AOV = MovieDB::DataAnalysis::AnalysisOfVariance::LeastSquares
-    include PATH_AOV::Coefficient_Of_Determination
-    include PATH_AOV::Explained_Sum_Of_Squares
-    include PATH_AOV::Fraction_Of_Variance_Unexplained
-    include PATH_AOV::Gauss_Newton_Algorithm
-    include PATH_AOV::Iteratively_Reweighted_Least_Squares
-    include PATH_AOV::Lack_Of_Fit_Sum_Of_Squares
-    include PATH_AOV::Least_Squares_Support_Vector_Machine
-    include PATH_AOV::Mean_Squared_Error
-    include PATH_AOV::Moving_Least_Squares
-    include PATH_AOV::Non_Linear_Iterative_Partial_Least_Squares
-    include PATH_AOV::Non_Linear_Least_Squares
-    include PATH_AOV::Ordinary_Least_Squares
-    include PATH_AOV::Partial_Least_Squares_Regression
-    include PATH_AOV::Partition_Of_Sums_Of_Squares
-    include PATH_AOV::Residual_Sum_Of_Squares
-    include PATH_AOV::Total_Least_Squares
-    include PATH_AOV::Total_Sum_Of_Squares
-
     class  << self 
       #TODO: Check the data analysis(DA) name. Write a define_method and include the DA.
 
@@ -129,10 +110,6 @@ module MovieDB
           element_array = element_title[(i)]
           @sheet.row(1 + i).concat element_array
         end
-      end
-
-      def sum_total
-        @sheet.row(4).push "Grand Totals", 'sum of 2.00'
       end
 
       def report_name

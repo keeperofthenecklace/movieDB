@@ -9,23 +9,38 @@ module MovieDB
     module AnalysisOfVariance
       module LeastSquares
         module Coefficient_Of_Determination
-
           def coefficient_of_determination (directory_name)
             open_spreadsheet(directory_name)
-            process_data_analysis
-            write_cod_xls_file
+            perform_computation
+            insert_data_to_existing_xls_file
           end
 
-           def open_spreadsheet(directory_name)
+          def open_spreadsheet(directory_name)
             @book = Spreadsheet.open File.join('reports', directory_name)
-           end
+            @sheet = @book.worksheet(0)
+          end
 
-           def process_data_analysis
-            @sheet = @book.worksheet 0
-            @sheet.each do |row|
-             # row[1] *= 2
+          def perform_computation
+            @col_0 = []
+
+            @sheet.each_with_index do |row, i|
+              @col_0 << @sheet[i, 1]
             end
-           end
+
+            ##
+            # Perform computation on the data collected
+            # TODO: Need to use coefficienct statistical formula
+            # Calculate median as an example but COD formula must be used
+
+            drop_header = @col_0.shift
+
+            row_count = @sheet.rows.count
+            column_count = @sheet.columns[0].count
+
+            @data_processing = @col_0.inject do |sum, n|
+              (sum + n)/(row_count-1)
+            end
+          end
 
           def report_name
             module_nesting = Module.nesting[0].to_s.gsub('::', ' ').split()
@@ -34,15 +49,15 @@ module MovieDB
             @data_analysis_name << '_' <<  "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..9].join}"
           end
 
-           def write_cod_xls_file
-            Spreadsheet.client_encoding = 'UTF-8'
-            @cod = Spreadsheet::Workbook.new
-            @sheet = @cod.create_worksheet name: "Data Analysis: #{@data_analysis_name}" # the analysis nameshould be an input
-
+          def insert_data_to_existing_xls_file
             filename = ("#{report_name}.xls")
-            @cod.write File.join('reports', filename)
-            return filename   
-           end
+            #@book.worksheet(0).insert_row(4, [@data_processing ])
+            @sheet[5, 1] = @data_processing
+            @sheet.row(6).push "Median", @data_processing 
+
+            @book.write File.join('reports', filename)
+            return filename
+          end
         end
         module Discrete_Least_Squares_Meshless_Method; end
         module Explained_Sum_Of_Squares; end
