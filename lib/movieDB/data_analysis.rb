@@ -24,7 +24,7 @@ module MovieDB
 
             total_columns = 17
             @column = []
-  p          @row_count = @sheet.rows.count
+            @row_count = @sheet.rows.count
 
             1.upto(total_columns) do |c|
               @column = [] # set instance variable to an empty array
@@ -48,13 +48,18 @@ module MovieDB
 
 
               if @column.all? {|i| (1..99999999).include? (i)}
-                
 
                 n = @column.count
                     @column.sort!
 
                 @mean = @column.sum/n
                 @range = @column.max - @column.min
+
+                ##
+                # Find the most repeated integer occurence
+
+                freq = @column.inject(Hash.new(0)) { |h, v| h[v] += 1; h }
+                @mode =  @column.sort_by { |v| freq[v]}.last
 
                  if n.odd?
                    index = (n + 1)/2
@@ -64,11 +69,12 @@ module MovieDB
                    right_index = middle_index + 1
                    @median = (@column[middle_index - 1] + @column[right_index - 1])/2
                  end
-                 
+
               else
                 @median = "N/A"
                 @mean = "N/A"
                 @range = "N/A"
+                @mode = "N/A"
               end
 
               ##
@@ -83,7 +89,10 @@ module MovieDB
               @sheet[@row_count + 4, 0 ] =  "Range"
               @sheet[@row_count + 4, 0 + c ] =  @range
 
-              @sheet[@row_count + 5, 0 ] =  "STDERR"
+              @sheet[@row_count + 5, 0 ] =  "Mode"
+              @sheet[@row_count + 5, 0 + c ] =  @mode
+
+              @sheet[@row_count + 6, 0 ] =  "STDERR"
              # @sheet[@row_count + 2, 0 + c ] = @stderr
             end 
           end
