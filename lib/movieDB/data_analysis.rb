@@ -21,25 +21,45 @@ module MovieDB
           end
 
           def perform_computation
-            @col_0 = []
 
-            @sheet.each_with_index do |row, i|
-              @col_0 << @sheet[i, 1]
-            end
+            total_columns = 17
+            @column = []
+            @row_count = @sheet.rows.count
 
-            ##
-            # Perform computation on the data collected
-            # TODO: Need to use coefficienct statistical formula
-            # Calculate median as an example but COD formula must be used
+            1.upto(total_columns) do |c|
+              @column = [] # set instance variable to an empty array
 
-            drop_header = @col_0.shift
+              ##
+              # loop through to collect all elements
+              # The returned array includes both strings and integers elements
 
-            row_count = @sheet.rows.count
-            column_count = @sheet.columns[0].count
+              @sheet.each_with_index do |row, i|
+                @column << @sheet[i, 0 + c ]
+              end
 
-            @data_processing = @col_0.inject do |sum, n|
-              (sum + n)/(row_count-1)
-            end
+              @column.shift # delete the string header from the array
+              @column.compact! # delete nil from the array
+              row_count = @sheet.rows.count
+
+              ##
+              # Perform computation on the data collected
+              # TODO: Need to use coefficienct statistical formula
+              # Calculate median as an example but COD formula must be used
+
+
+              if @column.all? {|i| (1..99999999).include? (i)}
+                @data_processing = @column.inject do |sum, n|
+                  (sum + n)/(row_count-1) 
+                end
+              else
+                @data_processing = "N/A" # This applies to arrays that include strings elements like ["Steve McQueen", 24,"Albert McKeever"]
+              end
+
+              ##
+              # Insert the processed data analysis into spreadsheet
+              @sheet[@row_count + 1, 0 ] =  "Median"
+              @sheet[@row_count + 1, 0 + c ] =  @data_processing
+            end 
           end
 
           def report_name
@@ -52,8 +72,8 @@ module MovieDB
           def insert_data_to_existing_xls_file
             filename = ("#{report_name}.xls")
             #@book.worksheet(0).insert_row(4, [@data_processing ])
-            @sheet[5, 1] = @data_processing
-            @sheet.row(6).push "Median", @data_processing 
+            #@sheet[row_count + 2, 2] = @data_processing
+            #@sheet.row(row_count + 2).push "R Squared n ", @data_processing 
 
             @book.write File.join('reports', filename)
             return filename
