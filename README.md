@@ -37,7 +37,9 @@ Or install it yourself as:
 
     > MovieDB::Movie.clear_data_store  **ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY)
   
-    > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")
+    > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")  
+
+      ** YOU CAN ADD AS MANY IMDB UNIQUE NUMBERS. JUST DO NOT PAST THE EXCEED RATE.
 
     > MovieDB::DataExport.export_movie_data
 
@@ -68,21 +70,21 @@ The exported analyzed data is stored in your reports directory.
  More statistical computations coming. This includes:
 
    > Gauss_Newton_Algorithm 
-        > Iteratively_Reweighted_Least_Squares 
-        > Lack_Of_Fit_Sum_Of_Squares 
-        > Least_Squares_Support_Vector_Machine 
-        > Mean_Squared_Error 
-        > Moving_Least_Sqares 
-        > Non_Linear_Iterative_Partial_Least_Squares 
-        > Non_Linear_Least_Squares 
-        > Ordinary_Least_Squares 
-        > Partial_Least_Squares_Regression 
-        > Partition_Of_Sums_Of_Squares 
-        > Proofs_Involving_Ordinary_Least_Squares 
-        > Residual_Sum_Of_Squares 
-        > Total_Least_Squares 
-        > Total_Sum_Of_Squares 
-      
+      > Iteratively_Reweighted_Least_Squares 
+      > Lack_Of_Fit_Sum_Of_Squares 
+      > Least_Squares_Support_Vector_Machine 
+      > Mean_Squared_Error 
+      > Moving_Least_Sqares 
+      > Non_Linear_Iterative_Partial_Least_Squares 
+      > Non_Linear_Least_Squares 
+      > Ordinary_Least_Squares 
+      > Partial_Least_Squares_Regression 
+      > Partition_Of_Sums_Of_Squares 
+      > Proofs_Involving_Ordinary_Least_Squares 
+      > Residual_Sum_Of_Squares 
+      > Total_Least_Squares 
+      > Total_Sum_Of_Squares 
+    
     > EstimationOfDensity
       > Cluster_Weighted_Modeling 
       > Density_Estimation 
@@ -133,13 +135,13 @@ The exported analyzed data is stored in your reports directory.
       > Fourier_Amplitude_Sensitivity_Testing 
       > Hyperparameter 
     
-    > Time_series_Analysis
+    > Time_Series_Analysis
       > Frequency_Deviation 
 
 ## Contact me
 
 If you'd like to collaborate, please feel free to fork source code on github. 
 
-Also, You can also contact me at albertmck@gmail.com
+You can also contact me at albertmck@gmail.com
 
      
