@@ -69,7 +69,7 @@ The exported analyzed data is stored in your reports directory.
 
  More statistical computations coming. This includes:
 
-   > Gauss_Newton_Algorithm 
+    > GaussNewtonAlgorithm 
       > Iteratively_Reweighted_Least_Squares 
       > Lack_Of_Fit_Sum_Of_Squares 
       > Least_Squares_Support_Vector_Machine 
