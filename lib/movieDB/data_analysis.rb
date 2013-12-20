@@ -24,7 +24,7 @@ module MovieDB
 
             total_columns = 17
             @column = []
-            @row_count = @sheet.rows.count
+  p          @row_count = @sheet.rows.count
 
             1.upto(total_columns) do |c|
               @column = [] # set instance variable to an empty array
@@ -48,17 +48,28 @@ module MovieDB
 
 
               if @column.all? {|i| (1..99999999).include? (i)}
-                @data_processing = @column.inject do |sum, n|
-                  (sum + n)/(row_count-1) 
-                end
+                n = @column.count
+                    @column.sort!
+
+                 if n.odd?
+                   index = (n + 1)/2
+                   @median = @column[index - 1] # Subtract -1 to reduce index value since array start with an index 0.
+                 else
+                   middle_index = n/2
+                   right_index = middle_index + 1
+                   @median = (@column[middle_index - 1] + @column[right_index - 1])/2
+                 end
               else
-                @data_processing = "N/A" # This applies to arrays that include strings elements like ["Steve McQueen", 24,"Albert McKeever"]
+                @median = "N/A" # This applies to arrays that include strings elements like ["Steve McQueen", 24,"Albert McKeever"]
               end
 
               ##
               # Insert the processed data analysis into spreadsheet
               @sheet[@row_count + 1, 0 ] =  "Median"
-              @sheet[@row_count + 1, 0 + c ] =  @data_processing
+              @sheet[@row_count + 1, 0 + c ] =  @median
+
+              @sheet[@row_count + 2, 0 ] =  "STDERR"
+             # @sheet[@row_count + 2, 0 + c ] = @stderr
             end 
           end
 
@@ -71,10 +82,6 @@ module MovieDB
 
           def insert_data_to_existing_xls_file
             filename = ("#{report_name}.xls")
-            #@book.worksheet(0).insert_row(4, [@data_processing ])
-            #@sheet[row_count + 2, 2] = @data_processing
-            #@sheet.row(row_count + 2).push "R Squared n ", @data_processing 
-
             @book.write File.join('reports', filename)
             return filename
           end
