@@ -48,8 +48,13 @@ module MovieDB
 
 
               if @column.all? {|i| (1..99999999).include? (i)}
+                
+
                 n = @column.count
                     @column.sort!
+
+                @mean = @column.sum/n
+                @range = @column.max - @column.min
 
                  if n.odd?
                    index = (n + 1)/2
@@ -59,16 +64,26 @@ module MovieDB
                    right_index = middle_index + 1
                    @median = (@column[middle_index - 1] + @column[right_index - 1])/2
                  end
+                 
               else
-                @median = "N/A" # This applies to arrays that include strings elements like ["Steve McQueen", 24,"Albert McKeever"]
+                @median = "N/A"
+                @mean = "N/A"
+                @range = "N/A"
               end
 
               ##
-              # Insert the processed data analysis into spreadsheet
-              @sheet[@row_count + 1, 0 ] =  "Median"
-              @sheet[@row_count + 1, 0 + c ] =  @median
+              # Insert results into spreadsheet cell
 
-              @sheet[@row_count + 2, 0 ] =  "STDERR"
+              @sheet[@row_count + 2, 0 ] =  "Mean"
+              @sheet[@row_count + 2, 0 + c ] = @mean
+
+              @sheet[@row_count + 3, 0 ] =  "Median"
+              @sheet[@row_count + 3, 0 + c ] =  @median
+
+              @sheet[@row_count + 4, 0 ] =  "Range"
+              @sheet[@row_count + 4, 0 + c ] =  @range
+
+              @sheet[@row_count + 5, 0 ] =  "STDERR"
              # @sheet[@row_count + 2, 0 + c ] = @stderr
             end 
           end
