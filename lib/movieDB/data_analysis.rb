@@ -8,8 +8,9 @@ module MovieDB
   class DataAnalysis < MovieDB::Movie
     module AnalysisOfVariance
       module LeastSquares
-        module Coefficient_Of_Determination
-          def coefficient_of_determination (directory_name)
+        module Statistic
+
+          def basic_statistic (directory_name)
             open_spreadsheet(directory_name)
             perform_computation
             insert_data_to_existing_xls_file
@@ -52,14 +53,35 @@ module MovieDB
                 n = @column.count
                     @column.sort!
 
-                @mean = @column.sum/n
-                @range = @column.max - @column.min
-
                 ##
-                # Find the most repeated integer occurence
+                # Mean is commonly called as average.Mean or Average is defined as the sum of 
+                # all the given elements divided by the total number of elements.
+                #
+                # Range is the difference between the highest and the lowest values in a 
+                # frequency distribution.
+                #
+                # Mode is the most frequently occurring value in a frequency distribution.
+
+                @mean = @column.sum/n # Find the mean
+                @range = @column.max - @column.min # Find the range
 
                 freq = @column.inject(Hash.new(0)) { |h, v| h[v] += 1; h }
-                @mode =  @column.sort_by { |v| freq[v]}.last
+                @mode =  @column.sort_by { |v| freq[v]}.last # Find the mode
+
+                ##
+                # Calculate Standard Deviation 
+                # Standard deviation is a statistical measure of spread or variability.
+                # The standard deviation is the root mean square (RMS) deviation of the
+                # values from their arithmetic mean.
+
+                @column_squared = []
+                @column.each do |col|
+                  @column_squared << col**2
+                end
+
+                @sum_of_column = @column.sum
+                @sum_of_column_squared = @column_squared.sum
+                @standard_dev = Math.sqrt((@sum_of_column_squared -((@sum_of_column)*(@sum_of_column)/n))/(n-1))
 
                  if n.odd?
                    index = (n + 1)/2
@@ -75,6 +97,7 @@ module MovieDB
                 @mean = "N/A"
                 @range = "N/A"
                 @mode = "N/A"
+                @standard_dev = "N/A"
               end
 
               ##
@@ -92,8 +115,8 @@ module MovieDB
               @sheet[@row_count + 5, 0 ] =  "Mode"
               @sheet[@row_count + 5, 0 + c ] =  @mode
 
-              @sheet[@row_count + 6, 0 ] =  "STDERR"
-             # @sheet[@row_count + 2, 0 + c ] = @stderr
+              @sheet[@row_count + 6, 0 ] =  "Standard Deviation"
+              @sheet[@row_count + 6, 0 + c ] =  @standard_dev
             end 
           end
 
@@ -110,6 +133,7 @@ module MovieDB
             return filename
           end
         end
+        module Coefficient_Of_Determination; end
         module Discrete_Least_Squares_Meshless_Method; end
         module Explained_Sum_Of_Squares; end
         module Fraction_Of_Variance_Unexplained; end

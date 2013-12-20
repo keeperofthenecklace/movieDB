@@ -5,11 +5,10 @@ describe MovieDB::DataProcess do
   describe "#AnalysisOfVariance" do
    describe "#LeastSquares" do
      describe "#Coefficient_Of_Determination" do
-        let(:cod) {MovieDB::DataProcess}
-        #let(:cod) {MovieDB::DataProcess.analyze_cod(imdb_raw_data_2013121820.xls)}
+        let(:basic_stat) {MovieDB::DataProcess}
 
         it "should return the cof" do
-         cod.send(:coefficient_of_determination, 'imdb_raw_data_2013121911.xls').should == []
+         basic_stat.send(:basic_statistic, 'imdb_raw_data_2013121911.xls').should == []
         end 
 
         it "raise error if file does not exist" do
