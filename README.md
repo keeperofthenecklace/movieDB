@@ -39,7 +39,7 @@ Or install it yourself as:
   
     > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")  
 
-      ** YOU CAN ADD AS MANY IMDB UNIQUE NUMBERS. JUST DO NOT PAST THE EXCEED RATE.
+      ** YOU CAN ADD AS MANY IMDB UNIQUE NUMBERS. JUST DO NOT EXCEED MAXIMUM REQUEST RATE.
 
     > MovieDB::DataExport.export_movie_data
 
