@@ -11,9 +11,21 @@ Basic functions and Data Analysis:
 * Exploratory Data Analysis
 * Confirmatory Data Analysis
 
+#### VERY IMPORTANT NOTE
+
+Since our budget feature depends on themoviedb gem,
+You'll need their api key to use this fuctionality.
+
+Please follow the URL links for registration and installation
+
+* https://www.themoviedb.org
+* https://github.com/ahmetabdi/themoviedb
+
 ## Requirements
   
     ruby 1.9.x
+    
+    themoviedb api key
 
 ## Installation
 
@@ -36,12 +48,16 @@ Or install it yourself as:
     > require 'movieDB'
    
     > require 'MovieDB/data_export'
+    
+    > require 'themoviedb'
 
-    > MovieDB::Movie.clear_data_store  **ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY)
+    > Tmdb::Api.key("KEY_HERE")  ** ONLY IF YOU WANT TO USE THE BUDGET FEATURE
+
+    > MovieDB::Movie.clear_data_store  ** ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY)
   
     > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")  
 
-      ** YOU CAN ADD AS MANY IMDB UNIQUE NUMBERS. JUST DO NOT EXCEED MAXIMUM REQUEST RATE.
+      ** YOU CAN ADD AS MANY IMDB UNIQUE NUMBERS. DO NOT EXCEED MAXIMUM REQUEST RATE.
 
     > MovieDB::DataExport.export_movie_data
 
