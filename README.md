@@ -43,7 +43,7 @@ Or install it yourself as:
 
     > MovieDB::DataExport.export_movie_data
 
-## Exported Document
+### Exported Document
 
 The exported movie data is stored in your reports directory.
 
@@ -59,7 +59,7 @@ The exported movie data is stored in your reports directory.
 
     > MovieDB::DataProcess.send(:basic_statistics, 'imdb_raw_data_20131216.xls')
 
-## Exported - Analyzed Data 
+### Exported - Analyzed Data 
 
 The exported analyzed data is stored in your reports directory.
 
@@ -67,9 +67,9 @@ The exported analyzed data is stored in your reports directory.
 
 ## What's Next
 
- More statistical computations coming. This includes:
+##### More statistical computations coming. This includes:
 
-    > GaussNewtonAlgorithm 
+`:GaussNewtonAlgorithm`
       > Iteratively_Reweighted_Least_Squares 
       > Lack_Of_Fit_Sum_Of_Squares 
       > Least_Squares_Support_Vector_Machine 
@@ -144,4 +144,4 @@ If you'd like to collaborate, please feel free to fork source code on github.
 
 You can also contact me at albertmck@gmail.com
 
-     
+###### Copyright (c) 2013 Albert McKeever, released under MIT license     
