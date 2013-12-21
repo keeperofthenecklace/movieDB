@@ -67,7 +67,7 @@ The exported analyzed data is stored in your reports directory.
 
 ## What's Next
 
-##### More statistical computations coming. This includes:
+##### More statistical computations coming soon:
 
 `:GaussNewtonAlgorithm`
 
@@ -86,20 +86,22 @@ The exported analyzed data is stored in your reports directory.
     > Total_Least_Squares 
     > Total_Sum_Of_Squares 
     
-    > EstimationOfDensity
-      > Cluster_Weighted_Modeling 
-      > Density_Estimation 
-      > Discretization_Of_Continuous_Features 
-      > Mean_Integrated_Squared_Error 
-      > Multivariate_Kernel_Density_Estimation 
-      > Variable_Kernel_Density_Estimation 
+`:EstimationOfDensity`
+
+    > Cluster_Weighted_Modeling 
+    > Density_Estimation 
+    > Discretization_Of_Continuous_Features 
+    > Mean_Integrated_Squared_Error 
+    > Multivariate_Kernel_Density_Estimation 
+    > Variable_Kernel_Density_Estimation 
     
-    > ExploratoryDataAnalysis
-      > Data_Reduction 
-      > Table_Diagonalization 
-      > Configural_Frequency_Analysis 
-      > Median_Polish 
-      > Stem_And_Leaf_Display 
+`:ExploratoryDataAnalysis`
+
+    > Data_Reduction 
+    > Table_Diagonalization 
+    > Configural_Frequency_Analysis 
+    > Median_Polish 
+    > Stem_And_Leaf_Display 
     
     > Data_Mining
       > Applied_DataMining 
