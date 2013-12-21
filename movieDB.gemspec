@@ -6,7 +6,7 @@ require 'movieDB/version'
 Gem::Specification.new do |spec|
   spec.name          = "movieDB"
   spec.version       = MovieDB::VERSION
-  spec.authors       = ["Albert_McKeever"]
+  spec.authors       = ["Albert McKeever"]
   spec.email         = ["kotn_ep1@hotmail.com"]
   spec.description   = %q{Perform Data Analysis on IMDB Movies}
   spec.summary       = %q{Movie/Film Statistic and Data Analysis}
@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'fakeweb'
   spec.add_dependency "activesupport", ">= 4.0.0"
   spec.add_dependency "spreadsheet"
+  spec.add_dependency "themoviedb"
 end

@@ -13,10 +13,9 @@ Basic functions and Data Analysis:
 
 #### VERY IMPORTANT NOTE
 
-Since our budget feature depends on themoviedb gem,
-You'll need their api key to use this fuctionality.
+Our budget feature depends on themoviedb gem.
 
-Please follow the URL links for registration and installation
+Please follow the URL links for reading info.
 
 * https://www.themoviedb.org
 * https://github.com/ahmetabdi/themoviedb
@@ -41,7 +40,7 @@ Or install it yourself as:
 
     $ gem install movieDB
 
-## Usage - Collecting Movie Data From IMDb
+## Require - loading the libraries
 
     $ irb
 
@@ -51,7 +50,7 @@ Or install it yourself as:
     
     > require 'themoviedb'
 
-    > Tmdb::Api.key("KEY_HERE")  ** ONLY IF YOU WANT TO USE THE BUDGET FEATURE
+## Usage - Collecting Movie Data From IMDb
 
     > MovieDB::Movie.clear_data_store  ** ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY)
   

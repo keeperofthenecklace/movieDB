@@ -46,6 +46,7 @@ module MovieDB
         @sheet.row(0).default_format = title_format
         @sheet.column(1).default_format = float_format
         @sheet.column(16).default_format = float_format
+        @sheet.column(22).default_format = float_format
       end
 
       # Loop through array of and array imbd data. Each row has the 
@@ -78,6 +79,7 @@ module MovieDB
           when 'tagline' then spreadsheet_body_text_data("tagline")
           when 'year' then spreadsheet_body_numeric_data("year")
           when 'release_date' then spreadsheet_body_numeric_data("release_date")
+          when 'worldwide_gross' then spreadsheet_body_numeric_data("worldwide_gross")
           else
           end
         end

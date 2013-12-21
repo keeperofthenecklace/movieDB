@@ -3,11 +3,12 @@ require "time"
 require "open-uri"
 require "nokogiri"
 require "zimdb"
+require "themoviedb"
 require "imdb"
 require "spreadsheet"
 require "MovieDB/base"
 require "MovieDB/data_analysis"
-
+require "MovieDB/secret"
   ##
   # Create a new movie record. The values are stored in the key-value data store.
   #
@@ -21,8 +22,9 @@ require "MovieDB/data_analysis"
 unless defined? MovieDB::Movie
   module MovieDB
      class Movie < MovieDB::Base
-
-          prepend StatusChecker
+          
+       include StatusChecker
+       extend MovieDB::Secret::Lock
 
           # Use example
           # raise MovieError unless Movie.title_present?
@@ -51,6 +53,7 @@ unless defined? MovieDB::Movie
                         :tagline,
                         :year,
                         :release_date,
+                        :worldwide_gross,
                         :released,
                         :unique_id, 
                         :academy_award_nomination, 
@@ -59,7 +62,6 @@ unless defined? MovieDB::Movie
                         :golden_globe_wins,
                         :bafta_nomination, 
                         :bafta_wins, 
-                        :worldwide_gross,
                         :film_release
 
           DEFAULT_TITLE = "Method Missing 2: Rails Roars!"
@@ -85,6 +87,7 @@ unless defined? MovieDB::Movie
           DEFAULT_TAGLINE = 'Only One MVC Will rule Them All.'
           DEFAULT_YEAR = 2013
           DEFAULT_RELEASE_DATE = "11 October 2013 (USA)"
+          DEFAULT_WORLDWIDE_GROSS = "$124.6M" # Not provided by imdb api. 
           DEFAULT_UNIQUE_ID = @unique_id
           DEFAULT_ACADEMY_AWARD_NOMINATION = 4
           DEFAULT_ACADEMY_AWARD_WINS = 3
@@ -93,14 +96,14 @@ unless defined? MovieDB::Movie
           DEFAULT_BAFTA_NOMINATION = 3
           DEFAULT_BAFTA_WINS = 1
           DEFAULT_FILM_RELEASE = ['theatrical', 'video', 'television', 'internet', 'print']
-          DEFAULT_WORLDWIDE_GROSS = "$124.6M" # Not provided by imdb api. 
+
 
           def initialize(attributes = {})
             $IMDB_ATTRIBUTES_HEADERS = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters 
                             trailer_url director writer filming_locations company genres languages countries  
-                            length plot poster rating votes mpaa_rating tagline year release_date unique_id
+                            length plot poster rating votes mpaa_rating tagline year release_date worldwide_gross unique_id
                             academy_award_nomination academy_award_wins golden_globe_nominations golden_globe_wins
-                            bafta_nomination bafta_wins film_release worldwide_gross)
+                            bafta_nomination bafta_wins film_release )
             movie_attr.each do |attr|
               self.send "#{attr}=", (attributes.has_key?(attr.to_sym) ? attributes[attr.to_sym] : self.class.const_get("DEFAULT_#{attr.upcase}"))
             end
@@ -133,18 +136,14 @@ unless defined? MovieDB::Movie
               puts  zimdb_value = "tt" << value.to_s
               @movie_data = Imdb::Movie.new(value.to_s)
               @zimdb_data = Zimdb::Movie.new( :id => zimdb_value)
+             
               return @movie_data
               return @zimdb_data
-            end
-
-            def imdb_movie_search(name)
-              @movie_search = Imdb::Movie.search(name.to_s)
             end
 
             def global_movie_data_store
               return  $GLOBAL_MOVIE_DS 
             end
-
 
             ##
             # You can add multiple Imdb ids
@@ -156,11 +155,30 @@ unless defined? MovieDB::Movie
             #       # MovieDB::Movie.instance_eval{filter_movie_attr("title")}
 
             def get_multiple_imdb_movie_data(*args)
-              begin
                 args.each do |value| 
                   get_imdb_movie_data(value)
                   @movie_DS ||=[]
                   movie_info = Movie.new
+                  
+                  ##
+                  # query themoviedb.org for film revenue
+                  # Will return a 0 revenue if record doesn't exist at
+                  # themoviedb.org
+                   
+                  tmdb_arr = []
+                  tmdb_key =  MovieDB::Movie.key
+                  Tmdb::Api.key(tmdb_key)
+                  tmdb = Tmdb::Movie.find(@movie_data.title)
+
+                  if tmdb.empty?
+                    tmdb_data = Tmdb::Movie.new
+                    tmdb_data.revenue = 0
+                  else
+                    tmdb.select { |t| tmdb_arr << t.id }
+                    tmdb_id = tmdb_arr[0]
+                    tmdb_data = Tmdb::Movie.detail(tmdb_id)
+                  end               
+               begin                 
                   movie_info.title = Array.new << @movie_data.title
                   movie_info.cast_members =  @movie_data.cast_members.flatten
                   movie_info.cast_characters = @movie_data.cast_characters
@@ -183,6 +201,7 @@ unless defined? MovieDB::Movie
                   movie_info.tagline = Array.new << @movie_data.tagline
                   movie_info.year = Array.new << @movie_data.year
                   movie_info.release_date = Array.new << @movie_data.release_date
+                  movie_info.worldwide_gross = Array.new << tmdb_data.revenue 
                   movie_info.unique_id =  @unique_id
 
                   ##
@@ -194,13 +213,12 @@ unless defined? MovieDB::Movie
                   #movie_info.golden_globe_wins = golden_globe_wins
                   #movie_info.bafta_nomination = bafta_nomination 
                   #movie_info.bafta_wins = bafta_wins
-                  #movie_info.worldwide_gross = worldwide_gross
-                  $GLOBAL_MOVIE_DS = @movie_DS << movie_info
+                   $GLOBAL_MOVIE_DS = @movie_DS << movie_info
+                 rescue
+                  raise ArgumentError, 'invalid imbd id'
+                 end
                 end
-              rescue
-                raise ArgumentError, 'invalid imbd id'
-              end
-
+ 
               return @movie_DS
 
               ##
@@ -246,10 +264,10 @@ unless defined? MovieDB::Movie
 
     ##
     # Use the double splat to capture auxillary arguments.
+    # Will use this feature in Ruby 2.0 upgrade.
+    # Currently, the software requirement is Ruby 1.9.x
     #
-    # Example
-    #
-    # capture(synopsis: "Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze.")
+    # USAGE: capture(synopsis: "Last Vegas - Four geriatric friends vow to set Las Vegas Ablaze.")
 
           #def capture(**opts)
             #@synopsis = opts

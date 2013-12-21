@@ -23,7 +23,7 @@ module MovieDB
 
           def perform_computation
 
-            total_columns = 17
+            total_columns = 22
             @column = []
             @row_count = @sheet.rows.count
 
