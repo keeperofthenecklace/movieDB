@@ -70,20 +70,21 @@ The exported analyzed data is stored in your reports directory.
 ##### More statistical computations coming. This includes:
 
 `:GaussNewtonAlgorithm`
-      > Iteratively_Reweighted_Least_Squares 
-      > Lack_Of_Fit_Sum_Of_Squares 
-      > Least_Squares_Support_Vector_Machine 
-      > Mean_Squared_Error 
-      > Moving_Least_Sqares 
-      > Non_Linear_Iterative_Partial_Least_Squares 
-      > Non_Linear_Least_Squares 
-      > Ordinary_Least_Squares 
-      > Partial_Least_Squares_Regression 
-      > Partition_Of_Sums_Of_Squares 
-      > Proofs_Involving_Ordinary_Least_Squares 
-      > Residual_Sum_Of_Squares 
-      > Total_Least_Squares 
-      > Total_Sum_Of_Squares 
+
+    > Iteratively_Reweighted_Least_Squares 
+    > Lack_Of_Fit_Sum_Of_Squares 
+    > Least_Squares_Support_Vector_Machine 
+    > Mean_Squared_Error 
+    > Moving_Least_Sqares 
+    > Non_Linear_Iterative_Partial_Least_Squares 
+    > Non_Linear_Least_Squares 
+    > Ordinary_Least_Squares 
+    > Partial_Least_Squares_Regression 
+    > Partition_Of_Sums_Of_Squares 
+    > Proofs_Involving_Ordinary_Least_Squares 
+    > Residual_Sum_Of_Squares 
+    > Total_Least_Squares 
+    > Total_Sum_Of_Squares 
     
     > EstimationOfDensity
       > Cluster_Weighted_Modeling 
