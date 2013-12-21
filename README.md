@@ -1,4 +1,5 @@
  MovieDB - Movie Data Analysis Tool
+
 [![Gem Version](https://badge.fury.io/rb/movieDB.png)](http://badge.fury.io/rb/movieDB)
 
 ## Description
