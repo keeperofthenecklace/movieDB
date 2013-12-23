@@ -64,7 +64,7 @@ Or install it yourself as:
 
 The exported movie data is stored in your reports directory.
 
-    $ cd /reports/imdb_raw_data_20131216.xls
+    $ open /reports/imdb_raw_data_20131216.xls
 
 ## Usage - Analyse Data and Generate Statistic Results (4 Steps)
 
