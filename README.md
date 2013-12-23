@@ -50,7 +50,7 @@ Or install it yourself as:
     
     > require 'themoviedb'
 
-## Usage - Collecting Movie Data From IMDb
+## Usage - Collect Movie Data From IMDb (3 Steps)
 
     > MovieDB::Movie.clear_data_store         /* ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY) */
   
@@ -66,7 +66,7 @@ The exported movie data is stored in your reports directory.
 
     $ cd /reports/imdb_raw_data_20131216.xls
 
-## Usage - Analysing Data and Generating Stats
+## Usage - Analyse Data and Generate Statistic Results (4 Steps)
 
     $ irb
 
