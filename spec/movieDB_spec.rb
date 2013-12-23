@@ -12,6 +12,7 @@ describe MovieDB do
      
       MovieDB::Movie.send(:clear_data_store)
       MovieDB::Movie.send(:get_multiple_imdb_movie_data, "0120338", "0120815", "0120915")
+      #MovieDB::Movie.send(:get_multiple_imdb_movie_data, "0120338")
       MovieDB::DataExport.export_movie_data
 
 

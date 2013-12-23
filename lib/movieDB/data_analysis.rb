@@ -12,21 +12,35 @@ module MovieDB
 
           def basic_statistic (directory_name)
             open_spreadsheet(directory_name)
-            perform_computation
-            insert_data_to_existing_xls_file
+            
+            if check_imdb_count == true
+               puts "*"*41
+               puts "* A minimum of 2 Imdb id's are required *"
+               puts "* To perform statistical data analysis  *"
+               puts "* You only have ONE Imdb id entered     *"
+               puts "*"*41
+            else
+              perform_computation
+              insert_data_to_existing_xls_file
+            end
           end
 
           def open_spreadsheet(directory_name)
             @book = Spreadsheet.open File.join('reports', directory_name)
             @sheet = @book.worksheet(0)
 
-                    title_format = Spreadsheet::Format.new :color => :blue,
-                                         :weight => :bold,
-                                         :size => 13
+            ##
+            # Add document formatting
 
+            title_format = Spreadsheet::Format.new :color => :blue,
+                                 :weight => :bold,
+                                 :size => 13
 
-           # set default format
            @sheet.column(22).width = "worldwide_gross".length
+          end
+
+          def check_imdb_count
+            @sheet.rows.count - 1 == 1
           end
 
           def perform_computation          

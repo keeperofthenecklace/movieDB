@@ -79,7 +79,7 @@ unless defined? MovieDB::Movie
           DEFAULT_LANGUAGES = ["English", "German", "Italian"]
           DEFAULT_COUNTRIES = ["USA", "Germany", "Italy"]
           DEFAULT_LENGTH = 146
-          DEFAULT_PLOT = ["David Black, a developer, tries to write his flagship ruby book 'The Well-Grounded Rubyist vol. 186' only to find out that Ruby 9.0.2 and Rails 16.0.3 release dates have been postponed"]
+          DEFAULT_PLOT = ["David Black, a ruby developer, tries to write his flagship ruby book 'The Well-Grounded Rubyist vol. 186' only to find out that Ruby 9.0.2 and Rails 16.0.3 release dates have been postponed"]
           DEFAULT_POSTER = "http://ia.media-imdb.com/images/M/MV5BMTY@@.jpg"
           DEFAULT_RATING = 9.9
           DEFAULT_VOTES = 110636
@@ -155,6 +155,18 @@ unless defined? MovieDB::Movie
             #       # MovieDB::Movie.instance_eval{filter_movie_attr("title")}
 
             def get_multiple_imdb_movie_data(*args)
+
+              ##
+              # Notify user to input in 2 or more imdb id's
+
+             if args.size == 1
+               puts "*"*41
+               puts "* A minimum of 2 Imdb id's are required *"
+               puts "* To perform statistical data analysis  *"
+               puts "* You only have ONE Imdb id entered     *"
+               puts "*"*41
+             end
+              
                 args.each do |value| 
                   get_imdb_movie_data(value)
                   @movie_DS ||=[]
@@ -164,7 +176,7 @@ unless defined? MovieDB::Movie
                   # query themoviedb.org for film revenue
                   # Will return a 0 revenue if record doesn't exist at
                   # themoviedb.org
-                   
+
                   tmdb_arr = []
                   tmdb_key =  MovieDB::Movie.key
                   Tmdb::Api.key(tmdb_key)
@@ -218,7 +230,7 @@ unless defined? MovieDB::Movie
                   raise ArgumentError, 'invalid imbd id'
                  end
                 end
- 
+
               return @movie_DS
 
               ##
