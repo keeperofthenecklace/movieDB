@@ -40,7 +40,7 @@ module MovieDB
         title_format = Spreadsheet::Format.new :color => :blue,
                                          :weight => :bold,
                                          :size => 13
-  
+
         float_format = Spreadsheet::Format.new :number_format => "0.00"
 
         @sheet.row(0).default_format = title_format

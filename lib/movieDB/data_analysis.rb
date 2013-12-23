@@ -19,13 +19,25 @@ module MovieDB
           def open_spreadsheet(directory_name)
             @book = Spreadsheet.open File.join('reports', directory_name)
             @sheet = @book.worksheet(0)
+
+                    title_format = Spreadsheet::Format.new :color => :blue,
+                                         :weight => :bold,
+                                         :size => 13
+
+
+           # set default format
+           @sheet.column(22).width = "worldwide_gross".length
           end
 
-          def perform_computation
+          def perform_computation          
 
             total_columns = 22
             @column = []
             @row_count = @sheet.rows.count
+
+            ##
+            # Use this total column count to make it dynamic
+            #total_columns = @column_count = @sheet.column_count
 
             1.upto(total_columns) do |c|
               @column = [] # set instance variable to an empty array
@@ -48,7 +60,7 @@ module MovieDB
               # Calculate median as an example but COD formula must be used
 
 
-              if @column.all? {|i| (1..99999999).include? (i)}
+              if @column.all? {|i| (1..99999999999).include? (i)}
 
                 n = @column.count
                     @column.sort!
@@ -117,7 +129,8 @@ module MovieDB
 
               @sheet[@row_count + 6, 0 ] =  "Standard Deviation"
               @sheet[@row_count + 6, 0 + c ] =  @standard_dev
-            end 
+
+            end
           end
 
           def report_name
@@ -128,6 +141,7 @@ module MovieDB
           end
 
           def insert_data_to_existing_xls_file
+
             filename = ("#{report_name}.xls")
             @book.write File.join('reports', filename)
             return filename
