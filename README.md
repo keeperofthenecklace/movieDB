@@ -74,7 +74,7 @@ The exported movie data is stored in your reports directory.
 
     > require 'MovieDB/data_process'
 
-    > MovieDB::DataProcess.send(:basic_statistics, 'imdb_raw_data_20131216.xls')
+    > MovieDB::DataProcess.send(:basic_statistic, 'imdb_raw_data_20131216.xls')
 
 ### Exported - Analyzed Data 
 
