@@ -52,7 +52,7 @@ Or install it yourself as:
 
 ## Usage - Collecting Movie Data From IMDb
 
-    > MovieDB::Movie.clear_data_store  /* ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY) */
+    > MovieDB::Movie.clear_data_store         /* ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY) */
   
     > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")  
 
