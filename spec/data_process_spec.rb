@@ -8,7 +8,7 @@ describe MovieDB::DataProcess do
         let(:basic_stat) {MovieDB::DataProcess}
 
         it "should return the cof" do
-         basic_stat.send(:basic_statistic, 'imdb_raw_data_2013122312.xls').should == []
+         basic_stat.send(:basic_statistic, 'imdb_raw_data_2013122312.xls').should == 'Statistic_2013122417.xls'
         end 
 
         it "raise error if file does not exist" do
