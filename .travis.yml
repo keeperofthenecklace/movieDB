@@ -7,7 +7,7 @@ env:
   #- GEM DB=mysql
   #- GEM DB=postgres
 before_install:
-  #- cd $GEM; export BUNDLE_GEMFILE="`pwd`/Gemfile"
+  - cd $GEM; export BUNDLE_GEMFILE="`pwd`/Gemfile"
 script: bundle exec rspec spec
 
 matrix:
