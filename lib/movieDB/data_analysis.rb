@@ -161,7 +161,9 @@ module MovieDB
             return filename
           end
         end
-        module Coefficient_Of_Determination; end
+        module Coefficient_Of_Determination
+        #hold
+        end
         module Discrete_Least_Squares_Meshless_Method; end
         module Explained_Sum_Of_Squares; end
         module Fraction_Of_Variance_Unexplained; end
