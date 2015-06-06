@@ -115,7 +115,6 @@ unless defined? MovieDB::Movie
       # Iterating through the block for title duplication.
       # Return true if the array is not nil.
       # Absence of title duplications should yield an empty array.
-
       def self.title_present?
         titles = Movie.instance_eval{ filter_movie_attr("title") }
         @title_exist = titles.detect{ |duplicates| titles.count(duplicates) > 1 }
@@ -147,7 +146,7 @@ unless defined? MovieDB::Movie
         #
         #   MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241")
         #
-        #  Example: You can collect the arrays of the title attributes
+        # Example: You can also collect the title attribute:
         #
         #    MovieDB::Movie.instance_eval{filter_movie_attr("title")}
         def get_multiple_imdb_movie_data(*args)
@@ -164,9 +163,8 @@ unless defined? MovieDB::Movie
             @movie_DS ||=[]
             movie_info = Movie.new
 
-            # query themoviedb.org for film revenue
-            # Will return a 0 revenue if record doesn't exist at
-            # themoviedb.org
+            # Query themoviedb.org for film revenue.
+            # returns 0 if revenue record doesn't exist.
             tmdb_arr = []
             tmdb_key =  MovieDB::Movie.key
             Tmdb::Api.key(tmdb_key)
@@ -218,8 +216,8 @@ unless defined? MovieDB::Movie
               #   movie_info.bafta_nomination = bafta_nomination
               #   movie_info.bafta_wins = bafta_wins
               $GLOBAL_MOVIE_DS = @movie_DS << movie_info
-              rescue
-                raise ArgumentError, 'invalid imbd id'
+            rescue
+              raise ArgumentError, 'invalid imbd id'
             end
 
           end
