@@ -5,6 +5,7 @@ module MovieDB
     PATH_AOV = MovieDB::DataAnalysis::AnalysisOfVariance::LeastSquares
     extend PATH_AOV::Statistic
     extend PATH_AOV::Coefficient_Of_Determination
+
     include PATH_AOV::Explained_Sum_Of_Squares
     include PATH_AOV::Fraction_Of_Variance_Unexplained
     include PATH_AOV::Gauss_Newton_Algorithm

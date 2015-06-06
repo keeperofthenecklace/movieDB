@@ -1,20 +1,19 @@
 require 'rubygems'
 require 'time'
+# Create an actor instance and return the values for the actor variable.
+#
+#    actor = MovieDB::Actor.instance_eval{create_with_info("Brittany Murphy", "F", "1977-11-10", "2009-12-20")}
+#    actor = MovieDB::Actor.instance_eval{create_with_info("George Clooney", "M", "1961-05-06", nil)}
 
-  ##
-  # Create an actor instance and return the values  for 
-  # actor = MovieDB::Actor.instance_eval{create_with_info("Brittany Murphy", "F", "1977-11-10", "2009-12-20")}
-  # actor = MovieDB::Actor.instance_eval{create_with_info("George Clooney", "M", "1961-05-06", nil)}
-  #   # Name
-  #   # actor_name = actor.map(&:name) #=> ["Brittany Murphy"]
-  #
-  #   # Alive?
-  #   # actor_name = actor.map(&:alive?) #=> [false, true]
-  #
-  #   # Age
-  #   # actor_name = actor.map(&:age) #=> [32, 52]
-  #
-
+#  Example to find the actor name:
+#
+#    actor_name = actor.map(&:name) #=> ["Brittany Murphy"]
+#
+#  Example to see if an actoyre is alive:
+#    actor_name = actor.map(&:alive?) #=> [false, true]
+#
+#   Example to find an actor's age:
+#     actor_name = actor.map(&:age) #=> [32, 52]
 module MovieDB
   class Person
     attr_accessor :name, :gender, :birth_date, :death_date, :birthplace
@@ -49,27 +48,28 @@ module MovieDB
         person.gender = gender
         person.birth_date = birth_date
         person.death_date = death_date
+
         return @person_DS << person
       end
 
       def filter_person(attr)
        attr = attr.to_sym
-       raise ArgumentError, "#{attr} can only be name or age" if !attr == :age && :name
+       raise ArgumentError "#{attr} can only be name or age" if !attr == :age && :name
+
        return @person_DS.select{|s| s.alive?}.map(&attr)
       end
 
-  ##
-  # Returns a random parameter integer between min to max, 
-  # rather than a float between min to max.(Ruby 2.0.0)
-  #
-
+      # Returns a random parameter integer between min to max,
+      # rather than a float between min to max.(Ruby 2.0.0)
       def sample_attr(attr)
         randgen = Object.new
         attr_array = self.instance_eval{filter_person(attr)}
         attr_array.sample(random: randgen)
       end
     end
+
     private_class_method :create_with_info, :filter_person
+
   end
 
   class Actor < Person
@@ -85,7 +85,8 @@ module MovieDB
     end
 
     def actor_actress_gender(person)
-      case when person.gender == 'F'
+      case
+      when person.gender == 'F'
         return "actress"
       when person.gender == "M"
         return "actor"
@@ -95,23 +96,22 @@ module MovieDB
     end
 
     class << self
-
       def filter_actor_alive(attr)
        attr = attr.to_sym
-       raise ArgumentError, "#{attr} can only be name or age" if !attr == :age && :name
+       raise ArgumentError "#{attr} can only be name or age" if !attr == :age && :name
+
        return @person_DS.select{|s| s.alive?}.map(&"#{attr.to_sym}")
       end
 
       def filter_actor_deceased(actor)
-       return @person_DS.select{|s| !s.alive?}.map{|m| "#{m.age}"} if attr == "age"
-       return @person_DS.select{|s| !s.alive?}.map{|m| "#{m.name}"} if attr == "name"
+       return @person_DS.select{ |s| !s.alive?}.map{ |m| "#{m.age}" } if attr == "age"
+       return @person_DS.select{ |s| !s.alive?}.map{ |m| "#{m.name}" } if attr == "name"
       end
 
     end
   end
 
   class Writer < Person
-
     attr_accessor :published_work
     alias :published? :published_work
 
@@ -123,7 +123,6 @@ module MovieDB
   end
 
   class Director < Person
-
     attr_accessor :filmography
 
     def initialize(filmography = [])

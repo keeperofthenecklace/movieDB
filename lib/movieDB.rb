@@ -152,11 +152,11 @@ unless defined? MovieDB::Movie
         #    MovieDB::Movie.instance_eval{filter_movie_attr("title")}
         def get_multiple_imdb_movie_data(*args)
           if args.size == 1
-           puts "*"*41
+           puts "*" * 41
            puts "* A minimum of 2 Imdb id's are required *"
            puts "* To perform statistical data analysis  *"
            puts "* You only have ONE Imdb id entered     *"
-           puts "*"*41
+           puts "*" * 41
           end
 
           args.each do |value|
@@ -218,43 +218,43 @@ unless defined? MovieDB::Movie
               #   movie_info.bafta_nomination = bafta_nomination
               #   movie_info.bafta_wins = bafta_wins
               $GLOBAL_MOVIE_DS = @movie_DS << movie_info
-             rescue
-              raise ArgumentError, 'invalid imbd id'
-             end
+              rescue
+                raise ArgumentError, 'invalid imbd id'
+            end
 
           end
 
-        return @movie_DS
+          return @movie_DS
+        end
+
+        def clear_data_store
+          @movie_DS = []
+
+          return @movie_DS
+        end
+
+        # Filter the data store for the movie attributes. Return an array of the attributes.
+        #
+        # Example
+        #
+        #   Movie.filter_movie_attr('cast_members') #=> ["Chris_Hemsworth", "Natalie_Portman"]
+        def filter_movie_attr(attr)
+          attr_raw = attr
+          attr_sym = attr.to_sym
+
+          raise ArgumentError, ("#{attr_sym} is not a valid attribute." if !attr_sym == :director && :cast_members)
+          filtered = @movie_DS.select{ |ds| ds.attr_title? }.map(&attr_sym)#.flatten
+          attr_raw == ('languages' && 'title') ? filtered : filtered#.uniq
+        end
+
       end
 
-      def clear_data_store
-        @movie_DS = []
+      private_class_method :get_multiple_imdb_movie_data, :filter_movie_attr, :get_imdb_movie_data
 
-        return @movie_DS
+      def attr_title
+        !@title.nil?
       end
-
-      # Filter the data store for the movie attributes. Return an array of the attributes.
-      #
-      # Example
-      #
-      #   Movie.filter_movie_attr('cast_members') #=> ["Chris_Hemsworth", "Natalie_Portman"]
-      def filter_movie_attr(attr)
-        attr_raw = attr
-        attr_sym = attr.to_sym
-
-        raise ArgumentError, "#{attr_sym} is not a valid attribute." if !attr_sym == :director && :cast_members
-        filtered = @movie_DS.select{ |ds| ds.attr_title? }.map(&attr_sym)#.flatten
-        attr_raw == ('languages' && 'title') ? filtered : filtered#.uniq
-      end
-
-    end
-
-    private_class_method :get_multiple_imdb_movie_data, :filter_movie_attr, :get_imdb_movie_data
-
-    def attr_title
-      !@title.nil?
-    end
-    alias :attr_title? :attr_title
+      alias :attr_title? :attr_title
 
     end
   end
