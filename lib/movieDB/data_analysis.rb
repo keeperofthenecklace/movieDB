@@ -1,18 +1,15 @@
 require 'MovieDB'
 
 module MovieDB
-
-  ##
-  # Analysing, inspecting, cleaning, transforming and modeling data.
-
+  # Analyzing, inspecting, cleaning, transforming and modeling data.
+  #
   class DataAnalysis < MovieDB::Movie
     module AnalysisOfVariance
       module LeastSquares
         module Statistic
-
           def basic_statistic (directory_name)
             open_spreadsheet(directory_name)
-            
+
             if check_imdb_count == true
                puts "*"*41
                puts "* A minimum of 2 Imdb id's are required *"
@@ -29,76 +26,58 @@ module MovieDB
             @book = Spreadsheet.open File.join('reports', directory_name)
             @sheet = @book.worksheet(0)
 
-            ##
-            # Add document formatting
+            title_format = Spreadsheet::Format.new :color => :blue, :weight => :bold, :size => 13
 
-            title_format = Spreadsheet::Format.new :color => :blue,
-                                 :weight => :bold,
-                                 :size => 13
-
-           @sheet.column(22).width = "worldwide_gross".length
+            @sheet.column(22).width = "worldwide_gross".length
           end
 
           def check_imdb_count
             @sheet.rows.count - 1 == 1
           end
 
-          def perform_computation          
-
+          def perform_computation
+          # Perform computation on the data collected.
+          # TODO: Need to use coefficienct statistical formula.
+          # Calculate median as an example but COD formula must be used.
+          # Mean is commonly called as average. Mean or Average is defined as the sum of
+          # all the given elements divided by the total number of elements.
+          #
+          # Range is the difference between the highest and the lowest values in a
+          # frequency distribution.
+          #
+          # Mode is the most frequently occurring value in a frequency distribution.
+          #
+          # Calculate Standard Deviation.
+          # Standard deviation is a statistical measure of spread or variability.
+          #
+          # The standard deviation is the root mean square (RMS) deviation of the
+          # values from their arithmetic mean.
             total_columns = 22
             @column = []
+
             @row_count = @sheet.rows.count
 
-            ##
-            # Use this total column count to make it dynamic
-            #total_columns = @column_count = @sheet.column_count
-
             1.upto(total_columns) do |c|
-              @column = [] # set instance variable to an empty array
-
-              ##
-              # loop through to collect all elements
-              # The returned array includes both strings and integers elements
+              @column = []
 
               @sheet.each_with_index do |row, i|
                 @column << @sheet[i, 0 + c ]
               end
 
-              @column.shift # delete the string header from the array
-              @column.compact! # delete nil from the array
+              @column.shift
+              @column.compact!
+
               row_count = @sheet.rows.count
 
-              ##
-              # Perform computation on the data collected
-              # TODO: Need to use coefficienct statistical formula
-              # Calculate median as an example but COD formula must be used
-
-
-              if @column.all? {|i| (1..99999999999).include? (i)}
-
+              if @column.all? { |i| (1..99999999999).include? (i) }
                 n = @column.count
                     @column.sort!
 
-                ##
-                # Mean is commonly called as average.Mean or Average is defined as the sum of 
-                # all the given elements divided by the total number of elements.
-                #
-                # Range is the difference between the highest and the lowest values in a 
-                # frequency distribution.
-                #
-                # Mode is the most frequently occurring value in a frequency distribution.
-
-                @mean = @column.sum/n # Find the mean
-                @range = @column.max - @column.min # Find the range
+                @mean = @column.sum / n
+                @range = @column.max - @column.min
 
                 freq = @column.inject(Hash.new(0)) { |h, v| h[v] += 1; h }
-                @mode =  @column.sort_by { |v| freq[v]}.last # Find the mode
-
-                ##
-                # Calculate Standard Deviation 
-                # Standard deviation is a statistical measure of spread or variability.
-                # The standard deviation is the root mean square (RMS) deviation of the
-                # values from their arithmetic mean.
+                @mode =  @column.sort_by { |v| freq[v] }.last # Find the mode
 
                 @column_squared = []
                 @column.each do |col|
@@ -107,15 +86,15 @@ module MovieDB
 
                 @sum_of_column = @column.sum
                 @sum_of_column_squared = @column_squared.sum
-                @standard_dev = Math.sqrt((@sum_of_column_squared -((@sum_of_column)*(@sum_of_column)/n))/(n-1))
+                @standard_dev = Math.sqrt((@sum_of_column_squared - ((@sum_of_column) * (@sum_of_column) / n)) / (n - 1))
 
                  if n.odd?
-                   index = (n + 1)/2
-                   @median = @column[index - 1] # Subtract -1 to reduce index value since array start with an index 0.
+                   index = (n + 1) / 2
+                   @median = @column[index - 1]
                  else
-                   middle_index = n/2
+                   middle_index = n / 2
                    right_index = middle_index + 1
-                   @median = (@column[middle_index - 1] + @column[right_index - 1])/2
+                   @median = (@column[middle_index - 1] + @column[right_index - 1]) / 2
                  end
 
               else
@@ -125,9 +104,6 @@ module MovieDB
                 @mode = "N/A"
                 @standard_dev = "N/A"
               end
-
-              ##
-              # Insert results into spreadsheet cell
 
               @sheet[@row_count + 2, 0 ] =  "Mean"
               @sheet[@row_count + 2, 0 + c ] = @mean
@@ -143,7 +119,6 @@ module MovieDB
 
               @sheet[@row_count + 6, 0 ] =  "Standard Deviation"
               @sheet[@row_count + 6, 0 + c ] =  @standard_dev
-
             end
           end
 
@@ -155,15 +130,16 @@ module MovieDB
           end
 
           def insert_data_to_existing_xls_file
-
             filename = ("#{report_name}.xls")
             @book.write File.join('reports', filename)
             return filename
           end
         end
+
         module Coefficient_Of_Determination
-         #hold
+         # TODO: Add code.
         end
+
         module Discrete_Least_Squares_Meshless_Method; end
         module Explained_Sum_Of_Squares; end
         module Fraction_Of_Variance_Unexplained; end
@@ -194,12 +170,10 @@ module MovieDB
       module Variable_Kernel_Density_Estimation; end
     end
 
-    ##
-    # primarily EDA is for seeing what the data can 
-    # tell us beyond the formal modeling or hypothesis testing task
-    # The output will be a visual material
-
     module ExploratoryDataAnalysis
+    # primarily EDA is for seeing what the data can
+    # tell us beyond the formal modeling or hypothesis testing task.
+    # The output will be a visual material.
       module Data_Reduction; end
       module Table_Diagonalization; end
       module Configural_Frequency_Analysis; end
@@ -218,12 +192,12 @@ module MovieDB
     module RegressionAnalysis
       module Choice_Modelling; end
 
-      module Generalized_Linear_Model 
-        module Binomial_Regression; end        
-        module Generalized_Additive_Model; end        
-        module Linear_Probability_Model; end        
-        module Poisson_Regression; end        
-        module Zero_Inflated_Model; end           
+      module Generalized_Linear_Model
+        module Binomial_Regression; end
+        module Generalized_Additive_Model; end
+        module Linear_Probability_Model; end
+        module Poisson_Regression; end
+        module Zero_Inflated_Model; end
       end
 
       module Nonparametric_Regression; end
@@ -253,23 +227,19 @@ module MovieDB
     end
   end
 
-  ##
-  #TODO: All Mathetical Calculations go here.
-
   class ExportData
     def write_spreadsheet (data, data_analysis_name)
-    
       begin data_analysis.is_a? String
         @data_analysis_name = data_analysis_name.split.join.gsub('_', ' ').downcase.to_s
         case data_analysis_name
-          when "coefficient of determination"
-            write_coefficient_of_determination 
-          when  "discrete least squares meshless method"
-            write_discrete_least_squares_meshless_method
-          when "discrete least squares meshless method"
-            write_discrete_least_squares_meshless_method
-          else
-          end
+        when "coefficient of determination"
+          write_coefficient_of_determination
+        when  "discrete least squares meshless method"
+          write_discrete_least_squares_meshless_method
+        when "discrete least squares meshless method"
+          write_discrete_least_squares_meshless_method
+        else
+        end
       rescue
         raise ArgumentError, 'invalid attribute'
       end
@@ -277,11 +247,9 @@ module MovieDB
 
     def write_coefficient_of_determination
       book = Spreadsheet::Workbook.new
+
       sheet1 = book.create_worksheet name: "Data Analysis: #{@data_analysis_name}"
       sheet1.row(0).concat %w{title released_date worldwide_gross}
-
-      # Loop through the data to collect  all values. 
-      # Then values into array
 
       data.each_with_index do |value, index|
         sheet1[1, index] = "#{value}"

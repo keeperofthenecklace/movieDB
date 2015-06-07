@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency 'imdb'
-  spec.add_development_dependency 'zimdb'  
+  spec.add_development_dependency 'zimdb'
   spec.add_development_dependency 'highline'
   spec.add_development_dependency 'fakeweb'
   spec.add_dependency "activesupport", ">= 4.0.0"

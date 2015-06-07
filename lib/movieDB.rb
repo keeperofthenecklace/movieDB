@@ -87,7 +87,7 @@ unless defined? MovieDB::Movie
       DEFAULT_RATING = 9.9
       DEFAULT_VOTES = 110636
       DEFAULT_MPAA_RATING = "Rated R for dynamic OOD language usage and private methods access (certificate 33087)"
-      DEFAULT_TAGLINE = 'Only One MVC Will rule Them All.'
+      DEFAULT_TAGLINE = 'Only One MVC Will Rule Them All.'
       DEFAULT_YEAR = 2013
       DEFAULT_RELEASE_DATE = "11 October 2013 (USA)"
       DEFAULT_WORLDWIDE_GROSS = "$124.6M" # Not provided by imdb api.
@@ -104,10 +104,10 @@ unless defined? MovieDB::Movie
                         trailer_url director writer filming_locations company genres languages countries
                         length plot poster rating votes mpaa_rating tagline year release_date worldwide_gross unique_id
                         academy_award_nomination academy_award_wins golden_globe_nominations golden_globe_wins
-                        bafta_nomination bafta_wins film_release )
+                        bafta_nomination bafta_wins film_release)
 
         movie_attr.each do |attr|
-          self.send "#{attr}=", (attributes.has_key?(attr.to_sym) ? attributes[attr.to_sym] : self.class.const_get("DEFAULT_#{attr.upcase}"))
+          self.send("#{attr}=", (attributes.has_key?(attr.to_sym) ? attributes[attr.to_sym] : self.class.const_get("DEFAULT_#{attr.upcase}")))
         end
 
       end
