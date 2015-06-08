@@ -11,9 +11,7 @@ require "MovieDB/data_analysis"
 require "MovieDB/secret"
 
 unless defined? MovieDB::Movie
-  module MovieDB::Base #:nodoc:
-  # = Movie DB
-  #
+  module MovieDB #:nodoc:
   # Create a new movie record. The values are stored in the key-value data store.
   #
   # Default values are supplement during the instantiation of the class.
