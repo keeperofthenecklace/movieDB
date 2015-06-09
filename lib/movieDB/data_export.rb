@@ -1,13 +1,14 @@
 require "spreadsheet"
 require "MovieDB"
-  
+
   # This module will write xls document to file
   #
-  # Usage @book = Spreadsheet::Workbook.new
-
+  # Usage
+  #
+  #    @book = Spreadsheet::Workbook.new
 module MovieDB
   class DataExport < MovieDB::Movie
-    class  << self 
+    class  << self
       #TODO: Check the data analysis(DA) name. Write a define_method and include the DA.
 
       def export_movie_data
@@ -17,12 +18,11 @@ module MovieDB
       end
 
       def create_spreadsheet_file
-        directory_name = ('reports')
+        directory_name = 'reports'
         create_directory(directory_name)
         Spreadsheet.client_encoding = 'UTF-8'
         @book = Spreadsheet::Workbook.new
-        @sheet = @book.create_worksheet name: "Data Analysis: #{$DATA_ANALYSIS_NAME}" # the analysis nameshould be an input
-
+        @sheet = @book.create_worksheet name: "Data Analysis: #{$DATA_ANALYSIS_NAME}" # the analysis name should be an input
       end
 
       def create_directory(directory_name)
@@ -37,26 +37,25 @@ module MovieDB
       def create_spreadsheet_header
         @sheet.row(0).concat $IMDB_ATTRIBUTES_HEADERS
 
-        title_format = Spreadsheet::Format.new :color => :blue,
-                                         :weight => :bold,
-                                         :size => 13
-
+        title_format = Spreadsheet::Format.new :color => :blue, :weight => :bold, :size => 13
         float_format = Spreadsheet::Format.new :number_format => "0.00"
 
         @sheet.row(0).default_format = title_format
+
         @sheet.column(1).default_format = float_format
         @sheet.column(16).default_format = float_format
         @sheet.column(22).default_format = float_format
       end
 
-      # Loop through array of and array imbd data. Each row has the 
+      # Loop through array of and array imbd data. Each row has the
       # the information about the film/movie
       # The Data is obtained from MovieDB::Movie
       # example
-      # catching fire |
+      #
+      #   Film: catching fire
       def create_spreadsheet_body
-       $IMDB_ATTRIBUTES_HEADERS.each do |header|
-        case header
+        $IMDB_ATTRIBUTES_HEADERS.each do |header|
+          case header
           when 'title' then spreadsheet_body_text_data("title")
           when 'cast_members' then spreadsheet_body_count_data("cast_members")
           when 'cast_characters' then spreadsheet_body_count_data("cast_characters")
@@ -86,19 +85,19 @@ module MovieDB
       end
 
       def spreadsheet_body_text_data(header_title)
-        @e_t = element_title = MovieDB::Movie.instance_eval{filter_movie_attr(header_title)}.flatten
+        @e_t = element_title = MovieDB::Movie.instance_eval { filter_movie_attr(header_title) }.flatten
 
         element_title.each_with_index do |element2, i|
           element_array = element_title[(i)].split('   ',)
-          @sheet.row(1 + i).concat element_array 
+          @sheet.row(1 + i).concat element_array
         end
       end
 
       def spreadsheet_body_count_data(header_title)
-         element_cast = MovieDB::Movie.instance_eval{filter_movie_attr(header_title)}
+        element_cast = MovieDB::Movie.instance_eval { filter_movie_attr(header_title) }
 
-         0.upto(@e_t.length - 1) do |i|
-           element_array = []
+        0.upto(@e_t.length - 1) do |i|
+          element_array = []
 
           element_array << element_cast[i].length
           @sheet.row(1 + i).concat element_array
@@ -106,7 +105,7 @@ module MovieDB
       end
 
       def spreadsheet_body_numeric_data(header_title)
-        @e_t = element_title = MovieDB::Movie.instance_eval{filter_movie_attr(header_title)}
+        @e_t = element_title = MovieDB::Movie.instance_eval { filter_movie_attr(header_title) }
 
         element_title.each_with_index do |element2, i|
           element_array = element_title[(i)]

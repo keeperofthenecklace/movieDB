@@ -54,9 +54,11 @@ Or install it yourself as:
 
 ## Usage - Collect Movie Data From IMDb (3 Steps)
 
+    > MovieDB::Movie.new                      /* PRINTS OUT THE DEFAULT INITIALIZED VALUES */
+
     > MovieDB::Movie.clear_data_store         /* ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY) */
 
-    > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241", "0791314")
+    > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "0369610", "3079380", "2395427")
 
       /* YOU CAN ADD AS MANY IMDB UNIQUE NUMBERS. DO NOT EXCEED MAXIMUM REQUEST RATE.*/
 

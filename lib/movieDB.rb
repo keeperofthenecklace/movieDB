@@ -1,11 +1,11 @@
 require "rubygems"
-require "time"
-require "open-uri"
-require "nokogiri"
-require "zimdb"
-require "themoviedb"
-require "imdb"
-require "spreadsheet"
+require "time"                    # Time is an abstraction of dates and times.
+require "open-uri"                # is an easy-to-use wrapper for net/http, net/https and net/ftp.
+require "nokogiri"                # is an HTML, XML, SAX, and Reader parser.
+require "zimdb"                   # Access movie information from IMDb via the API offered by http://www.imdbapi.com/
+require "themoviedb"              # Provides a simple, easy to use interface for the Movie Database API.
+require "imdb"                    # Easily use Ruby or the command line to find information on IMDB.com.
+require "spreadsheet"             # A library designed to read and write Spreadsheet Documents.
 require "MovieDB/base"
 require "MovieDB/data_analysis"
 require "MovieDB/secret"
@@ -114,8 +114,8 @@ unless defined? MovieDB::Movie
       # Return true if the array is not nil.
       # Absence of title duplications should yield an empty array.
       def self.title_present?
-        titles = Movie.instance_eval{ filter_movie_attr("title") }
-        @title_exist = titles.detect{ |duplicates| titles.count(duplicates) > 1 }
+        titles = Movie.instance_eval { filter_movie_attr("title") }
+        @title_exist = titles.detect { |duplicates| titles.count(duplicates) > 1 }
         !@title_exist.nil?
       end
 
@@ -128,13 +128,8 @@ unless defined? MovieDB::Movie
         #
         # TODO: This method should be deprecated in the next version release.
         def get_imdb_movie_data(value)
-          puts  zimdb_value = "tt" << value.to_s
-
-          @movie_data = Imdb::Movie.new(value.to_s)
-          @zimdb_data = Zimdb::Movie.new(id: zimdb_value)
-
-          # return @movie_data
-          # return @zimdb_data
+          @movie_data = Imdb::Movie.new(value)
+          return @movie_data
         end
 
         def global_movie_data_store
@@ -185,7 +180,7 @@ unless defined? MovieDB::Movie
               movie_info.cast_members_characters = @movie_data.cast_members_characters
               movie_info.trailer_url =  @movie_data.trailer_url.nil? ? 'No Trailer' : @movie_data.trailer_url
               movie_info.director =  @movie_data.director.flatten
-              movie_info.writer = Array.new << @zimdb_data.writer
+              movie_info.writer =  @movie_data.writers.flatten
               movie_info.filming_locations = @movie_data.filming_locations.flatten.join(', ')
               movie_info.company = Array.new << @movie_data.company
               movie_info.genres = @movie_data.genres.flatten.join(' ').sub(' ' , ', ')
@@ -200,10 +195,10 @@ unless defined? MovieDB::Movie
               movie_info.tagline = Array.new << @movie_data.tagline
               movie_info.year = Array.new << @movie_data.year
               movie_info.release_date = Array.new << @movie_data.release_date
-              movie_info.worldwide_gross = Array.new << tmdb_data.revenue
+              movie_info.worldwide_gross = Array.new << tmdb_data["revenue"]
               movie_info.unique_id =  @unique_id
 
-              # TODO: Write API to request data from AMPAS.
+              # TODO: Write API to request additional data from AMPAS.
               #
               # Example: We can fetch the data like this:
               #
@@ -217,7 +212,6 @@ unless defined? MovieDB::Movie
             rescue
               raise ArgumentError, 'invalid imbd id'
             end
-
           end
 
           return @movie_DS
@@ -242,7 +236,6 @@ unless defined? MovieDB::Movie
           filtered = @movie_DS.select{ |ds| ds.attr_title? }.map(&attr_sym)#.flatten
           attr_raw == ('languages' && 'title') ? filtered : filtered#.uniq
         end
-
       end
 
       private_class_method :get_multiple_imdb_movie_data, :filter_movie_attr, :get_imdb_movie_data
@@ -255,3 +248,7 @@ unless defined? MovieDB::Movie
     end
   end
 end
+
+p MovieDB::Movie.send(:get_multiple_imdb_movie_data, 2024544, )
+# p @movie_data = Imdb::Movie.new(' 1800241')
+
