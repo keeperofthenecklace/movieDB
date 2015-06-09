@@ -52,7 +52,7 @@ Or install it yourself as:
 
     > require 'themoviedb'
 
-## Usage - Collect Movie Data From IMDb (3 Steps)
+## Usage - Fetch Raw Movie Data From IMDb (3 Steps)
 
     > MovieDB::Movie.new                      /* PRINTS OUT THE DEFAULT INITIALIZED VALUES */
 
@@ -68,9 +68,11 @@ Or install it yourself as:
 
 The exported movie data is stored in your reports directory.
 
-    $ open /reports/imdb_raw_data_20131216.xls
+The file name is 'imdb_raw_data_' + today's date.
 
-## Usage - Analyse Data and Generate Statistic Results (4 Steps)
+    $ open /reports/imdb_raw_data_20150608.xls
+
+## Usage - Analyze Raw Data and Generate Statistical Results (4 Steps)
 
     $ irb
 

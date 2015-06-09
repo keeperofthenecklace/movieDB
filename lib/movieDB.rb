@@ -248,7 +248,3 @@ unless defined? MovieDB::Movie
     end
   end
 end
-
-p MovieDB::Movie.send(:get_multiple_imdb_movie_data, 2024544, )
-# p @movie_data = Imdb::Movie.new(' 1800241')
-
