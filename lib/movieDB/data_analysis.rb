@@ -7,7 +7,7 @@ module MovieDB
     module AnalysisOfVariance
       module LeastSquares
         module Statistic
-          def basic_statistic (directory_name)
+          def basic_statistic(directory_name)
             open_spreadsheet(directory_name)
 
             if check_imdb_count == true
@@ -37,7 +37,9 @@ module MovieDB
 
           def perform_computation
           # Perform computation on the data collected.
+          #
           # TODO: Need to use coefficienct statistical formula.
+          #
           # Calculate median as an example but COD formula must be used.
           # Mean is commonly called as average. Mean or Average is defined as the sum of
           # all the given elements divided by the total number of elements.
@@ -228,7 +230,7 @@ module MovieDB
   end
 
   class ExportData
-    def write_spreadsheet (data, data_analysis_name)
+    def write_spreadsheet(data, data_analysis_name)
       begin data_analysis.is_a? String
         @data_analysis_name = data_analysis_name.split.join.gsub('_', ' ').downcase.to_s
         case data_analysis_name
@@ -256,7 +258,5 @@ module MovieDB
       end
     end
 
-    def write_discrete_least_squares_meshless_method; end
-    def write_discrete_least_squares_meshless_method; end
   end
 end

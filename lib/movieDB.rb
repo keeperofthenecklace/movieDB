@@ -2,13 +2,13 @@ require "rubygems"
 require "time"                    # Time is an abstraction of dates and times.
 require "open-uri"                # is an easy-to-use wrapper for net/http, net/https and net/ftp.
 require "nokogiri"                # is an HTML, XML, SAX, and Reader parser.
-require "zimdb"                   # Access movie information from IMDb via the API offered by http://www.imdbapi.com/
 require "themoviedb"              # Provides a simple, easy to use interface for the Movie Database API.
 require "imdb"                    # Easily use Ruby or the command line to find information on IMDB.com.
 require "spreadsheet"             # A library designed to read and write Spreadsheet Documents.
 require "MovieDB/base"
 require "MovieDB/data_analysis"
 require "MovieDB/secret"
+require "MovieDB/data_export"
 
 unless defined? MovieDB::Movie
   module MovieDB #:nodoc:
@@ -28,6 +28,7 @@ unless defined? MovieDB::Movie
     class Movie < MovieDB::Base
       include StatusChecker
 
+      extend MovieDB::DataExport
       extend MovieDB::Secret::Lock
 
       const_set("MovieError",  Class.new(StandardError))
@@ -97,6 +98,7 @@ unless defined? MovieDB::Movie
       DEFAULT_BAFTA_NOMINATION = 3
       DEFAULT_BAFTA_WINS = 1
       DEFAULT_FILM_RELEASE = ['theatrical', 'video', 'television', 'internet', 'print']
+
       def initialize(attributes = {})
         $IMDB_ATTRIBUTES_HEADERS = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters
                         trailer_url director writer filming_locations company genres languages countries
@@ -107,144 +109,63 @@ unless defined? MovieDB::Movie
         movie_attr.each do |attr|
           self.send("#{attr}=", (attributes.has_key?(attr.to_sym) ? attributes[attr.to_sym] : self.class.const_get("DEFAULT_#{attr.upcase}")))
         end
-
       end
 
-      # Iterating through the block for title duplication.
-      # Return true if the array is not nil.
-      # Absence of title duplications should yield an empty array.
-      def self.title_present?
-        titles = Movie.instance_eval { filter_movie_attr("title") }
-        @title_exist = titles.detect { |duplicates| titles.count(duplicates) > 1 }
-        !@title_exist.nil?
-      end
+      # This is empty the container       #
+      # def clear_data_store
+      #   return @movie_DS = []
+      # end
 
-      def unique_id
-        @unique_id ||= "#{Date.today}#{Array.new(9){rand(9)}.join}".gsub('-','')
-      end
+      # You can Imdb movie data like this:
+      #
+      #   MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241")
+      #
+      # Example: You can also collect the title attribute:
+      #
+      #    MovieDB::Movie.instance_eval { filter_movie_attr("title") }
+      def self.get_data(*args)
+        @movie_DS = []
 
-      class << self
-        # Get a single data from imdb database.
-        #
-        # TODO: This method should be deprecated in the next version release.
-        def get_imdb_movie_data(value)
+        args.each do |value|
+          movie_info = Movie.new
           @movie_data = Imdb::Movie.new(value)
-          return @movie_data
-        end
 
-        def global_movie_data_store
-          return  $GLOBAL_MOVIE_DS
-        end
-        # You can add multiple Imdb ids like this:
-        #
-        #   MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241")
-        #
-        # Example: You can also collect the title attribute:
-        #
-        #    MovieDB::Movie.instance_eval{filter_movie_attr("title")}
-        def get_multiple_imdb_movie_data(*args)
-          if args.size == 1
-           puts "*" * 41
-           puts "* A minimum of 2 Imdb id's are required *"
-           puts "* To perform statistical data analysis  *"
-           puts "* You only have ONE Imdb id entered     *"
-           puts "*" * 41
+          begin
+            movie_info.title = Array.new << @movie_data.title
+            movie_info.cast_members =  @movie_data.cast_members.flatten
+            movie_info.cast_characters = @movie_data.cast_characters
+            movie_info.cast_member_ids = @movie_data.cast_member_ids
+            movie_info.cast_members_characters = @movie_data.cast_members_characters
+            movie_info.trailer_url =  @movie_data.trailer_url.nil? ? 'No Trailer' : @movie_data.trailer_url
+            movie_info.director =  @movie_data.director.flatten
+            movie_info.writer =  @movie_data.writers.flatten
+            movie_info.filming_locations = @movie_data.filming_locations.flatten.join(', ')
+            movie_info.company = Array.new << @movie_data.company
+            movie_info.genres = @movie_data.genres.flatten.join(' ').sub(' ' , ', ')
+            movie_info.languages = Array.new << @movie_data.languages.flatten.join(' ').sub(' ' , ', ')
+            movie_info.countries = Array.new << @movie_data.countries.flatten.join(' ').sub(' ' , ', ')
+            movie_info.length = Array.new << @movie_data.length
+            movie_info.plot = Array.new << @movie_data.plot
+            movie_info.poster = Array.new << @movie_data.poster
+            movie_info.rating = Array.new << @movie_data.rating
+            movie_info.votes = Array.new << @movie_data.votes
+            movie_info.mpaa_rating = Array.new << @movie_data.mpaa_rating == [nil] ? ["Not Rated"] : [@movie_data.mpaa_rating]
+            movie_info.tagline = Array.new << @movie_data.tagline
+            movie_info.year = Array.new << @movie_data.year
+            movie_info.release_date = Array.new << @movie_data.release_date
+          rescue
+            raise ArgumentError, 'Invalid IMDb id entered.'
           end
 
-          args.each do |value|
-            get_imdb_movie_data(value)
-            @movie_DS ||=[]
-            movie_info = Movie.new
-
-            # Query themoviedb.org for film revenue.
-            # returns 0 if revenue record doesn't exist.
-            tmdb_arr = []
-            tmdb_key =  MovieDB::Movie.key
-            Tmdb::Api.key(tmdb_key)
-            tmdb = Tmdb::Movie.find(@movie_data.title)
-
-            if tmdb.empty?
-              tmdb_data = Tmdb::Movie.new
-              tmdb_data.revenue = 0
-            else
-              tmdb.select { |t| tmdb_arr << t.id }
-              tmdb_id = tmdb_arr[0]
-              tmdb_data = Tmdb::Movie.detail(tmdb_id)
-            end
-
-            begin
-              movie_info.title = Array.new << @movie_data.title
-              movie_info.cast_members =  @movie_data.cast_members.flatten
-              movie_info.cast_characters = @movie_data.cast_characters
-              movie_info.cast_member_ids = @movie_data.cast_member_ids
-              movie_info.cast_members_characters = @movie_data.cast_members_characters
-              movie_info.trailer_url =  @movie_data.trailer_url.nil? ? 'No Trailer' : @movie_data.trailer_url
-              movie_info.director =  @movie_data.director.flatten
-              movie_info.writer =  @movie_data.writers.flatten
-              movie_info.filming_locations = @movie_data.filming_locations.flatten.join(', ')
-              movie_info.company = Array.new << @movie_data.company
-              movie_info.genres = @movie_data.genres.flatten.join(' ').sub(' ' , ', ')
-              movie_info.languages = Array.new << @movie_data.languages.flatten.join(' ').sub(' ' , ', ')
-              movie_info.countries = Array.new << @movie_data.countries.flatten.join(' ').sub(' ' , ', ')
-              movie_info.length = Array.new << @movie_data.length
-              movie_info.plot = Array.new << @movie_data.plot
-              movie_info.poster = Array.new << @movie_data.poster
-              movie_info.rating = Array.new << @movie_data.rating
-              movie_info.votes = Array.new << @movie_data.votes
-              movie_info.mpaa_rating = Array.new << @movie_data.mpaa_rating == [nil] ? ["Not Rated"] : [@movie_data.mpaa_rating]
-              movie_info.tagline = Array.new << @movie_data.tagline
-              movie_info.year = Array.new << @movie_data.year
-              movie_info.release_date = Array.new << @movie_data.release_date
-              movie_info.worldwide_gross = Array.new << tmdb_data["revenue"]
-              movie_info.unique_id =  @unique_id
-
-              # TODO: Write API to request additional data from AMPAS.
-              #
-              # Example: We can fetch the data like this:
-              #
-              #   movie_info.academy_award_nomination = academy_award_nomination
-              #   movie_info.academy_award_wins = academy_award_wins
-              #   movie_info.golden_globe_nominations = golden_globe_nominations
-              #   movie_info.golden_globe_wins = golden_globe_wins
-              #   movie_info.bafta_nomination = bafta_nomination
-              #   movie_info.bafta_wins = bafta_wins
-              $GLOBAL_MOVIE_DS = @movie_DS << movie_info
-            rescue
-              raise ArgumentError, 'invalid imbd id'
-            end
-          end
-
-          return @movie_DS
+          @movie_DS << movie_info
         end
 
-        def clear_data_store
-          @movie_DS = []
-
-          return @movie_DS
-        end
-
-        # Filter the data store for the movie attributes. Return an array of the attributes.
-        #
-        # Example
-        #
-        #   Movie.filter_movie_attr('cast_members') #=> ["Chris_Hemsworth", "Natalie_Portman"]
-        def filter_movie_attr(attr)
-          attr_raw = attr
-          attr_sym = attr.to_sym
-
-          raise ArgumentError, ("#{attr_sym} is not a valid attribute." if !attr_sym == :director && :cast_members)
-          filtered = @movie_DS.select{ |ds| ds.attr_title? }.map(&attr_sym)#.flatten
-          attr_raw == ('languages' && 'title') ? filtered : filtered#.uniq
-        end
+        write_imdb_data_to_xls
       end
 
-      private_class_method :get_multiple_imdb_movie_data, :filter_movie_attr, :get_imdb_movie_data
-
-      def attr_title
-        !@title.nil?
+      def self.write_imdb_data_to_xls
+        Movie.export_movie_data(@movie_DS)
       end
-      alias :attr_title? :attr_title
-
     end
   end
 end

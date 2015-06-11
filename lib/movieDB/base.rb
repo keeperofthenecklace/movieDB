@@ -12,4 +12,3 @@ module MovieDB #:nodoc
   end
 end
 $:.unshift File.expand_path('..', __FILE__)
-

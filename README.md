@@ -11,23 +11,6 @@ Basic functions and Data Analysis:
 * Exploratory Data Analysis
 * Confirmatory Data Analysis
 
-#### VERY IMPORTANT NOTE
-
-Our budget feature depends on themoviedb gem.
-
-Please follow the URL links for reading info.
-
-* https://www.themoviedb.org
-* https://github.com/ahmetabdi/themoviedb
-
-## Requirements
-
-    ruby 1.9.x
-
-    themoviedb api key
-
-    code formattted using TomDoc code documentation specification
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -48,29 +31,25 @@ Or install it yourself as:
 
     > require 'movieDB'
 
-    > require 'MovieDB/data_export'
+## Usage - Fetch Raw Movie Data From IMDb
 
-    > require 'themoviedb'
+    > MovieDB::Movie.get_data("0369610", "3079380")
 
-## Usage - Fetch Raw Movie Data From IMDb (3 Steps)
+      /* YOU CAN ADD AS MANY IMDB IDs AS YOU LIKE. BUT DO NOT EXCEED THE MAXIMUM REQUEST RATE. */
 
-    > MovieDB::Movie.new                      /* PRINTS OUT THE DEFAULT INITIALIZED VALUES */
+### IMDb Data
 
-    > MovieDB::Movie.clear_data_store         /* ONLY IF YOUR WANT TO EMPTY YOUR DATASTORE (ARRAY) */
+When IMDb data is fetched, two things happen.
 
-    > MovieDB::Movie.send(:get_multiple_imdb_movie_data, "0369610", "3079380", "2395427")
+First a reports folder is created in the movieDB gem.
 
-      /* YOU CAN ADD AS MANY IMDB UNIQUE NUMBERS. DO NOT EXCEED MAXIMUM REQUEST RATE.*/
+Second, the fetched data is written to an xls format and stored in the reports directory.
 
-    > MovieDB::DataExport.export_movie_data
+The file name is 'imdb_' + name title of the films you requested + today's date
 
-### Exported Document
+For example, the fetched data used
 
-The exported movie data is stored in your reports directory.
-
-The file name is 'imdb_raw_data_' + today's date.
-
-    $ open /reports/imdb_raw_data_20150608.xls
+    $ open /reports/imdb_JurassicWorld_Spy_20150611.xls
 
 ## Usage - Analyze Raw Data and Generate Statistical Results (4 Steps)
 
@@ -80,7 +59,7 @@ The file name is 'imdb_raw_data_' + today's date.
 
     > require 'MovieDB/data_process'
 
-    > MovieDB::DataProcess.send(:basic_statistic, 'imdb_raw_data_20131216.xls')
+    > MovieDB::DataProcess.send(:basic_statistic, 'mdb_JurassicWorld_Spy_20150611.xls')
 
 ### Exported - Analyzed Data
 
