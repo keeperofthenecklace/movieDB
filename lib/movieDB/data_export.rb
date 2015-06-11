@@ -10,6 +10,7 @@ require "spreadsheet"
 module MovieDB
   module DataExport
     def export_movie_data(movie_DS)
+      @movie_DS = movie_DS
       create_spreadsheet_file
       create_spreadsheet_report(movie_DS)
       write_xls_file
@@ -76,8 +77,14 @@ module MovieDB
     end
 
     def report_name
-      name = "imdb_raw_data_".to_s.downcase
-      name << "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..9].join}"
+      name = "imdb_"
+
+      0.upto(@movie_DS.length - 1) do |i|
+        name << @movie_DS[i].title.map { |m| m }.join().gsub(' ', '') + "_"
+      end
+
+      name << "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..7].join}"
+
       return name
     end
 
