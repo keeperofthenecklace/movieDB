@@ -91,6 +91,7 @@ module MovieDB
     def write_xls_file
       filename = ("#{report_name}.xls")
       @book.write File.join('reports', filename)
+
       return filename
     end
   end

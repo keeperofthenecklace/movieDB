@@ -59,13 +59,13 @@ For example, the fetched data used
 
     > require 'MovieDB/data_process'
 
-    > MovieDB::DataProcess.send(:basic_statistic, 'mdb_JurassicWorld_Spy_20150611.xls')
+    > MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_20150611.xls')
 
 ### Exported - Analyzed Data
 
 The exported analyzed data is stored in your reports directory.
 
-    $ cd /reports/basic_statistic_20131216.xls
+    $ cd /reports/basic_statistic_20150611.xls
 
 ## What's Next
 
