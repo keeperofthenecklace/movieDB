@@ -8,7 +8,7 @@ describe MovieDB::DataExport do
       let(:file_name) {MovieDB::Movie.write_imdb_data_to_xls}
 
     it 'writes the fetched data as an xls file to the reports directory' do
-     File.exist?(File.join('reports', file_name)).should == true
+     expect(File.exist?(File.join('reports', file_name))).to eql(true)
     end
 
   end
