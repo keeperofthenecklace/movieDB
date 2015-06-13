@@ -9,7 +9,7 @@ describe MovieDB::DataProcess do
 
         it "should return the cof" do
           # pending
-         basic_stat.send(:basic_statistic, 'imdb_raw_data_2013122312.xls').should == 'Statistic_2013122417.xls'
+         basic_stat.send(:basic_statistic, 'imdb_12YearsaSlave_AmericanHustle_KeeperoftheNecklace.xls').should == 'Statistic_2015061319.xls'
         end
       end
     end

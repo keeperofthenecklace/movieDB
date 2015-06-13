@@ -80,10 +80,11 @@ module MovieDB
       name = "imdb_"
 
       0.upto(@movie_DS.length - 1) do |i|
-        name << @movie_DS[i].title.map { |m| m }.join().gsub(' ', '') + "_"
+        name << @movie_DS[i].title.map { |m| m }.join().gsub(' ', '')
+        name << '_' unless i == (@movie_DS.length - 1)
       end
 
-      name << "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..7].join}"
+      #name << "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..7].join}"
 
       return name
     end
