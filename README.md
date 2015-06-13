@@ -1,4 +1,4 @@
- ## MovieDB
+## MovieDB
 
  MovieDB is a ruby wrapper for fetching raw Movie or TV Data from IMDb and performing a variety of statistical analysis and computation.
  The objective and usage of this tool is to media producers make high level structured decision decisions based off realistic figures.
