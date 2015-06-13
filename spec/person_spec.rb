@@ -13,10 +13,10 @@ describe MovieDB::Person do
 
   context "#filter attribute" do
     it "should return a random integer bewteen min to max" do
-      # age = MovieDB::Person.instance_eval{ filter_person('age') }
-      # moviePerson = MovieDB::Person.instance_eval{ sample_attr('age') }
+      age = MovieDB::Person.instance_eval{ filter_person('age') }
+      moviePerson = MovieDB::Person.instance_eval{ sample_attr('age') }
 
-      #moviePerson.should be_in(age)
+      moviePerson.should be_in(age)
     end
   end
 
