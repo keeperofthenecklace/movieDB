@@ -12,7 +12,7 @@ script: bundle exec rspec spec
 
 matrix:
   allow_failures:
-     rvm: 2.2.2
+     - rvm: 1.9.3
     #- rvm: jruby
     #- rvm: rbx
     #- rvm: ree
@@ -24,7 +24,7 @@ notifications:
     on_failure: always
 
 rvm:
-  # 1.9.3
-  # 1.9.7
-    2.2.2
-  #- 2.1.0
+  - 1.9.3
+  # - 1.9.7
+  # - 2.2.2
+  # - 2.1.0
