@@ -1,5 +1,8 @@
 $:.unshift File.expand_path('..', __FILE__)
 $:.unshift File.expand_path('../../lib/', __FILE__)
+
+Coveralls.wear!
+require 'coveralls'
 require 'movieDB'
 require 'MovieDB/base'
 require "MovieDB/person"

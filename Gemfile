@@ -1,4 +1,8 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in movieDB.gemspec
 gemspec
+
+group :documentation do
+  gem 'coveralls', :require => false
+end
+
