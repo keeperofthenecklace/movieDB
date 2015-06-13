@@ -4,7 +4,7 @@
 [![Join the chat at https://gitter.im/keeperofthenecklace/movieDB](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/
 keeperofthenecklace/movieDB?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-{<img src="https://coveralls.io/repos/keeperofthenecklace/movieDB/badge.svg" alt="Coverage Status" />}[https://coveralls.io/r/keeperofthenecklace/movieDB]
+[![Coverage Status](https://coveralls.io/repos/keeperofthenecklace/movieDB/badge.svg)](https://coveralls.io/r/keeperofthenecklace/movieDB)
 
 
 ## Description
