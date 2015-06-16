@@ -1,9 +1,9 @@
 ## MovieDB
 
  MovieDB is a ruby wrapper for fetching raw Movie or TV Data from IMDb and performing a variety of statistical analysis and computation.
- The objective and usage of this tool is to media producers make high level structured decision decisions based off realistic figures.
+ The objective and usage of this tool is to help media producers make high level structured decisions based on realistic analysis of actual data.
 
- The fetched data is stored in memory using Redis. An expiration time of 1800 seconds has be set for every load.
+ The fetched data is stored in memory using Redis and has an expiration time of 1800 seconds for all cached objects.
 
   - [![Join the chat at https://gitter.im/keeperofthenecklace/movieDB](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/keeperofthenecklace/movieDB?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   - [![Coverage Status](https://coveralls.io/repos/keeperofthenecklace/movieDB/badge.svg)](https://coveralls.io/r/keeperofthenecklace/movieDB)
@@ -16,8 +16,13 @@
 * Data Analysis
 * Exploratory Data Analysis
 * Confirmatory Data Analysis
+* More to come...
 
 ## Installation
+
+Please make sure you have redis install
+
+    This tutorial doesn't cover redis installation.
 
 Add this line to your application's Gemfile:
 
