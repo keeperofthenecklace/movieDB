@@ -20,7 +20,7 @@
 
 ## Installation
 
-Please make sure you have redis install
+Please make sure you have redis installed.
 
     This tutorial doesn't cover redis installation.
 
