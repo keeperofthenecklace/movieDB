@@ -1,5 +1,4 @@
 require "rubygems"
-require "time"                    # Time is an abstraction of dates and times.
 require "open-uri"                # is an easy-to-use wrapper for net/http, net/https and net/ftp.
 require "nokogiri"                # is an HTML, XML, SAX, and Reader parser.
 require "themoviedb"              # Provides a simple, easy to use interface for the Movie Database API.
@@ -9,6 +8,8 @@ require "MovieDB/base"
 require "MovieDB/data_analysis"
 require "MovieDB/secret"
 require "MovieDB/data_export"
+require "redis"
+require "json"
 
 unless defined? MovieDB::Movie
   module MovieDB #:nodoc:
@@ -40,7 +41,7 @@ unless defined? MovieDB::Movie
                     :cast_members_characters,
                     :trailer_url,
                     :director,
-                    :writer,
+                    :writers,
                     :filming_locations,
                     :company,
                     :genres,
@@ -55,16 +56,7 @@ unless defined? MovieDB::Movie
                     :tagline,
                     :year,
                     :release_date,
-                    :worldwide_gross,
-                    :released,
-                    :unique_id,
-                    :academy_award_nomination,
-                    :academy_award_wins,
-                    :golden_globe_nominations,
-                    :golden_globe_wins,
-                    :bafta_nomination,
-                    :bafta_wins,
-                    :film_release
+                    :revenue
 
       DEFAULT_TITLE = "Method Missing 2: Rails Roars!"
       DEFAULT_CAST_MEMBERS = ["David Black", "Paola Perotta", "Obie Fernandez", "David Chelimsky"]
@@ -74,7 +66,7 @@ unless defined? MovieDB::Movie
       DEFAULT_CAST_MEMBER_IDS = ["nm3901234", "nm4901244", "nm5901235", "nm3601266"]
       DEFAULT_TRAILER_URL = "http://imdb.com/video/screenplay/vi581042457/"
       DEFAULT_DIRECTOR = "Yukihiro 'Matz' Matsumoto"
-      DEFAULT_WRITER = 'David Heinemeier Hansson'
+      DEFAULT_WRITERS = 'David Heinemeier Hansson'
       DEFAULT_FILMING_LOCATIONS = ["Manhattan, New York, USA"]
       DEFAULT_COMPANY = "Open Source Community Film Corporation"
       DEFAULT_GENRES = ["Bromantic", "Syfy"]
@@ -89,29 +81,23 @@ unless defined? MovieDB::Movie
       DEFAULT_TAGLINE = 'Only One MVC Will Rule Them All.'
       DEFAULT_YEAR = 2013
       DEFAULT_RELEASE_DATE = "11 October 2013 (USA)"
-      DEFAULT_WORLDWIDE_GROSS = "$124.6M" # Not provided by imdb api.
-      DEFAULT_UNIQUE_ID = @unique_id
-      DEFAULT_ACADEMY_AWARD_NOMINATION = 4
-      DEFAULT_ACADEMY_AWARD_WINS = 3
-      DEFAULT_GOLDEN_GLOBE_NOMINATIONS = 4
-      DEFAULT_GOLDEN_GLOBE_WINS = 2
-      DEFAULT_BAFTA_NOMINATION = 3
-      DEFAULT_BAFTA_WINS = 1
-      DEFAULT_FILM_RELEASE = ['theatrical', 'video', 'television', 'internet', 'print']
+      DEFAULT_REVENUE = 456790
 
       def initialize(attributes = {})
         $IMDB_ATTRIBUTES_HEADERS = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters
-                        trailer_url director writer filming_locations company genres languages countries
-                        length plot poster rating votes mpaa_rating tagline year release_date worldwide_gross unique_id
-                        academy_award_nomination academy_award_wins golden_globe_nominations golden_globe_wins
-                        bafta_nomination bafta_wins film_release)
+                        trailer_url director writers filming_locations company genres languages countries
+                        length plot poster rating votes mpaa_rating tagline year release_date revenue)
 
         movie_attr.each do |attr|
           self.send("#{attr}=", (attributes.has_key?(attr.to_sym) ? attributes[attr.to_sym] : self.class.const_get("DEFAULT_#{attr.upcase}")))
         end
       end
 
-      # This is empty the container       #
+      # This is empty the container
+      #
+      # Futire release of this software will be using the boxofficemojoAPI
+      # https://github.com/skozilla/BoxOfficeMojo/tree/master/boxofficemojoAPI
+      #
       # def clear_data_store
       #   return @movie_DS = []
       # end
@@ -124,47 +110,44 @@ unless defined? MovieDB::Movie
       #
       #    MovieDB::Movie.instance_eval { filter_movie_attr("title") }
       def self.get_data(*args)
-        @movie_DS = []
+        @db_redis ||= Redis.new
 
-        args.each do |value|
+        @db_redis.del "revenue"
+
+        @imdb_id = []
+
+        Tmdb::Api.key(Movie.key)
+
+        args.flatten.each do |value|
+          @imdb_id << value
+
           movie_info = Movie.new
           @movie_data = Imdb::Movie.new(value)
 
-          begin
-            movie_info.title = Array.new << @movie_data.title
-            movie_info.cast_members =  @movie_data.cast_members.flatten
-            movie_info.cast_characters = @movie_data.cast_characters
-            movie_info.cast_member_ids = @movie_data.cast_member_ids
-            movie_info.cast_members_characters = @movie_data.cast_members_characters
-            movie_info.trailer_url =  @movie_data.trailer_url.nil? ? 'No Trailer' : @movie_data.trailer_url
-            movie_info.director =  @movie_data.director.flatten
-            movie_info.writer =  @movie_data.writers.flatten
-            movie_info.filming_locations = @movie_data.filming_locations.flatten.join(', ')
-            movie_info.company = Array.new << @movie_data.company
-            movie_info.genres = @movie_data.genres.flatten.join(' ').sub(' ' , ', ')
-            movie_info.languages = Array.new << @movie_data.languages.flatten.join(' ').sub(' ' , ', ')
-            movie_info.countries = Array.new << @movie_data.countries.flatten.join(' ').sub(' ' , ', ')
-            movie_info.length = Array.new << @movie_data.length
-            movie_info.plot = Array.new << @movie_data.plot
-            movie_info.poster = Array.new << @movie_data.poster
-            movie_info.rating = Array.new << @movie_data.rating
-            movie_info.votes = Array.new << @movie_data.votes
-            movie_info.mpaa_rating = Array.new << @movie_data.mpaa_rating == [nil] ? ["Not Rated"] : [@movie_data.mpaa_rating]
-            movie_info.tagline = Array.new << @movie_data.tagline
-            movie_info.year = Array.new << @movie_data.year
-            movie_info.release_date = Array.new << @movie_data.release_date
-          rescue
-            raise ArgumentError, 'Invalid IMDb id entered.'
-          end
+          movie_detail = Tmdb::Movie.detail("tt#{value}")
 
-          @movie_DS << movie_info
+          $IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
+            begin @movie_data.send(attr_key)
+              attr_value = @movie_data.send(attr_key)
+            rescue => e
+              attr_value = movie_detail['revenue']
+            end
+
+            @db_redis.hset "movie:#{value}", "#{attr_key}", "#{attr_value}" # Adding a hash data type.
+
+            @db_redis.lpush "#{attr_key}", "#{attr_value}" if attr_value.is_a? Numeric # Adding a list data type.
+
+            @db_redis.expire "#{attr_key}", 1800
+
+            @db_redis.expire "movie:#{value}", 1800
+          end
         end
 
         write_imdb_data_to_xls
       end
 
       def self.write_imdb_data_to_xls
-        Movie.export_movie_data(@movie_DS)
+        Movie.export_movie_data(@db_redis, @imdb_id)
       end
     end
   end

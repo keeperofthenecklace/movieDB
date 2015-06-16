@@ -3,6 +3,8 @@
  MovieDB is a ruby wrapper for fetching raw Movie or TV Data from IMDb and performing a variety of statistical analysis and computation.
  The objective and usage of this tool is to media producers make high level structured decision decisions based off realistic figures.
 
+ The fetched data is stored in memory using Redis. An expiration time of 1800 seconds has be set for every load.
+
   - [![Join the chat at https://gitter.im/keeperofthenecklace/movieDB](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/keeperofthenecklace/movieDB?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
   - [![Coverage Status](https://coveralls.io/repos/keeperofthenecklace/movieDB/badge.svg)](https://coveralls.io/r/keeperofthenecklace/movieDB)
   - [![Code Climate](https://codeclimate.com/github/keeperofthenecklace/movieDB.png)](https://codeclimate.com/github/keeperofthenecklace/movieDB)
@@ -23,21 +25,23 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle install
+    $> bundle install
 
 Or install it yourself as:
 
-    $ gem install movieDB
+    $> gem install movieDB
 
 ## Require - loading the libraries
 
-    $ irb
+    $> irb
 
-    > require 'movieDB'
+    $> require 'movieDB'
 
 ## Usage - Fetch Raw Movie Data From IMDb
 
-    > MovieDB::Movie.get_data("0369610", "3079380")
+    $> imdb_ids = ["0369610", "3079380"]
+
+    $> MovieDB::Movie.get_data(imdb_ids)
 
       /* YOU CAN ADD AS MANY IMDB IDs AS YOU LIKE. BUT DO NOT EXCEED THE MAXIMUM REQUEST RATE. */
 

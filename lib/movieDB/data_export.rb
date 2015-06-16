@@ -1,18 +1,18 @@
 require "spreadsheet"
+require "redis"
+require "json"
 
-# JSON Data (movie_DS) fetched from IMDb by the movieDB.rb module is processed here.
-# Spreadsheet gem is used to writes the attributes in an xls format to the report folder,
-# where it is later used for data analysis.
-#
-# Usage / Example:
-#
-#   MovieDB::Movie.export_movie_data(IMDB_JSON_FILE)
+# Movie data fetched from IMDb is stored as a hash data type in redis.
+# The key and values are written into a spreadsheet for later data analysis.
 module MovieDB
   module DataExport
-    def export_movie_data(movie_DS)
-      @movie_DS = movie_DS
+    def export_movie_data(db_redis, imdb_ids)
+      @db_redis = db_redis
+      @imdb_ids = imdb_ids
+
       create_spreadsheet_file
-      create_spreadsheet_report(movie_DS)
+      create_spreadsheet_report
+
       write_xls_file
     end
 
@@ -24,7 +24,7 @@ module MovieDB
 
       @book = Spreadsheet::Workbook.new
       @sheet = @book.create_worksheet
-      @sheet.name = report_name if @movie_DS
+      @sheet.name = report_name if @db_redis
       @sheet.name = "Data Analysis: #{$DATA_ANALYSIS_NAME}" if $DATA_ANALYSIS_NAME
     end
 
@@ -32,9 +32,9 @@ module MovieDB
       Dir.mkdir(directory_name) unless File.exists? directory_name
     end
 
-    def create_spreadsheet_report(movie_DS)
+    def create_spreadsheet_report
       create_spreadsheet_header
-      create_spreadsheet_body(movie_DS)
+      create_spreadsheet_body
     end
 
     def create_spreadsheet_header
@@ -49,29 +49,24 @@ module MovieDB
       @sheet.column(22).default_format = float_format
     end
 
-    # The values from the header_attr is converted from a string to a method.
-    # We accomplish this by using Object#send
-    #
-    # Example Usage:
-    #
-    #    movie_attribute = movie_DS[i].send(header_attr)
-    #
-    # Starts the row insert on row 1 and not row 0.
-    #
-    # Example Usage:
-    #
-    #   row = @sheet.row(i + 1)
-    def create_spreadsheet_body(movie_DS)
-      0.upto(movie_DS.length - 1) do |i|
-        row = @sheet.row(i + 1)
+    # We write the all keys and values from our data set to the spreadsheet
+    def create_spreadsheet_body
+      @imdb_ids.each_with_index do |imdb_id, idx|
+        row = @sheet.row(idx + 1)
 
-        $IMDB_ATTRIBUTES_HEADERS.each do |header_attr|
-          string_values = ['title', 'language', 'length', 'rating', 'vote', 'release', 'mpaa_rating', 'year']
-          movie_attribute = movie_DS[i].send(header_attr)
+        $IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
+          string_values = ['title', 'language', 'length', 'rating', 'vote', 'release', 'mpaa_rating', 'year', 'revenue']
 
-          row.push(movie_attribute.map { |t| t }.join(' ')) if ([].unshift header_attr).any? { |v| string_values.include?(v) }
-          row.push movie_attribute.length if (movie_attribute.is_a? Array) && ([].unshift header_attr).any? { |v| !string_values.include?(v) }
-          row.push(movie_attribute) if movie_attribute.is_a? String
+          # Check to see if the fetch redis value is in a JSON
+          begin
+            movie_value = JSON.parse(@db_redis.hget "movie:#{imdb_id}", "#{attr_key}")
+          rescue => e
+            movie_value = [] << (@db_redis.hget "movie:#{imdb_id}", "#{attr_key}")
+          end
+
+          row.push(movie_value.map { |t| t }.join(' ')) if ([].unshift attr_key).any? { |v| string_values.include?(v) }
+          row.push movie_value.length if (movie_value.is_a? Array) && ([].unshift attr_key).any? { |v| !string_values.include?(v) }
+          row.push(movie_value) if movie_value.is_a? String
         end
       end
     end
@@ -79,12 +74,10 @@ module MovieDB
     def report_name
       name = "imdb_"
 
-      0.upto(@movie_DS.length - 1) do |i|
-        name << @movie_DS[i].title.map { |m| m }.join().gsub(' ', '')
-        name << '_' unless i == (@movie_DS.length - 1)
+      @imdb_ids.each do |imdb_id|
+        name << (@db_redis.hget "movie:#{imdb_id}", "title").gsub(' ', '')
+        name << '_' unless @imdb_ids.length == imdb_id
       end
-
-      #name << "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..7].join}"
 
       return name
     end
@@ -92,7 +85,6 @@ module MovieDB
     def write_xls_file
       filename = ("#{report_name}.xls")
       @book.write File.join('reports', filename)
-
       return filename
     end
   end
