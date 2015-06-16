@@ -58,13 +58,13 @@ First a reports folder is created in the movieDB gem.
 
 Second, the fetched data is written to an xls format and stored in the reports directory.
 
-The file name is 'imdb_' + name title of the films you requested + today's date
+The file name is 'imdb_' + name title of the films you requested
 
-For example, the fetched data used
+For example, the fetched data is written to the report folder as:
 
-    $ open /reports/imdb_JurassicWorld_Spy_20150611.xls
+    $ open /reports/imdb_JurassicWorld_Spy.xls
 
-## Usage - Analyze Raw Data and Generate Statistical Results (4 Steps)
+## Usage - Analyzing Data From IMDb.
 
     $ irb
 
@@ -72,13 +72,13 @@ For example, the fetched data used
 
     > require 'MovieDB/data_process'
 
-    > MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_20150611.xls')
+    > MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_.xls')
 
 ### Exported - Analyzed Data
 
-The exported analyzed data is stored in your reports directory.
+The exported analyzed data is stored in your reports directory in your gem folder
 
-    $ cd /reports/basic_statistic_20150611.xls
+    $ cd /reports/statistic_20150611.xls
 
 ## What's Next
 
