@@ -9,6 +9,7 @@ module MovieDB
         module Statistic
           def basic_statistic(directory_name)
             open_spreadsheet(directory_name)
+            @directory_name = directory_name
 
             if check_imdb_count == true
                puts "*"*41
@@ -129,6 +130,7 @@ module MovieDB
             count = module_nesting.size
             @data_analysis_name = module_nesting[count - 1]
             @data_analysis_name << '_' <<  "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..9].join}"
+            @data_analysis_name << '_' <<  @directory_name.gsub('_.xls', '')
           end
 
           def insert_data_to_existing_xls_file

@@ -2,14 +2,15 @@ require 'spec_helper'
 
 describe MovieDB::DataExport do
 
-  describe "#fetch_movie_data_from_imdb" do
-    MovieDB::Movie.get_data("2024544", "1800241", "0791314")
+  describe "#write_xls_file " do
+    imdb_id = ["2024544", "1800241", "0791314"]
 
-    let(:file_name) {MovieDB::Movie.write_imdb_data_to_xls}
+    MovieDB::Movie.get_data(imdb_id)
 
-    it 'writes the fetched data as an xls file to the reports directory' do
+    let(:file_name) { MovieDB::Movie.write_xls_file }
+
+    it 'writes the fetched data as an xls file' do
      expect(File.exist?(File.join('reports', file_name))).to eql(true)
     end
-
   end
 end
