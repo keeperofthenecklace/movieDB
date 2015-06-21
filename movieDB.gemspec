@@ -22,8 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency 'highline'
-  spec.add_development_dependency 'fakeweb'
-  spec.add_dependency "activesupport", ">= 4.0.0"
   spec.add_dependency "spreadsheet"
   spec.add_dependency "themoviedb"
   spec.add_dependency "redis"
