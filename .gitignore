@@ -17,4 +17,4 @@ test/version_tmp
 tmp
 reports
 .coveralls.yml
-setup_readme.txt
+readme_first.txt
