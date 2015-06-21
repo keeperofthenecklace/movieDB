@@ -6,9 +6,10 @@ env:
   #- GEM DB=sqlite
   #- GEM DB=mysql
   #- GEM DB=postgres
+  - TEST_SUITE = units
 before_install:
     - cd $GEM; export BUNDLE_GEMFILE="`pwd`/Gemfile"
-script: bundle exec rspec spec
+script: bundle exec rake test:$TEST_SUITE
 
 matrix:
   allow_failures:
