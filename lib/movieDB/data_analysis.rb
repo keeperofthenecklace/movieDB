@@ -129,7 +129,6 @@ module MovieDB
             module_nesting = Module.nesting[0].to_s.gsub('::', ' ').split()
             count = module_nesting.size
             @data_analysis_name = module_nesting[count - 1]
-            @data_analysis_name << '_' <<  "#{Time.now.to_s.gsub(':', '').gsub('-', '').gsub(' ', '').split('')[0..9].join}"
             @data_analysis_name << '_' <<  @directory_name.gsub('_.xls', '')
           end
 
