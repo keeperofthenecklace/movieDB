@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Albert McKeever"]
   spec.email         = ["kotn_ep1@hotmail.com"]
   spec.description   = %q{Perform Data Analysis on IMDB Movies}
-  spec.summary       = %q{Movie/Film/TV Statistic and Data Analysis}
+  spec.summary       = %q{Movie/Film/TV Statistic and Data Analysis Tool}
   spec.homepage      = "https://github.com/keeperofthenecklace/movieDB"
   spec.license       = "MIT"
 
@@ -20,9 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
   spec.add_development_dependency "test-unit"
-  spec.add_development_dependency 'highline'
   spec.add_dependency "spreadsheet"
   spec.add_dependency "themoviedb"
   spec.add_dependency "redis"
