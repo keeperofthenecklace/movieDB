@@ -10,6 +10,7 @@ require "MovieDB/secret"
 require "MovieDB/data_export"
 require "redis"
 require "json"
+require 'highline/import'
 
 unless defined? MovieDB::Movie
   module MovieDB #:nodoc:
@@ -93,29 +94,21 @@ unless defined? MovieDB::Movie
         end
       end
 
-      # This is empty the container
-      #
-      # Futire release of this software will be using the boxofficemojoAPI
+      # Future release of this software will scrap IMDb data from boxofficemojoAPI.com
       # https://github.com/skozilla/BoxOfficeMojo/tree/master/boxofficemojoAPI
       #
-      # def clear_data_store
-      #   return @movie_DS = []
-      # end
-
-      # You can Imdb movie data like this:
+      # You can fetch IMDb movie data like this:
+      #   ids = ["2024544", "1800241" ]
       #
-      #   MovieDB::Movie.send(:get_multiple_imdb_movie_data, "2024544", "1800241")
+      #   MovieDB::Movie.get_data(ids)
       #
-      # Example: You can also collect the title attribute:
-      #
-      #    MovieDB::Movie.instance_eval { filter_movie_attr("title") }
+      #  The fetch data is stored in redis for 1800 seconds
+      #  And then written to a xls file.
       def self.get_data(*args)
+        # return [] if args.empty?
         @db_redis ||= Redis.new
-
         @db_redis.del "revenue"
-
         @imdb_id = []
-
         Tmdb::Api.key(Movie.key)
 
         args.flatten.each do |value|
@@ -123,22 +116,19 @@ unless defined? MovieDB::Movie
 
           movie_info = Movie.new
           @movie_data = Imdb::Movie.new(value)
-
           movie_detail = Tmdb::Movie.detail("tt#{value}")
 
           $IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
             begin @movie_data.send(attr_key)
               attr_value = @movie_data.send(attr_key)
-            rescue => e
+            rescue
               attr_value = movie_detail['revenue']
             end
 
             @db_redis.hset "movie:#{value}", "#{attr_key}", "#{attr_value}" # Adding a hash data type.
-
             @db_redis.lpush "#{attr_key}", "#{attr_value}" if attr_value.is_a? Numeric # Adding a list data type.
 
             @db_redis.expire "#{attr_key}", 1800
-
             @db_redis.expire "movie:#{value}", 1800
           end
         end
@@ -146,6 +136,7 @@ unless defined? MovieDB::Movie
         write_imdb_data_to_xls
       end
 
+      # Written stored IMDb data to spreadsheet
       def self.write_imdb_data_to_xls
         Movie.export_movie_data(@db_redis, @imdb_id)
       end
