@@ -1,31 +1,21 @@
-before_script:
-   #- sh -e /etc/init.d/xvfb start
-  #- export DISPLAY=99:0
-bundler_args: --without development production --quiet
+language: ruby
+rvm:
+  - 2.2.2
 env:
-  #- GEM DB=sqlite
-  #- GEM DB=mysql
-  #- GEM DB=postgres
   - TEST_SUITE = units
+before_script:
+  - rm -rf reports/*.8
+bundler_args: --without development production --quiet
 before_install:
-    - cd $GEM; export BUNDLE_GEMFILE="`pwd`/Gemfile"
-script: bundle exec rake test:$TEST_SUITE
-
+  - cd $GEM; export BUNDLE_GEMFILE="`pwd`/Gemfile"
+script:
+  - bundle exec rake test:$TEST_SUITE
 matrix:
   allow_failures:
      - rvm: 2.2.2
-    #- rvm: jruby
-    #- rvm: rbx
-    #- rvm: ree
-
+cache: bundler
 notifications:
   email: kotn_ep1@hotmail.com
-  webhooks:
-    on_success: always
-    on_failure: always
-
-rvm:
-  - 2.2.2
-  # - 1.9.7
-  # - 2.2.2
-  # - 2.1.0
+webhooks:
+  on_success: always
+  on_failure: always
