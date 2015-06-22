@@ -82,7 +82,7 @@ A statistical computation is performed and the results is written to movieDB gem
 
 Feel free to open it.
 
-    $ open ../reports/imdb_statistic_JurassicWorld_Spy.xls
+    $ open ../reports/Statistic_imdb_JurassicWorld_Spy.xls
 
 ## What's Next
 
