@@ -9,12 +9,9 @@ rescue MovieError
 end
 
 class TestMovieDB < Test::Unit::TestCase
-
   # This unit test writes an excel file to the reports directory
-  # in your gem folder.
-  #
-  # So, this method removes and empty the reports folder of
-  # all or andy pre-existing test files.
+  # in your gem folder. So, this method removes and empty the reports folder of
+  # all or any pre-existing test files.
   def remove_test_files_from_reports_directory
     testxlsfiles = File.join("**", "reports", "*.xls")
     FileUtils.rm Dir.glob(testxlsfiles)
