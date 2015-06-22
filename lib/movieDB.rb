@@ -13,7 +13,7 @@ require "json"
 require 'highline/import'
 
 unless defined? MovieDB::Movie
-  module MovieDB #:nodoc:
+  module MovieDB
   # Create a new movie record. The values are stored in the key-value data store.
   #
   # Default values are supplement during the instantiation of the class.
@@ -104,25 +104,51 @@ unless defined? MovieDB::Movie
       #
       #  The fetch data is stored in redis for 1800 seconds
       #  And then written to a xls file.
-      def self.get_data(*args)
-        # return [] if args.empty?
-        @db_redis ||= Redis.new
-        @db_redis.del "revenue"
+      def self.find_imdb_id(*args)
+        raise ArgumentError if args.empty?
+
+        get_imdb_movie_data(args)
+        get_tmdb_movie_data(args)
+        cache_movie_data_to_redis(args)
+        write_imdb_data_to_xls
+      end
+
+      def self.get_imdb_movie_data(*args) #:nodoc:
         @imdb_id = []
-        Tmdb::Api.key(Movie.key)
+        @imdb_movie_data = []
 
         args.flatten.each do |value|
           @imdb_id << value
 
-          movie_info = Movie.new
-          @movie_data = Imdb::Movie.new(value)
-          movie_detail = Tmdb::Movie.detail("tt#{value}")
+          Movie.new   # Instantiate a movie object.
+          @imdb_movie_data << Imdb::Movie.new(value)
+        end
+        @imdb_movie_data
+      end
+
+      def self.get_tmdb_movie_data(*args) #:nodoc:
+        @tmdb_movie_data = []
+        Tmdb::Api.key(Movie.key)
+
+        args.flatten.each do |value|
+          @tmdb_movie_data << Tmdb::Movie.detail("tt#{value}")
+        end
+        @tmdb_movie_data
+      end
+
+      def self.cache_movie_data_to_redis(*args) #:nodoc:
+        @db_redis ||= Redis.new
+        @db_redis.del "revenue"
+
+        args.flatten.each_with_index do |value, idx|
+          imdb_movie_data = @imdb_movie_data[idx]
+          tmdb_movie_data = @tmdb_movie_data[idx]
 
           $IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
-            begin @movie_data.send(attr_key)
-              attr_value = @movie_data.send(attr_key)
+            begin imdb_movie_data.send(attr_key)
+              attr_value = imdb_movie_data.send(attr_key)
             rescue
-              attr_value = movie_detail['revenue']
+              attr_value = tmdb_movie_data['revenue']
             end
 
             @db_redis.hset "movie:#{value}", "#{attr_key}", "#{attr_value}" # Adding a hash data type.
@@ -132,12 +158,10 @@ unless defined? MovieDB::Movie
             @db_redis.expire "movie:#{value}", 1800
           end
         end
-
-        write_imdb_data_to_xls
+        @db_redis
       end
 
-      # Written stored IMDb data to spreadsheet
-      def self.write_imdb_data_to_xls
+      def self.write_imdb_data_to_xls #:nodoc:
         Movie.export_movie_data(@db_redis, @imdb_id)
       end
     end

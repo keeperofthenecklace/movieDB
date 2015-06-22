@@ -2,11 +2,11 @@
 
 Below is a complete listing of changes for each revision of movieDB.
 
-### 0.3.3 /
+### 0.3.3 / Jun 22, 2015
 * Changed test suite from rspec to unit test.
 * Updated the README.md with better instructions.
 * Applied OOP design for base code.
-* Wrote better test unit code
+* More test unit code.
 
 ### 0.1.5 - 0.3.2 / Dec 10, 2013 - Jun 20, 2015
 * Fix styling
