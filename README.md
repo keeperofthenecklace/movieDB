@@ -46,7 +46,7 @@ Or install it yourself as:
 
     $> imdb_ids = ["0369610", "3079380"]
 
-    $> MovieDB::Movie.get_data(imdb_ids)
+    $> MovieDB::Movie.find_imdb_id(imdb_ids)
 
       /* YOU CAN ADD AS MANY IMDB IDs AS YOU LIKE. BUT DO NOT EXCEED THE MAXIMUM REQUEST RATE. */
 
@@ -54,15 +54,19 @@ Or install it yourself as:
 
 When IMDb data is fetched, two things happen.
 
-First a reports folder is created in the movieDB gem.
+First, a reports folder is created in the movieDB gem folder.
 
-Second, the fetched data is written to an xls format and stored in the reports directory.
+Next, the fetched data is written to an xls format and stored in the reports directory.
 
-The file name is 'imdb_' + name title of the films you requested
+From your terminal you can locate movieDB gem directory like this:
 
-For example, the fetched data is written to the report folder as:
+    $ gem content movieDB
 
-    $ open /reports/imdb_JurassicWorld_Spy.xls
+If you use our above IMDb id, you should find the following xls file.
+
+Feel free to open it.
+
+    $ open ../reports/imdb_JurassicWorld_Spy_.xls
 
 ## Usage - Analyzing Data From IMDb.
 
@@ -74,11 +78,11 @@ For example, the fetched data is written to the report folder as:
 
     > MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_.xls')
 
-### Exported - Analyzed Data
+A statistical computation is performed and the results is written to movieDB gem reports folder.
 
-The exported analyzed data is stored in your reports directory in your gem folder
+Feel free to open it.
 
-    $ cd /reports/statistic_20150611.xls
+    $ open ../reports/imdb_statistic_JurassicWorld_Spy.xls
 
 ## What's Next
 
