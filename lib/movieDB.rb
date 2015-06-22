@@ -100,7 +100,7 @@ unless defined? MovieDB::Movie
       # You can fetch IMDb movie data like this:
       #   ids = ["2024544", "1800241" ]
       #
-      #   MovieDB::Movie.get_data(ids)
+      #   MovieDB::Movie.find_imdb_id(ids)
       #
       #  The fetch data is stored in redis for 1800 seconds
       #  And then written to a xls file.
