@@ -2,10 +2,10 @@ require 'test/unit'
 require "imdb"
 require "redis"
 require 'fileutils'
-
+require 'movieDB'
 begin
-  require 'MovieDB'
-rescue MovieError
+  require 'movieDB'
+rescue
 end
 
 class TestMovieDB < Test::Unit::TestCase
