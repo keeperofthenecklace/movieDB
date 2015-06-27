@@ -1,6 +1,8 @@
 ## Change Log
 
 Below is a complete listing of changes for each revision of movieDB.
+### 0.3.4
+* Moved attribute headers to data_export file.
 
 ### 0.3.3 / Jun 22, 2015
 * Changed test suite from rspec to unit test.
