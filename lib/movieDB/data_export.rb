@@ -6,7 +6,12 @@ require "json"
 # The key and values are written into a spreadsheet for later data analysis.
 module MovieDB
   module DataExport
+    IMDB_ATTRIBUTES_HEADERS = %w(title cast_members cast_characters cast_member_ids cast_members_characters
+                    trailer_url director writers filming_locations company genres languages countries
+                    length plot poster rating votes mpaa_rating tagline year release_date revenue)
+
     def export_movie_data(db_redis, imdb_ids)
+
       @db_redis = db_redis
       @imdb_ids = imdb_ids
 
@@ -38,7 +43,7 @@ module MovieDB
     end
 
     def create_spreadsheet_header
-      @sheet.row(0).concat $IMDB_ATTRIBUTES_HEADERS
+      @sheet.row(0).concat MovieDB::DataExport::IMDB_ATTRIBUTES_HEADERS
 
       title_format = Spreadsheet::Format.new :color => :blue, :weight => :bold, :size => 13
       float_format = Spreadsheet::Format.new :number_format => "0.00"
@@ -54,7 +59,7 @@ module MovieDB
       @imdb_ids.each_with_index do |imdb_id, idx|
         row = @sheet.row(idx + 1)
 
-        $IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
+        MovieDB::DataExport::IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
           string_values = ['title', 'language', 'length', 'rating', 'vote', 'release', 'mpaa_rating', 'year', 'revenue']
 
           # Check to see if the fetch redis value is in a JSON

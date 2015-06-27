@@ -85,11 +85,7 @@ unless defined? MovieDB::Movie
       DEFAULT_REVENUE = 456790
 
       def initialize(attributes = {})
-        $IMDB_ATTRIBUTES_HEADERS = movie_attr = %w(title cast_members cast_characters cast_member_ids cast_members_characters
-                        trailer_url director writers filming_locations company genres languages countries
-                        length plot poster rating votes mpaa_rating tagline year release_date revenue)
-
-        movie_attr.each do |attr|
+        MovieDB::DataExport::IMDB_ATTRIBUTES_HEADERS.each do |attr|
           self.send("#{attr}=", (attributes.has_key?(attr.to_sym) ? attributes[attr.to_sym] : self.class.const_get("DEFAULT_#{attr.upcase}")))
         end
       end
@@ -144,7 +140,7 @@ unless defined? MovieDB::Movie
           imdb_movie_data = @imdb_movie_data[idx]
           tmdb_movie_data = @tmdb_movie_data[idx]
 
-          $IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
+          MovieDB::DataExport::IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
             begin imdb_movie_data.send(attr_key)
               attr_value = imdb_movie_data.send(attr_key)
             rescue
