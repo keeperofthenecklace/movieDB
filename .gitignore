@@ -16,7 +16,6 @@ test/tmp
 test/version_tmp
 tmp
 reports
-.coveralls.yml
 readme_first.txt
 test/.DS_Store
 coverage
