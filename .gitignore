@@ -19,3 +19,4 @@ reports
 .coveralls.yml
 readme_first.txt
 test/.DS_Store
+coverage

@@ -3,6 +3,7 @@ require "imdb"
 require "redis"
 require 'fileutils'
 require 'movieDB'
+require 'test_helper'
 begin
   require 'movieDB'
 rescue
