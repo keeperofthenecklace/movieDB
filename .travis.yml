@@ -8,6 +8,8 @@ before_script:
 bundler_args: --without development production --quiet
 before_install:
   - cd $GEM; export BUNDLE_GEMFILE="`pwd`/Gemfile"
+after_success:
+  - CI=true TRAVIS=true coveralls --verbose
 script:
   - bundle exec rake test:$TEST_SUITE
 matrix:
@@ -19,5 +21,3 @@ notifications:
 webhooks:
   on_success: always
   on_failure: always
-  after_success:
-  - coveralls --verbose
