@@ -2,9 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
-group :documentation do
-  gem 'coveralls', :require => false
-end
+gem 'coveralls', require: false
+
 
 # Code coverage analysis tool for Ruby
 group :test do
