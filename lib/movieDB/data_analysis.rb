@@ -13,7 +13,7 @@ module MovieDB
             @directory_name = directory_name
 
             if check_imdb_count == true
-              Logger.new('movieDBLogs.rb', 5 * 1024 * 1024, 'daily').error "Error. A minimum of 2 Imdb id's are required."
+              Logger.new('movieDB.log', 5 * 1024 * 1024, 'daily').error "Error. A minimum of 2 Imdb id's are required."
             else
               perform_computation
               insert_data_to_existing_xls_file
