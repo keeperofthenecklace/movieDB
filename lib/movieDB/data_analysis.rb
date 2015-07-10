@@ -8,14 +8,12 @@ module MovieDB
     module AnalysisOfVariance
       module LeastSquares
         module Statistic
-          $LOG = Logger.new('movieDBLogs.rb', 5 * 1024 * 1024, 'daily')
-
           def basic_statistic(directory_name)
             open_spreadsheet(directory_name)
             @directory_name = directory_name
 
             if check_imdb_count == true
-               $LOG.error "Error. A minimum of 2 Imdb id's are required."
+              Logger.new('movieDBLogs.rb', 5 * 1024 * 1024, 'daily').error "Error. A minimum of 2 Imdb id's are required."
             else
               perform_computation
               insert_data_to_existing_xls_file
