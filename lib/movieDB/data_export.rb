@@ -30,7 +30,6 @@ module MovieDB
       @book = Spreadsheet::Workbook.new
       @sheet = @book.create_worksheet
       @sheet.name = report_name if @db_redis
-      @sheet.name = "Data Analysis: #{$DATA_ANALYSIS_NAME}" if $DATA_ANALYSIS_NAME
     end
 
     def create_directory(directory_name)

@@ -4,10 +4,6 @@ require "redis"
 require 'fileutils'
 require 'movieDB'
 require 'test_helper'
-begin
-  require 'movieDB'
-rescue
-end
 
 class TestMovieDB < Test::Unit::TestCase
   # This unit test writes an excel file to the reports directory
@@ -95,4 +91,3 @@ class TestMovieDB < Test::Unit::TestCase
     remove_test_files_from_reports_directory
   end
 end
-
