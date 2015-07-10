@@ -1,22 +1,21 @@
 require 'MovieDB'
+require 'logger'
 
 module MovieDB
   # Analyzing, inspecting, cleaning, transforming and modeling data.
-  #
+  # The stored log files should not exceed 5 MB and will be keep for a day.
   class DataAnalysis < MovieDB::Movie
     module AnalysisOfVariance
       module LeastSquares
         module Statistic
+          $LOG = Logger.new('movieDBLogs.rb', 5 * 1024 * 1024, 'daily')
+
           def basic_statistic(directory_name)
             open_spreadsheet(directory_name)
             @directory_name = directory_name
 
             if check_imdb_count == true
-               puts "*"*41
-               puts "* A minimum of 2 Imdb id's are required *"
-               puts "* To perform statistical data analysis  *"
-               puts "* You only have ONE Imdb id entered     *"
-               puts "*"*41
+               $LOG.error "Error. A minimum of 2 Imdb id's are required."
             else
               perform_computation
               insert_data_to_existing_xls_file
@@ -239,9 +238,8 @@ module MovieDB
           write_coefficient_of_determination
         when  "discrete least squares meshless method"
           write_discrete_least_squares_meshless_method
-        when "discrete least squares meshless method"
-          write_discrete_least_squares_meshless_method
         else
+          write_discrete_least_squares_meshless_method
         end
       rescue
         raise ArgumentError, 'invalid attribute'
