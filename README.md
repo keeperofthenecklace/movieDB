@@ -28,7 +28,7 @@ Please make sure you have redis installed.
 
 Add this line to your application's Gemfile:
 
-  gem 'movieDB'
+      gem 'movieDB'
 
 And then execute:
 
