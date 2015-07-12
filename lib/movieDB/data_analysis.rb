@@ -33,7 +33,6 @@ module MovieDB
             @sheet.rows.count - 1 == 1
           end
 
-          def perform_computation
           # Perform computation on the data collected.
           #
           # TODO: Need to use coefficienct statistical formula.
@@ -52,6 +51,7 @@ module MovieDB
           #
           # The standard deviation is the root mean square (RMS) deviation of the
           # values from their arithmetic mean.
+          def perform_computation
             total_columns = 22
             @column = []
 
@@ -136,94 +136,91 @@ module MovieDB
           end
         end
 
-        module Coefficient_Of_Determination
-         # TODO: Add code.
-        end
-
-        module Discrete_Least_Squares_Meshless_Method; end
-        module Explained_Sum_Of_Squares; end
-        module Fraction_Of_Variance_Unexplained; end
-        module Gauss_Newton_Algorithm; end
-        module Iteratively_Reweighted_Least_Squares; end
-        module Lack_Of_Fit_Sum_Of_Squares; end
-        module Least_Squares_Support_Vector_Machine; end
-        module Mean_Squared_Error; end
-        module Moving_Least_Sqares; end
-        module Non_Linear_Iterative_Partial_Least_Squares; end
-        module Non_Linear_Least_Squares; end
-        module Ordinary_Least_Squares; end
-        module Partial_Least_Squares_Regression; end
-        module Partition_Of_Sums_Of_Squares; end
-        module Proofs_Involving_Ordinary_Least_Squares; end
-        module Residual_Sum_Of_Squares; end
-        module Total_Least_Squares; end
-        module Total_Sum_Of_Squares; end
+        module CoefficientOfDetermination; end
+        module DiscreteLeastSquaresMeshless; end
+        module ExplainedSumOfSquares; end
+        module FractionOfVarianceUnexplained; end
+        module GaussNewtonAlgorithm; end
+        module IterativelyReweightedLeastSquares; end
+        module LackOfFitSumOfSquares; end
+        module LeastSquaresSupportVectorMachine; end
+        module MeanSquaredError; end
+        module MovingLeastSqares; end
+        module NonLinearIterativePartialLeast_Squares; end
+        module NonLinearLeastSquares; end
+        module OrdinaryLeastSquares; end
+        module PartialLeastSquaresRegression; end
+        module PartitionOfSumsOfSquares; end
+        module ProofsInvolvingOrdinaryLeastSquares; end
+        module ResidualSumOfSquares; end
+        module TotalLeastSquares; end
+        module TotalSumOfSquares; end
       end
     end
 
     module EstimationOfDensity
-      module Cluster_Weighted_Modeling; end
-      module Density_Estimation; end
-      module Discretization_Of_Continuous_Features; end
-      module Mean_Integrated_Squared_Error; end
-      module Multivariate_Kernel_Density_Estimation; end
-      module Variable_Kernel_Density_Estimation; end
+      module ClusterWeightedModeling; end
+      module DensityEstimation; end
+      module DiscretizationOfContinuousFeatures; end
+      module MeanIntegratedSquaredError; end
+      module MultivariateKernelDensityEstimation; end
+      module VariableKernelDensityEstimation; end
     end
 
     # primarily EDA is for seeing what the data can
     # tell us beyond the formal modeling or hypothesis testing task.
     # The output will be a visual material.
     module ExploratoryDataAnalysis
-      module Data_Reduction; end
-      module Table_Diagonalization; end
-      module Configural_Frequency_Analysis; end
-      module Median_Polish; end
-      module Stem_And_Leaf_Display; end
+      module DataReduction; end
+      module TableDiagonalization; end
+      module ConfiguralFrequencyAnalysis; end
+      module MedianPolish; end
+      module StemAndLeafDisplay; end
     end
 
 
-    module Data_Mining
-      module Applied_DataMining; end
-      module Cluster_Analysis; end
-      module Dimension_Reduction; end
-      module Applied_DataMining; end
+    module DataMining
+      module AppliedDataMining; end
+      module ClusterAnalysis; end
+      module DimensionReduction; end
+      module AppliedDataMining; end
     end
 
     module RegressionAnalysis
-      module Choice_Modelling; end
+      module ChoiceModelling; end
 
-      module Generalized_Linear_Model
-        module Binomial_Regression; end
-        module Generalized_Additive_Model; end
-        module Linear_Probability_Model; end
-        module Poisson_Regression; end
-        module Zero_Inflated_Model; end
+      module GeneralizedLinearModel
+        module BinomialRegression; end
+        module GeneralizedAdditiveModel; end
+        module LinearProbabilityModel; end
+        module PoissonRegression; end
+        module ZeroInflatedModel; end
       end
 
-      module Nonparametric_Regression; end
-      module Statistical_Outliers; end
-      module Regression_And_Curve_Fitting_Software; end
-      module Regression_Diagnostics; end
-      module Regression_Variable_Selection; end
-      module Regression_With_Time_Series_Structure; end
-      module Robust_Regression; end
-      module Choice_Modeling; end
+      module NonparametricRegression; end
+      module StatisticalOutliers; end
+      module RegressionAndCurveFittingSoftware; end
+      module RegressionDiagnostics; end
+      module RegressionVariableSelection; end
+      module RegressionWithTimeSeriesStructure; end
+      module RobustRegression; end
+      module ChoiceModeling; end
     end
 
     module Resampling
-      module Bootstrapping_Population; end
+      module BootstrappingPopulation; end
     end
 
-    module Sensitivity_Analysis
-      module Variance_Based_Sensitivity_Analysis; end
-      module Elementary_Effects_Method; end
-      module Experimental_Uncertainty_Analysis; end
-      module Fourier_Amplitude_Sensitivity_Testing; end
+    module SensitivityAnalysis
+      module VarianceBasedSensitivityAnalysis; end
+      module ElementaryEffectsMethod; end
+      module ExperimentalUncertaintyAnalysis; end
+      module FourierAmplitudeSensitivityTesting; end
       module Hyperparameter; end
     end
 
-    module Time_series_Analysis
-      module Frequency_Deviation; end
+    module TimeseriesAnalysis
+      module FrequencyDeviation; end
     end
   end
 
