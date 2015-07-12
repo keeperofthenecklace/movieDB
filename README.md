@@ -28,7 +28,7 @@ Please make sure you have redis installed.
 
 Add this line to your application's Gemfile:
 
-      gem 'movieDB'
+    gem 'movieDB'
 
 And then execute:
 
@@ -80,11 +80,17 @@ Feel free to open it.
 
     MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_.xls')
 
-A statistical computation is performed and the results is written to movieDB gem reports folder.
+A statistical computation is performed and the results is written to movieDB.
 
-Feel free to open it.
+You can open movieDB directory from your terminal.
 
-    $ open ../reports/Statistic_imdb_JurassicWorld_Spy.xls
+Assuming you are using vim as your IDE,
+
+    EDITOR=vi bundle open movieDB
+
+Inside the reports directory you will find this file.
+
+    Statistic_imdb_JurassicWorld_Spy.xls
 
 ## What's Next
 
