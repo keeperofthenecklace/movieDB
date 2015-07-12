@@ -10,6 +10,7 @@ module MovieDB
                     trailer_url director writers filming_locations company genres languages countries
                     length plot poster rating votes mpaa_rating tagline year release_date revenue)
 
+    # Export the movie data.
     def export_movie_data(db_redis, imdb_ids)
 
       @db_redis = db_redis

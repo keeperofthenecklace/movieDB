@@ -170,10 +170,10 @@ module MovieDB
       module Variable_Kernel_Density_Estimation; end
     end
 
-    module ExploratoryDataAnalysis
     # primarily EDA is for seeing what the data can
     # tell us beyond the formal modeling or hypothesis testing task.
     # The output will be a visual material.
+    module ExploratoryDataAnalysis
       module Data_Reduction; end
       module Table_Diagonalization; end
       module Configural_Frequency_Analysis; end

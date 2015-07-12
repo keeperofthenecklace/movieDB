@@ -5,15 +5,16 @@ require 'fileutils'
 require 'movieDB'
 require 'test_helper'
 
+# This unit test writes an excel file to the reports directory
+# in your gem folder. So, this method removes and empty the reports folder of
+# all or any pre-existing test files.
 class TestMovieDB < Test::Unit::TestCase
-  # This unit test writes an excel file to the reports directory
-  # in your gem folder. So, this method removes and empty the reports folder of
-  # all or any pre-existing test files.
   def remove_test_files_from_reports_directory
     testxlsfiles = File.join("**", "reports", "*.xls")
     FileUtils.rm Dir.glob(testxlsfiles)
   end
 
+  # Initial and add a new movie
   def test_movie_new
     m = MovieDB::Movie.new
     assert_instance_of MovieDB::Movie, m
