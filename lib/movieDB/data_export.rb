@@ -62,10 +62,10 @@ module MovieDB
         MovieDB::DataExport::IMDB_ATTRIBUTES_HEADERS.each do |attr_key|
           string_values = ['title', 'language', 'length', 'rating', 'vote', 'release', 'mpaa_rating', 'year', 'revenue']
 
-          # Check to see if the fetch redis value is in a JSON
+          # Checks to see if fetched redis value returns JSON resources.
           begin
             movie_value = JSON.parse(@db_redis.hget "movie:#{imdb_id}", "#{attr_key}")
-          rescue => e
+          rescue
             movie_value = [] << (@db_redis.hget "movie:#{imdb_id}", "#{attr_key}")
           end
 

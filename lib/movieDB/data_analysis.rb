@@ -23,9 +23,6 @@ module MovieDB
           def open_spreadsheet(directory_name)
             @book = Spreadsheet.open File.join('reports', directory_name)
             @sheet = @book.worksheet(0)
-
-            title_format = Spreadsheet::Format.new :color => :blue, :weight => :bold, :size => 13
-
             @sheet.column(22).width = "worldwide_gross".length
           end
 
@@ -33,9 +30,7 @@ module MovieDB
             @sheet.rows.count - 1 == 1
           end
 
-          # Perform computation on the data collected.
-          #
-          # TODO: Need to use coefficienct statistical formula.
+          # Consider refactoring this Complex method.
           #
           # Calculate median as an example but COD formula must be used.
           # Mean is commonly called as average. Mean or Average is defined as the sum of
@@ -61,15 +56,13 @@ module MovieDB
               @column = []
 
               @sheet.each_with_index do |row, i|
-                @column << @sheet[i, 0 + c ]
+                @column << @sheet[i, 0 + c]
               end
 
               @column.shift
               @column.compact!
 
-              row_count = @sheet.rows.count
-
-              if @column.all? { |i| (1..99999999999).include? (i) }
+              if @column.all? { |i| (1..99_999_999_999).include? (i) }
                 n = @column.count
                     @column.sort!
 
@@ -96,7 +89,6 @@ module MovieDB
                    right_index = middle_index + 1
                    @median = (@column[middle_index - 1] + @column[right_index - 1]) / 2
                  end
-
               else
                 @median = "N/A"
                 @mean = "N/A"
@@ -106,19 +98,19 @@ module MovieDB
               end
 
               @sheet[@row_count + 2, 0 ] =  "Mean"
-              @sheet[@row_count + 2, 0 + c ] = @mean
+              @sheet[@row_count + 2, 0 + c] = @mean
 
-              @sheet[@row_count + 3, 0 ] =  "Median"
-              @sheet[@row_count + 3, 0 + c ] =  @median
+              @sheet[@row_count + 3, 0] =  "Median"
+              @sheet[@row_count + 3, 0 + c] =  @median
 
               @sheet[@row_count + 4, 0 ] =  "Range"
-              @sheet[@row_count + 4, 0 + c ] =  @range
+              @sheet[@row_count + 4, 0 + c] =  @range
 
-              @sheet[@row_count + 5, 0 ] =  "Mode"
-              @sheet[@row_count + 5, 0 + c ] =  @mode
+              @sheet[@row_count + 5, 0] =  "Mode"
+              @sheet[@row_count + 5, 0 + c] =  @mode
 
-              @sheet[@row_count + 6, 0 ] =  "Standard Deviation"
-              @sheet[@row_count + 6, 0 + c ] =  @standard_dev
+              @sheet[@row_count + 6, 0] =  "Standard Deviation"
+              @sheet[@row_count + 6, 0 + c] =  @standard_dev
             end
           end
 
@@ -146,7 +138,7 @@ module MovieDB
         module LeastSquaresSupportVectorMachine; end
         module MeanSquaredError; end
         module MovingLeastSqares; end
-        module NonLinearIterativePartialLeast_Squares; end
+        module NonLinearIterativePartialLeastSquares; end
         module NonLinearLeastSquares; end
         module OrdinaryLeastSquares; end
         module PartialLeastSquaresRegression; end

@@ -7,7 +7,7 @@ module MovieDB
   #   movie = Movie.new(film_release: ['theatrical', 'print'])
   #   movie.status_check
     def self.included(base)
-      base.class_eval {
+      base.class_eval do |ce|
         def theatrical_released?
           self.movie_status == 'theartrical'
         end
@@ -42,7 +42,7 @@ module MovieDB
             "Not Released"
           end
         end
-      }
+      end
     end
   end
 end

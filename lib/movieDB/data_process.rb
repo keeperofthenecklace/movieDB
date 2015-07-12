@@ -23,4 +23,3 @@ module MovieDB
     include PATHAOV::TotalSumOfSquares
   end
 end
-
