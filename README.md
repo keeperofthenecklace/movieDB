@@ -58,17 +58,17 @@ When IMDb data is fetched, two things happen.
 
 First, a reports folder is created in the movieDB gem folder.
 
-Next, the fetched data is written to an xls format and stored in the reports directory.
+Then, the fetched data is written to an xls format and stored in the reports directory.
 
-From your terminal you can locate movieDB gem directory like this:
+You can open movieDB directory from your terminal.
 
-    gem content movieDB
+Assuming you are using vim as your IDE,
 
-If you use our above IMDb id, you should find the following xls file.
+    EDITOR=vi bundle open movieDB
 
-Feel free to open it.
+Inside the reports directory you will find this file.
 
-    open ../reports/imdb_JurassicWorld_Spy_.xls
+    imdb_JurassicWorld_Spy_.xls
 
 ## Usage - Analyzing Data From IMDb.
 
