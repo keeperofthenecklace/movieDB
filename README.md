@@ -32,23 +32,23 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-  bundle install
+    bundle install
 
 Or install it yourself as:
 
-  gem install movieDB
+    gem install movieDB
 
 ## Require - loading the libraries
 
-  irb
+    irb
 
-  require 'movieDB'
+    require 'movieDB'
 
 ## Usage - Fetch Raw Movie Data From IMDb
 
-  imdb_ids = ["0369610", "3079380"]
+    imdb_ids = ["0369610", "3079380"]
 
-  MovieDB::Movie.find_imdb_id(imdb_ids)
+    MovieDB::Movie.find_imdb_id(imdb_ids)
 
   /* YOU CAN ADD AS MANY IMDB IDs AS YOU LIKE. BUT DO NOT EXCEED THE MAXIMUM REQUEST RATE. */
 
@@ -62,29 +62,29 @@ Next, the fetched data is written to an xls format and stored in the reports dir
 
 From your terminal you can locate movieDB gem directory like this:
 
-  gem content movieDB
+    gem content movieDB
 
 If you use our above IMDb id, you should find the following xls file.
 
 Feel free to open it.
 
-  open ../reports/imdb_JurassicWorld_Spy_.xls
+    open ../reports/imdb_JurassicWorld_Spy_.xls
 
 ## Usage - Analyzing Data From IMDb.
 
-  irb
+    irb
 
-  require 'MovieDB/data_analysis'
+    require 'MovieDB/data_analysis'
 
-  require 'MovieDB/data_process'
+    require 'MovieDB/data_process'
 
-  MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_.xls')
+    MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_.xls')
 
 A statistical computation is performed and the results is written to movieDB gem reports folder.
 
 Feel free to open it.
 
-  $ open ../reports/Statistic_imdb_JurassicWorld_Spy.xls
+    $ open ../reports/Statistic_imdb_JurassicWorld_Spy.xls
 
 ## What's Next
 
