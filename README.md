@@ -100,4 +100,4 @@ If you'd like to collaborate, please feel free to fork source code on github.
 
 You can also contact me at albertmck@gmail.com
 
-###### Copyright (c) 2013 Albert McKeever, released under MIT license
+###### Copyright (c) 2013 - 2015 Albert McKeever, released under MIT license
