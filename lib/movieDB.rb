@@ -27,8 +27,6 @@ unless defined? MovieDB::Movie
   #
   #   raise MovieError unless Movie.title_present?
     class Movie < MovieDB::Base
-      include StatusChecker
-
       extend MovieDB::DataExport
       extend MovieDB::Secret::Lock
 

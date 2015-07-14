@@ -37,7 +37,7 @@ describe MovieDB do
   end
 
   describe "#find_imdb_id" do
-    it "raises an error if thers no ids" do
+    it "raises an error if theres no ids" do
       expect { MovieDB::Movie.find_imdb_id() }.to raise_error
     end
 
@@ -51,14 +51,14 @@ describe MovieDB do
     imdb_ids = ['0369610', '2395427']
     wrong_ids = ['abcd', 'cdef']
 
-    it "returns the attributes for the movie" do
+    it "returns attributes for a valid IMDb movie" do
       m = MovieDB::Movie.get_imdb_movie_data(imdb_ids)
 
       expect(m[0].title).to eql("Jurassic World")
       expect(m[1].title).to eql("Avengers: Age of Ultron")
     end
 
-    it "raises an error for wrong IMDB ids" do
+    it "raises an error for wrong IMDb ids" do
       expect { MovieDB::Movie.get_imdb_movie_data(wrong_ids) }.to raise_error("Wrong IMDb id")
     end
   end
@@ -81,7 +81,7 @@ describe MovieDB do
     MovieDB::Movie.get_tmdb_movie_data(imdb_id)
     m = MovieDB::Movie.cache_movie_data_to_redis(imdb_id)
 
-    it "returns the title from redis" do
+    it "fetches the title value from redis" do
       expect(m.hget "movie:0369610", "title").to eql "Jurassic World"
     end
   end
