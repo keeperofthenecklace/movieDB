@@ -10,7 +10,7 @@ describe MovieDB do
   describe "#new" do
     m = MovieDB::Movie.new
 
-    it "creates an object with default values" do
+    it "creates an object with default attribute values" do
       expect(m.title).to eql "Method Missing 2: Rails Roars!"
       expect(m.cast_members).to eql (["David Black", "Paola Perotta", "Obie Fernandez", "David Chelimsky"])
       expect(m.cast_members_characters).to eql (["David Black => Developer", "Paola Perotta => Police Officer", "Obie Fernandez =>Hunter", "David Chelimsky =>Hostage"])
@@ -51,27 +51,25 @@ describe MovieDB do
     imdb_ids = ['0369610', '2395427']
     wrong_ids = ['abcd', 'cdef']
 
-    it "return length of movies" do
-      expect(MovieDB::Movie.get_imdb_movie_data(imdb_ids).length).to eql 2
+    it "returns the attributes for the movie" do
+      m = MovieDB::Movie.get_imdb_movie_data(imdb_ids)
+
+      expect(m[0].title).to eql("Jurassic World")
+      expect(m[1].title).to eql("Avengers: Age of Ultron")
     end
 
-    it "raise an error for wrong IMDB ids" do
+    it "raises an error for wrong IMDB ids" do
       expect { MovieDB::Movie.get_imdb_movie_data(wrong_ids) }.to raise_error("Wrong IMDb id")
     end
   end
 
+  describe "#get_tmdb_movie_data" do
+    imdb_ids = ['0078748', '0120338']
 
+    it "fetches revenue data" do
+      m = MovieDB::Movie.get_tmdb_movie_data(imdb_ids)
 
-
-
-
-
-
-
-
-
-
-
-
-
+      expect(m[0]['revenue']).to eql  104_931_801
+    end
+  end
 end
