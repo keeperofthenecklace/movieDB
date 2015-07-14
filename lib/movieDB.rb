@@ -117,7 +117,7 @@ unless defined? MovieDB::Movie
           @imdb_id << value
 
           Movie.new   # Instantiate a movie object.
-          @imdb_movie_data << Imdb::Movie.new(value)
+          Imdb::Movie.new(value).title.nil? ? raise('Wrong IMDb id') : @imdb_movie_data << Imdb::Movie.new(value)
         end
         @imdb_movie_data
       end

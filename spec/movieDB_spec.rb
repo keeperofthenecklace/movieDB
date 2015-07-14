@@ -10,7 +10,7 @@ describe MovieDB do
   describe "#new" do
     m = MovieDB::Movie.new
 
-    it "returns default values when initialized" do
+    it "creates an object with default values" do
       expect(m.title).to eql "Method Missing 2: Rails Roars!"
       expect(m.cast_members).to eql (["David Black", "Paola Perotta", "Obie Fernandez", "David Chelimsky"])
       expect(m.cast_members_characters).to eql (["David Black => Developer", "Paola Perotta => Police Officer", "Obie Fernandez =>Hunter", "David Chelimsky =>Hostage"])
@@ -41,9 +41,37 @@ describe MovieDB do
       expect { MovieDB::Movie.find_imdb_id() }.to raise_error
     end
 
-    it "returns" do
+    it "returns an IMDb movie if id is valid" do
       expect(MovieDB::Movie.find_imdb_id('0369610')).to eql ("imdb_JurassicWorld_.xls")
       deleteFile
     end
   end
+
+  describe "#get_imdb_movie_data" do
+    imdb_ids = ['0369610', '2395427']
+    wrong_ids = ['abcd', 'cdef']
+
+    it "return length of movies" do
+      expect(MovieDB::Movie.get_imdb_movie_data(imdb_ids).length).to eql 2
+    end
+
+    it "raise an error for wrong IMDB ids" do
+      expect { MovieDB::Movie.get_imdb_movie_data(wrong_ids) }.to raise_error("Wrong IMDb id")
+    end
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end
