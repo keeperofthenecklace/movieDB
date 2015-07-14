@@ -15,6 +15,10 @@ end
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require "rspec"
+require "imdb"
+require "redis"
+require 'fileutils'
+require 'movieDB'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |c|
