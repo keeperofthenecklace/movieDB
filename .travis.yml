@@ -3,13 +3,16 @@ rvm:
   - 2.2.2
 env:
   - TEST_SUITE = units
+global:
+  - "CI=true"
+  - "TRAVIS=true"
+after_success:
+  - coveralls --verbose
 before_script:
   - rm -rf reports/*.8
 bundler_args: --without development production --quiet
 before_install:
   - cd $GEM; export BUNDLE_GEMFILE="`pwd`/Gemfile"
-after_success:
-  - CI=true TRAVIS=true coveralls --verbose
 script:
   - bundle exec rake test:$TEST_SUITE
 matrix:

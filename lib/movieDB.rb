@@ -10,7 +10,6 @@ require "MovieDB/secret"
 require "MovieDB/data_export"
 require "redis"
 require "json"
-require 'highline/import'
 
 unless defined? MovieDB::Movie
   module MovieDB
