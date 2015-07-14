@@ -7,6 +7,13 @@ describe MovieDB do
     FileUtils.rm Dir.glob(testxlsfiles)
   end
 
+  describe "raise an exception" do
+    a = MovieDB::Movie::DEFAULT_TITLE
+    it "xcf" do
+      expect(MovieDB::Movie::DEFAULT_TITLE).to eql "Method Missing 2: Rails Roars!"
+    end
+  end
+
   describe "#new" do
     m = MovieDB::Movie.new
 
