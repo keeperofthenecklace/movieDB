@@ -25,3 +25,4 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+RSpec::Expectations.configuration.warn_about_potential_false_positives = false

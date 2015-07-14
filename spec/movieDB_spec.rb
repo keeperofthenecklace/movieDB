@@ -70,6 +70,32 @@ describe MovieDB do
       m = MovieDB::Movie.get_tmdb_movie_data(imdb_ids)
 
       expect(m[0]['revenue']).to eql  104_931_801
+      expect(m[1]['revenue']).to eql  1_845_034_188
+    end
+  end
+
+  describe "#store_movie_data_to_redis" do
+    imdb_id = ["0369610"]
+
+    MovieDB::Movie.get_imdb_movie_data(imdb_id)
+    MovieDB::Movie.get_tmdb_movie_data(imdb_id)
+    m = MovieDB::Movie.cache_movie_data_to_redis(imdb_id)
+
+    it "returns the title from redis" do
+      expect(m.hget "movie:0369610", "title").to eql "Jurassic World"
+    end
+  end
+
+  describe "#write_imdb_data_to_xls" do
+    imdb_ids = ['0369610', '2395427']
+
+    MovieDB::Movie.get_imdb_movie_data(imdb_ids)
+    MovieDB::Movie.get_tmdb_movie_data(imdb_ids)
+    m = MovieDB::Movie.cache_movie_data_to_redis(imdb_ids)
+
+    it "performs computation and writes to a xls file" do
+      expect(MovieDB::Movie.export_movie_data(m, imdb_ids)).to eql "imdb_JurassicWorld_Avengers:AgeofUltron_.xls"
+      deleteFile
     end
   end
 end
