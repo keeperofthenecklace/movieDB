@@ -7,10 +7,10 @@ describe MovieDB do
     FileUtils.rm Dir.glob(testxlsfiles)
   end
 
-  describe "#new" do
-    m = MovieDB::Movie.new
+  describe ".new" do
+    let(:m) { MovieDB::Movie.new }
 
-    it "creates an object with default attribute values" do
+    it "creates a default movie" do
       expect(m.title).to eql "Method Missing 2: Rails Roars!"
       expect(m.cast_members).to eql (["David Black", "Paola Perotta", "Obie Fernandez", "David Chelimsky"])
       expect(m.cast_members_characters).to eql (["David Black => Developer", "Paola Perotta => Police Officer", "Obie Fernandez =>Hunter", "David Chelimsky =>Hostage"])
@@ -36,8 +36,8 @@ describe MovieDB do
     end
   end
 
-  describe "#find_imdb_id" do
-    it "raises an error if theres no ids" do
+  describe ".find_imdb_id" do
+    it "raises an error if ids are not present" do
       expect { MovieDB::Movie.find_imdb_id() }.to raise_error
     end
 
@@ -47,26 +47,30 @@ describe MovieDB do
     end
   end
 
-  describe "#get_imdb_movie_data" do
+  describe ".get_imdb_movie_data" do
     imdb_ids = ['0369610', '2395427']
     wrong_ids = ['abcd', 'cdef']
 
-    it "returns attributes for a valid IMDb movie" do
-      m = MovieDB::Movie.get_imdb_movie_data(imdb_ids)
+    context "when ids are valid" do
+      it "returns data" do
+        m = MovieDB::Movie.get_imdb_movie_data(imdb_ids)
 
-      expect(m[0].title).to eql("Jurassic World")
-      expect(m[1].title).to eql("Avengers: Age of Ultron")
+        expect(m[0].title).to eql("Jurassic World")
+        expect(m[1].title).to eql("Avengers: Age of Ultron")
+      end
     end
 
-    it "raises an error for wrong IMDb ids" do
-      expect { MovieDB::Movie.get_imdb_movie_data(wrong_ids) }.to raise_error("Wrong IMDb id")
+    context "when ids are invalid" do
+      it "raises an error" do
+        expect { MovieDB::Movie.get_imdb_movie_data(wrong_ids) }.to raise_error("Wrong IMDb id")
+      end
     end
   end
 
-  describe "#get_tmdb_movie_data" do
+  describe ".get_tmdb_movie_data" do
     imdb_ids = ['0078748', '0120338']
 
-    it "fetches revenue data" do
+    it "fetches revenues" do
       m = MovieDB::Movie.get_tmdb_movie_data(imdb_ids)
 
       expect(m[0]['revenue']).to eql  104_931_801
@@ -74,26 +78,26 @@ describe MovieDB do
     end
   end
 
-  describe "#store_movie_data_to_redis" do
+  describe ".store_movie_data_to_redis" do
     imdb_id = ["0369610"]
 
     MovieDB::Movie.get_imdb_movie_data(imdb_id)
     MovieDB::Movie.get_tmdb_movie_data(imdb_id)
     m = MovieDB::Movie.cache_movie_data_to_redis(imdb_id)
 
-    it "fetches the title value from redis" do
+    it "fetches data from redis" do
       expect(m.hget "movie:0369610", "title").to eql "Jurassic World"
     end
   end
 
-  describe "#write_imdb_data_to_xls" do
+  describe ".write_imdb_data_to_xls" do
     imdb_ids = ['0369610', '2395427']
 
     MovieDB::Movie.get_imdb_movie_data(imdb_ids)
     MovieDB::Movie.get_tmdb_movie_data(imdb_ids)
     m = MovieDB::Movie.cache_movie_data_to_redis(imdb_ids)
 
-    it "performs computation and writes to a xls file" do
+    it "writes a xls file" do
       expect(MovieDB::Movie.export_movie_data(m, imdb_ids)).to eql "imdb_JurassicWorld_Avengers:AgeofUltron_.xls"
       deleteFile
     end
