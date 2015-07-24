@@ -19,7 +19,6 @@ describe MovieDB::DataAnalysis do
         xit 'checks imdb size' do
         end
       end
-
     end
   end
 end
