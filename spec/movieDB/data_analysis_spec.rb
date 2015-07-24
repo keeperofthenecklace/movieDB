@@ -19,6 +19,22 @@ describe MovieDB::DataAnalysis do
         xit 'checks imdb size' do
         end
       end
+
+      describe '#perform_computation' do
+        xit 'should calculate the median.' do
+        end
+      end
+
+      describe '#report_name' do
+        xit 'writes the report name to the file.' do
+        end
+      end
+
+      describe '#insert_data_to_existing_xls_file' do
+        xit 'writes the report name to the file.' do
+        end
+      end
+
     end
   end
 end

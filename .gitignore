@@ -20,3 +20,4 @@ readme_first.txt
 test/.DS_Store
 coverage
 *.log
+.idea/

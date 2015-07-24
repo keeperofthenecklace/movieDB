@@ -3,7 +3,8 @@ require 'logger'
 
 module MovieDB
   # Analyzing, inspecting, cleaning, transforming and modeling data.
-  # The stored log files should not exceed 5 MB and will be keep for a day.
+  # The stored log files should not exceed 5 MB.
+  # The stored log files should be stored for 1 day.
   class DataAnalysis < MovieDB::Movie
     module AnalysisOfVariance
       module LeastSquares
@@ -128,7 +129,7 @@ module MovieDB
           end
         end
 
-        # TODO  Add the code and logic.
+        # TODO  Add the base code.
         # CoefficientOfDetermination
         module CoeffOfDeter; end
 
