@@ -128,102 +128,40 @@ module MovieDB
           end
         end
 
-        module CoefficientOfDetermination; end
-        module DiscreteLeastSquaresMeshless; end
-        module ExplainedSumOfSquares; end
-        module FractionOfVarianceUnexplained; end
-        module GaussNewtonAlgorithm; end
-        module IterativelyReweightedLeastSquares; end
-        module LackOfFitSumOfSquares; end
-        module LeastSquaresSupportVectorMachine; end
-        module MeanSquaredError; end
-        module MovingLeastSqares; end
-        module NonLinearIterativePartialLeastSquares; end
-        module NonLinearLeastSquares; end
-        module OrdinaryLeastSquares; end
-        module PartialLeastSquaresRegression; end
-        module PartitionOfSumsOfSquares; end
-        module ProofsInvolvingOrdinaryLeastSquares; end
-        module ResidualSumOfSquares; end
-        module TotalLeastSquares; end
-        module TotalSumOfSquares; end
+        # TODO  Add the code and logic.
+        # CoefficientOfDetermination
+        module CoeffOfDeter; end
+
+        # DiscreteLeastSquaresMeshless
+        module DiscLtSqMsh; end
+
+        # ExplainedSumOfSquares
+        module ExpSumOfSq; end
+
+        # FractionOfVarianceUnexplained
+        module FrOfVarUnexp; end
+
+        # GaussNewtonAlgorithm
+        module GNewtonAlg; end
+
+        # IterativelyReweightedLeastSquares
+        module ItReLstSq; end
+
+        # LackOfFitSumOfSquares
+        module LkOfFitSOfSq; end
       end
-    end
-
-    module EstimationOfDensity
-      module ClusterWeightedModeling; end
-      module DensityEstimation; end
-      module DiscretizationOfContinuousFeatures; end
-      module MeanIntegratedSquaredError; end
-      module MultivariateKernelDensityEstimation; end
-      module VariableKernelDensityEstimation; end
-    end
-
-    # primarily EDA is for seeing what the data can
-    # tell us beyond the formal modeling or hypothesis testing task.
-    # The output will be a visual material.
-    module ExploratoryDataAnalysis
-      module DataReduction; end
-      module TableDiagonalization; end
-      module ConfiguralFrequencyAnalysis; end
-      module MedianPolish; end
-      module StemAndLeafDisplay; end
-    end
-
-
-    module DataMining
-      module AppliedDataMining; end
-      module ClusterAnalysis; end
-      module DimensionReduction; end
-      module AppliedDataMining; end
-    end
-
-    module RegressionAnalysis
-      module ChoiceModelling; end
-
-      module GeneralizedLinearModel
-        module BinomialRegression; end
-        module GeneralizedAdditiveModel; end
-        module LinearProbabilityModel; end
-        module PoissonRegression; end
-        module ZeroInflatedModel; end
-      end
-
-      module NonparametricRegression; end
-      module StatisticalOutliers; end
-      module RegressionAndCurveFittingSoftware; end
-      module RegressionDiagnostics; end
-      module RegressionVariableSelection; end
-      module RegressionWithTimeSeriesStructure; end
-      module RobustRegression; end
-      module ChoiceModeling; end
-    end
-
-    module Resampling
-      module BootstrappingPopulation; end
-    end
-
-    module SensitivityAnalysis
-      module VarianceBasedSensitivityAnalysis; end
-      module ElementaryEffectsMethod; end
-      module ExperimentalUncertaintyAnalysis; end
-      module FourierAmplitudeSensitivityTesting; end
-      module Hyperparameter; end
-    end
-
-    module TimeseriesAnalysis
-      module FrequencyDeviation; end
     end
   end
 
   class ExportData
     def write_spreadsheet(data, data_analysis_name)
       begin data_analysis.is_a? String
+
         @data_analysis_name = data_analysis_name.split.join.gsub('_', ' ').downcase.to_s
         case data_analysis_name
-        when "coefficient of determination"
+        when 'coefficient of determination'
           write_coefficient_of_determination
-        when  "discrete least squares meshless method"
+        when 'discrete least squares meshless method'
           write_discrete_least_squares_meshless_method
         else
           write_discrete_least_squares_meshless_method
