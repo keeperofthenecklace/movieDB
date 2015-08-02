@@ -1,25 +1,26 @@
-require 'MovieDB/dataanalysis'
+require 'MovieDB/data_analysis'
 
 module MovieDB
-  class DataProcess
-    PATHAOV = MovieDB::DataAnalysis::AnalysisOfVariance::LeastSquares
-    extend PATHAOV::Statistic
-    extend PATHAOV::CoefficientOfDetermination
+  module DataProcess
+    STATISTIC = %w(median mean average mode)
 
-    include PATHAOV::ExplainedSumOfSquares
-    include PATHAOV::FractionOfVarianceUnexplained
-    include PATHAOV::GaussNewtonAlgorithm
-    include PATHAOV::IterativelyReweightedLeastSquares
-    include PATHAOV::LackOfFitSumOfSquares
-    include PATHAOV::LeastSquaresSupportVectorMachine
-    include PATHAOV::MeanSquaredError
-    include PATHAOV::NonLinearIterativePartialLeastSquares
-    include PATHAOV::NonLinearLeastSquares
-    include PATHAOV::OrdinaryLeastSquares
-    include PATHAOV::PartialLeastSquaresRegression
-    include PATHAOV::PartitionOfSumsOfSquares
-    include PATHAOV::ResidualSumOfSquares
-    include PATHAOV::TotalLeastSquares
-    include PATHAOV::TotalSumOfSquares
+    def statistic(*args) #:nodoc:
+      # attr_accessor (args)
+
+      @stats = args
+
+      raise NameError, "#{@invalid_statistics} is not supported." unless statistics_exists?
+      calculate_stats
+      write_results_to_json
+    end
+
+    def statistics_exists?
+      @invalid_statistics = []
+
+      @stats.each do |s|
+        (STATISTIC.include? s) ? true : @invalid_statistics << "#{s}"
+      end
+    end
   end
+
 end

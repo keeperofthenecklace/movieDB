@@ -1,4 +1,5 @@
 require 'MovieDB'
+require 'facter'
 require 'logger'
 
 module MovieDB
@@ -8,7 +9,7 @@ module MovieDB
   class DataAnalysis < MovieDB::Movie
     module AnalysisOfVariance
       module LeastSquares
-        module Statistic
+        module Statistic_rename_this
           def basic_statistic(directory_name)
             open_spreadsheet(directory_name)
             @directory_name = directory_name
