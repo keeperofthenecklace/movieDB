@@ -9,6 +9,7 @@ require "MovieDB/data_store"
 require "MovieDB/data_process"
 require "MovieDB/base"
 load "/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb"
+require "MovieDB/relation/print_methods"
 
 
 
@@ -32,6 +33,7 @@ unless defined? MovieDB::Movie
 
       include MovieDB::DataProcess
       include MovieDB::Relation::QueryMethods
+      include MovieDB::Relation::PrintMethods
 
       attr_reader :imdb_id
 
@@ -121,11 +123,9 @@ end
 
 m = MovieDB::Movie.new
 ids = ["0369610", "3079380"]
- m.imdb_id = (ids)
+m.imdb_id = (ids)
 
 # m.select(attr: ["title", "revenue"], ids: ['0120338', '2488496'] )
-m = m.all(ids)
-p m.print_json
+puts m.all(ids)
+# puts m.xml
 
-# p m.statistic()
-# # p m.imdb_id

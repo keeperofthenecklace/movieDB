@@ -1,10 +1,12 @@
 require 'redis'
 require 'json'
+require "MovieDB/support/print"
 
 # Movie data fetched from IMDb is stored as a hash data type in redis.
 # The key and values are written into a spreadsheet for later data analysis.
 module MovieDB
   module DataStore
+    include MovieDB::Support
 
     # Create a redis instance.
     def self.initialize_redis
@@ -44,28 +46,19 @@ module MovieDB
 
       case method
       when :all
-        @data = @redis_db.hgetall("movie:#{id}")
+        $data = @redis_db.hgetall("movie:#{id}")
       when :select
-        @data = eval(@db_redis.hget "movie:#{imdb_id}", "#{attr_key}")
+        $data = eval(@db_redis.hget "movie:#{imdb_id}", "#{attr_key}")
       else
         raise ArgumentError, "The method #{method} is invalid."
       end
 
-       print_document(print: 'hash')
+       send_to_print unless $data.nil?
     end
 
-    def self.print_document(**options)
-      @data.each do |d|
-         d.each do |e|
-           next if e.length <= 20
-
-           return JSON.pretty_generate(eval(e)) if options[:print] == 'pretty_json'
-           return JSON.generate(eval(e)) if options[:print] == 'json'
-           return eval(e) if options[:print] == 'hash'
-         end
-      end
+    def self.send_to_print
+      MovieDB::Support::Print.print_document($data, print: 'hash')
     end
-
 
       private
 

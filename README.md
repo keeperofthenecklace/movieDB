@@ -49,25 +49,35 @@ Or install it yourself as:
 ## Usage - Fetch movie data.
    There are several ways to fetch movie data.
 
-    # Fetch using a string in an array.
+    # Fetch using a string objects in an array.
     m.imdb_id = ["0369610", "3079380"]
 
-    # Fetch using numeric in an array.
+    # Fetch using numeric objects in an array.
     m.imdb_id = [0369610, 3079380]
 
-    # Fetch using sequence strings.
+    # Fetch using sequenced string objects.
     m.imdb_id = "0369610", 3079380
 
-## Print - Outputting a hash movie data.
+## Print - Outputting a Hash movie data.
     By default When you fetch the movie data, movieDB
-    outputs the results as a Hash.
+    prints the results to screen as Hash.
 
-    #
+    {"adult"=>false, "backdrop_path"=>"/dkMD5qlogeRMiEixC4YNPUvax2T.jpg",
+    "belongs_to_collection"=>{"id"=>328,
+    "name"=>"Jurassic Park Collection",
+    "poster_path"=>"/jcUXVtJ6s0NG0EaxllQCAUtqdr0.jpg",
+    "backdrop_path"=>"/pJjIH9QN0OkHFV9eue6XfRVnPkr.jpg"},
+    ...
 
 ## Print - Outputting a JSON movie data.
-    # You can request a JSON with the following command.
+    # You can have movieDB print out your results
+     to screen as JSON.
 
-      m.imdb_id.to_json
+        m = MovieDB::Movie.new
+
+        m.imdb_id = ["0369610", "3079380"]
+
+        m.json
 
     {
       "adult": false,
@@ -80,6 +90,16 @@ Or install it yourself as:
       },
       "budget": 150000000,
       ...
+
+## Print - Outputting an XML movie data.
+    # You can have movieDB print out your results
+     to screen as XML.
+
+        m = MovieDB::Movie.new
+
+        m.imdb_id = ["0369610", "3079380"]
+
+        m.xml
 
 ## Usage - Add, delete Movie IMDb ids
     You can add and delete IMDb ids
