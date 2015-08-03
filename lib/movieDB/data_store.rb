@@ -21,14 +21,14 @@ module MovieDB
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
         options.each_pair do |k, v|
-          @redis_db.hsetnx "movie:#{options[:id]}", k, v
+          @redis_db.hsetnx "#{options[:id]}", k, v
         end
       else
         puts "I am not a hash"
         options[:imdb_tmdb].title
       end
 
-      @redis_db.expire "movie:#{options[:id]}", 1800
+      @redis_db.expire "#{options[:id]}", 1800
     end
 
     # You can fetch one data at at a time.
@@ -40,15 +40,21 @@ module MovieDB
     # Not accepted:
     # get_data(['0369610', 3079380])
     # An ArgumentError will be raised.
-    def self.get_data(method, id)
+    def self.get_data(method, id = nil)
       initialize_redis
-      return unless check_if_movie_is_present(id)
+      # return unless check_if_movie_is_present(id)
 
       case method
-      when :all
-        $data = @redis_db.hgetall("movie:#{id}")
+      when :all_ids
+        $data = @redis_db.hgetall("#{id}")
+        when :all
+          @redis_db.keys.each do |id|
+            $data = @redis_db.hgetall("#{id}")
+          end
       when :select
-        $data = eval(@db_redis.hget "movie:#{imdb_id}", "#{attr_key}")
+        $data = @redis_db.hget "#{id}", "#{attr_key}"
+        when :keys
+        return @redis_db.keys
       else
         raise ArgumentError, "The method #{method} is invalid."
       end
@@ -63,7 +69,7 @@ module MovieDB
       private
 
         def self.check_if_movie_is_present(id)
-          @redis_db.hgetall(movie:"#{id}").empty?
+          @redis_db.hgetall("#{id}").empty?
         end
   end
 end

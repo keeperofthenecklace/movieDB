@@ -101,8 +101,13 @@ Or install it yourself as:
 
         m.xml
 
-## Usage - Add, delete Movie IMDb ids
-    You can add and delete IMDb ids
+## Edit - You can add or delete IMDb ids in your redis database.
+
+        m = MovieDB::Movie.new
+
+        m.imdb_id #=>
+
+        m.imdb_id = ["0369610", "3079380"]
 
     m.unshift('089000')
     m.push('454562')

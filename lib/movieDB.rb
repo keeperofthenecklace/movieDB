@@ -8,8 +8,9 @@ require "MovieDB/secret"
 require "MovieDB/data_store"
 require "MovieDB/data_process"
 require "MovieDB/base"
-load "/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb"
+# load "/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb"
 require "MovieDB/relation/print_methods"
+require "MovieDB/relation/query_methods"
 
 
 
@@ -34,8 +35,6 @@ unless defined? MovieDB::Movie
       include MovieDB::DataProcess
       include MovieDB::Relation::QueryMethods
       include MovieDB::Relation::PrintMethods
-
-      attr_reader :imdb_id
 
       # You can fetch IMDb movie data like this:
       #   ids = ["2024544", "1800241"]
@@ -67,16 +66,20 @@ unless defined? MovieDB::Movie
         find_movie
       end
 
+      def imdb_id
+        movie = MovieDB::Movie.new
+        movie.find(:keys)
+      end
+
       # Check redis to see if movie exists?
       # If movie hasn't been cached, then fetch
       # from IMDb and TMDb.
       # Store data to redis.
       def find_movie
         movie = MovieDB::Movie.new
-        movie = movie.all(@imdb_ids)
+        movie = movie.find_movie_by(:all_ids, @imdb_ids)
 
-       movie.all?(&:empty?) ? imdb_tmdb_lookup : movie
-
+        movie.nil? ? imdb_tmdb_lookup : movie
       end
 
       def imdb_tmdb_lookup # :nodoc:
@@ -85,6 +88,7 @@ unless defined? MovieDB::Movie
           query_tmdb(imdb_id)
         end
       end
+
 
       # Fetch the movie from both IMDb and TMDb repositories.
       #
@@ -123,9 +127,10 @@ end
 
 m = MovieDB::Movie.new
 ids = ["0369610", "3079380"]
-m.imdb_id = (ids)
-
+# m.imdb_id = ids
+# m.imdb_id
+m.all
+# puts m.keys
 # m.select(attr: ["title", "revenue"], ids: ['0120338', '2488496'] )
-puts m.all(ids)
-# puts m.xml
+m.pretty_json
 

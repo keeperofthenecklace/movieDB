@@ -5,12 +5,29 @@ module MovieDB
   module Relation
     module QueryMethods
 
+      def find(method)
+        fetch_data(method)
+      end
       # This will build and fetch all objects from redis
       # database, converting them into JSON.
-      def all(*ids)
-        check_argument(:all, ids)
+
+      def find_movie_by(method, *ids)
+        check_argument(method, ids)
         check_rate_limit(ids)
-        fetch_data(:all, ids)
+        fetch_data(method, ids)
+      end
+
+      def select(attr:, ids:)
+        check_argument(:select, attr, ids)
+        fetch_data(:select, attr, ids)
+      end
+
+      def all
+        find(:all)
+      end
+
+      def keys
+        find(:keys)
       end
 
       # IMDb current limits are 40 requests every 10
@@ -25,17 +42,14 @@ module MovieDB
         end
       end
 
-      def select(attr:, ids:)
-        check_argument(:select, attr, ids)
-        fetch_data(:select, attr, ids)
-      end
-
-      def fetch_data(method, ids)
-        ary = []
-        ids.flatten!.each do |id|
-         ary <<  MovieDB::DataStore.get_data(method, id)
+      def fetch_data(method, ids = nil)
+        if ids.nil?
+          return MovieDB::DataStore.get_data(method)
+        else
+          ids.flatten!.each do |id|
+            return MovieDB::DataStore.get_data(method, id)
+          end
         end
-        ary
       end
 
       private
