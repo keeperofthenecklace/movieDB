@@ -47,7 +47,7 @@ module MovieDB
       case method
       when :all_ids
         $data = @redis_db.hgetall("#{id}")
-        when :all
+      when :all
           @redis_db.keys.each do |id|
             $data = @redis_db.hgetall("#{id}")
           end

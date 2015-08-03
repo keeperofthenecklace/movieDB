@@ -61,7 +61,7 @@ unless defined? MovieDB::Movie
           @imdb_ids = arr
         end
 
-        raise ArgumentError, 'Please provide 2 or more IMDd ids.' if @imdb_ids.length <= 1
+        # raise ArgumentError, 'Please provide 2 or more IMDd ids.' if @imdb_ids.length <= 1
 
         find_movie
       end
@@ -79,7 +79,7 @@ unless defined? MovieDB::Movie
         movie = MovieDB::Movie.new
         movie = movie.find_movie_by(:all_ids, @imdb_ids)
 
-        movie.nil? ? imdb_tmdb_lookup : movie
+        (movie.nil? || movie.all?(&:empty?)) ? imdb_tmdb_lookup : movie
       end
 
       def imdb_tmdb_lookup # :nodoc:
@@ -126,11 +126,13 @@ unless defined? MovieDB::Movie
 end
 
 m = MovieDB::Movie.new
-ids = ["0369610", "3079380"]
-# m.imdb_id = ids
-# m.imdb_id
+ids = [ "4178092",  "3079380", "0369610"]
+m.imdb_id = ids
+# # m.imdb_id
+# m.imdb_id = "4178092"
 m.all
-# puts m.keys
+# p m.keys
+# p m.json
 # m.select(attr: ["title", "revenue"], ids: ['0120338', '2488496'] )
 m.pretty_json
 
