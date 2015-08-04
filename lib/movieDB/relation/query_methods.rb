@@ -30,9 +30,16 @@ module MovieDB
         return MovieDB::DataStore.write_data(imdb_tmdb: record, id: id)
       end
 
+      def all_ids
+        p MovieDB::DataStore.get_data(:scan).flatten.delete_if{ |n| n == "0" }
+      end
+
+      def delete_all
+        return MovieDB::DataStore.get_data(:flushall)
+      end
+
       def imdb_tmdb_lookup(id) # :nodoc:
         query_tmdb(id)
-        # query_imdb(id)
       end
 
       # Fetch the movie from both IMDb and TMDb repositories.
@@ -54,27 +61,6 @@ module MovieDB
       def query_tmdb(imdb_id) # :nodoc:
         Tmdb::Api.key(Movie.key)
         @tmdb_record = Tmdb::Movie.detail("tt#{imdb_id}")
-      end
-
-      # This will build and fetch all objects from redis
-      # database, converting them into JSON.
-      def find_movie_by(method, ids)
-        check_argument(method, ids)
-        check_rate_limit(ids)
-        fetch_data(method, ids)
-      end
-
-      def all
-        ids = find(:all)
-        find_movie_by(:all_ids, ids)
-      end
-
-      def keys
-        find(:keys)
-      end
-
-      def values
-        find(:values)
       end
 
       def fetch_data(method, ids = nil)

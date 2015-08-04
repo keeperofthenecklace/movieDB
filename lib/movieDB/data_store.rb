@@ -20,7 +20,6 @@ module MovieDB
     # We get that info from TMDb.
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
-        puts "I am a hash"
         options.each_pair do |k, v|
           @redis_db.hset "#{options[:id]}", k, v
         end
@@ -43,17 +42,16 @@ module MovieDB
     # An ArgumentError will be raised.
     def self.get_data(method, id = nil)
       initialize_redis
-      # return unless check_if_movie_is_present(id)
 
       case method
         when :all
           return @redis_db.hgetall "#{id}"
-        when :select
-          $data = @redis_db.hget "#{id}", "#{attr_key}"
         when :keys
           return @redis_db.keys
-        when :values
-          return @redis_db.hvals()
+        when :scan
+          return @redis_db.scan 0
+        when :flushall
+          @redis_db.flushall
       else
         raise ArgumentError, "The method #{method} is invalid."
       end
@@ -64,12 +62,6 @@ module MovieDB
     def self.send_to_print
       MovieDB::Support::Print.print_document($data, print: 'hash')
     end
-
-      private
-
-        def self.check_if_movie_is_present(id)
-          @redis_db.hgetall("#{id}").empty?
-        end
   end
 end
 
