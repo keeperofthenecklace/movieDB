@@ -24,39 +24,78 @@ Redis Installation
   This tutorial doesn't cover redis installation.
   You will find that information at: http://redis.io/topics/quickstart
 
+
+movieDB is available through [Rubygems](http://rubygems.org/gems/movieDB) and can be installed via:
+
 Add this line to your application's Gemfile:
 
-    gem 'movieDB'
+``` ruby
+gem 'movieDB'
+```
 
 And then execute:
 
-    bundle install
+``` ruby
+$ bundle install
+```
 
 Or install it yourself as:
 
-    gem install movieDB
+``` ruby
+gem install movieDB
+```
 
-## Require - loading the libraries
+## Console - loading the libraries
 
-    irb
+``` bash
+$ irb
+```
 
-    require 'movieDB'
+# Require the gem
 
-## Usage - Initialize movieDB
+```ruby
+require 'movieDB'
+```
 
-   m = MovieDB::Movie.new
+## Usage - Add movie data.
 
-## Usage - Fetch movie data.
-   There are several ways to fetch movie data.
+There are several ways to add movie data.
+Initial redis.
 
-    # Fetch using a string objects in an array.
-    m.imdb_id = ["0369610", "3079380"]
+``` ruby
+m = MovieDB::Movie.new
+```
+Add using a string objects in an array.
+``` ruby
+m.imdb_id = ["0369610", "3079380"]
+```
 
-    # Fetch using numeric objects in an array.
-    m.imdb_id = [0369610, 3079380]
+Add using numeric objects in an array.
+``` ruby
+m.imdb_id = [0369610, 3079380]
+```
 
-    # Fetch using sequenced string objects.
-    m.imdb_id = "0369610", 3079380
+Add using mixed values.
+``` ruby
+m.imdb_id = "0369610", 3079380
+```
+
+## Usage - Query data
+Fetch all imdb ids in your redis database
+
+``` ruby
+m = MovieDB::Movie.new
+
+m.all_ids
+# => ["0369610", "3079380"]
+```
+
+Delete all imdb ids in your redis database
+
+``` ruby
+m.delete_all
+# => []
+```
 
 ## Print - Outputting a Hash movie data.
     By default When you fetch the movie data, movieDB
@@ -100,18 +139,6 @@ Or install it yourself as:
         m.imdb_id = ["0369610", "3079380"]
 
         m.xml
-
-## Edit - You can add or delete IMDb ids in your redis database.
-
-        m = MovieDB::Movie.new
-
-        m.imdb_id #=>
-
-        m.imdb_id = ["0369610", "3079380"]
-
-    m.unshift('089000')
-    m.push('454562')
-    m.delete_at(1)
 
   /* YOU CAN ADD AS MANY IMDB IDs AS YOU LIKE. BUT DO NOT EXCEED THE MAXIMUM REQUEST RATE. */
 ## Basic functions and Data Analysis:
