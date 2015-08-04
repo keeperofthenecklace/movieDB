@@ -11,7 +11,7 @@ module MovieDB
           d.each do |e|
             next if e.length <= 20
               JSON.pretty_generate(eval(e)) if options[:print] == 'pretty_json'
-              JSON.generate(eval(e)) if options[:print] == 'json'
+            puts  JSON.generate(eval(e)) if options[:print] == 'json'
             puts  eval(e) if options[:print] == 'hash'
           end
         end

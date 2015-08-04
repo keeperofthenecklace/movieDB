@@ -99,29 +99,25 @@ m.delete_all
 # => []
 ```
 
-Get imdb record
+## Printing document.
 
 ``` ruby
 m.get("0133093")
-
-{"adult"=>false, "backdrop_path"=>"/7u3pxc0K1wx32IleAkLv78MKgrw.jpg", "belongs_to_collection"=>{"id"=>2344, "name"=>"The Matrix Collection", "poster_path"=>"/lh4aGpd3U9rm9B8Oqr6CUgQLtZL.jpg", "backdrop_path"=>"/bRm2DEgUiYciDw3myHuYFInD7la.jpg"}, "budget"=>63000000, "genres"=>[{"id"=>12, "name"=>"Adventure"}, {"id"=>28, "name"=>"Action"}, {"id"=>53, "name"=>"Thriller"}, {"id"=>878, "name"=>"Science Fiction"}], "homepage"=>"http://www.warnerbros
-
 ```
-
-## Printing document.
 
 By default when you fetch the movie data, movieDB
 prints the results to screen as Hash.
 
 ``` ruby
-    {"adult"=>false, "backdrop_path"=>"/dkMD5qlogeRMiEixC4YNPUvax2T.jpg",
-    "belongs_to_collection"=>{"id"=>328,
-    "name"=>"Jurassic Park Collection",
-    "poster_path"=>"/jcUXVtJ6s0NG0EaxllQCAUtqdr0.jpg",
-    "backdrop_path"=>"/pJjIH9QN0OkHFV9eue6XfRVnPkr.jpg"},
-    ...
+{"adult"=>false, "backdrop_path"=>"/7u3pxc0K1wx32IleAkLv78MKgrw.jpg",
+"belongs_to_collection"=>{"id"=>2344, "name"=>"The Matrix Collection",
+"poster_path"=>"/lh4aGpd3U9rm9B8Oqr6CUgQLtZL.jpg",
+"backdrop_path"=>"/bRm2DEgUiYciDw3myHuYFInD7la.jpg"},
+"budget"=>63000000, "genres"=>[{"id"=>12, "name"=>"Adventure"},
+{"id"=>28, "name"=>"Action"}, {"id"=>53, "name"=>"Thriller"},
+{"id"=>878, "name"=>"Science Fiction"}],
+"homepage"=>"http://www.warnerbros ...
 ```
-
 You can have movieDB print out your results to screen as JSON.
 
 ``` ruby

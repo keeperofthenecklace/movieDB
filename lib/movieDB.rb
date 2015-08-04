@@ -71,6 +71,7 @@ m.imdb_id = ids
 # m.delete_all
 # m.all_ids
 m.get("0133093")
+# m.json
 # m.keys
 # m.pretty_json
 # m.select(attr: ["title", "revenue"], ids: ['0120338', '2488496'] )
