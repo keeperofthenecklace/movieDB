@@ -20,12 +20,13 @@ module MovieDB
     # We get that info from TMDb.
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
+        puts "I am a hash"
         options.each_pair do |k, v|
-          @redis_db.hsetnx "#{options[:id]}", k, v
+          @redis_db.hset "#{options[:id]}", k, v
         end
       else
         puts "I am not a hash"
-        options[:imdb_tmdb].title
+        options[:imdb_tmdb]
       end
 
       @redis_db.expire "#{options[:id]}", 1800
@@ -45,21 +46,19 @@ module MovieDB
       # return unless check_if_movie_is_present(id)
 
       case method
-      when :all_ids
-        $data = @redis_db.hgetall("#{id}")
-      when :all
-          @redis_db.keys.each do |id|
-            $data = @redis_db.hgetall("#{id}")
-          end
-      when :select
-        $data = @redis_db.hget "#{id}", "#{attr_key}"
+        when :all
+          return @redis_db.hgetall "#{id}"
+        when :select
+          $data = @redis_db.hget "#{id}", "#{attr_key}"
         when :keys
-        return @redis_db.keys
+          return @redis_db.keys
+        when :values
+          return @redis_db.hvals()
       else
         raise ArgumentError, "The method #{method} is invalid."
       end
 
-       send_to_print unless $data.nil?
+      send_to_print unless $data.nil?
     end
 
     def self.send_to_print

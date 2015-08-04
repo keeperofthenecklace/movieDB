@@ -1,62 +1,110 @@
 require "MovieDB/data_store"
 require "MovieDB/support/reporting"
+require "imdb"
+require "themoviedb"
+require "MovieDB/secret"
 
 module MovieDB
   module Relation
     module QueryMethods
 
-      def find(method)
-        fetch_data(method)
+      def store_data(ids)
+        check_rate_limit(ids)
+
+        ids.each do |id|
+          imdb_tmdb_lookup(id) unless movie_exists?(id)
+          mset(@tmdb_record, id) unless movie_exists?(id)
+          mset(@imdb_record, id) unless movie_exists?(id)
+        end
       end
+
+      def movie_exists?(id)
+        !mgetall(id).empty?
+      end
+
+      def mgetall(id)
+        return MovieDB::DataStore.get_data(:all, id)
+      end
+
+      def mset(record, id)
+        return MovieDB::DataStore.write_data(imdb_tmdb: record, id: id)
+      end
+
+      def imdb_tmdb_lookup(id) # :nodoc:
+        query_tmdb(id)
+        # query_imdb(id)
+      end
+
+      # Fetch the movie from both IMDb and TMDb repositories.
+      #
+      # Future release of this software will scrap IMDb data from boxofficemojoAPI.com
+      # using Mechanize gem.
+      #
+      # Reference https://github.com/skozilla/BoxOfficeMojo/tree/master/boxofficemojoAPI
+      # for the api.
+      def query_imdb(imdb_id)
+        # Query IMDb
+        imdb = Imdb::Movie.new(imdb_id)
+
+        raise NameError, "#{imdb_id} is an invalid IMDb id." if imdb.title.nil?
+
+        @imdb_record = imdb
+      end
+
+      def query_tmdb(imdb_id) # :nodoc:
+        Tmdb::Api.key(Movie.key)
+        @tmdb_record = Tmdb::Movie.detail("tt#{imdb_id}")
+      end
+
       # This will build and fetch all objects from redis
       # database, converting them into JSON.
-
-      def find_movie_by(method, *ids)
+      def find_movie_by(method, ids)
         check_argument(method, ids)
         check_rate_limit(ids)
         fetch_data(method, ids)
       end
 
-      def select(attr:, ids:)
-        check_argument(:select, attr, ids)
-        fetch_data(:select, attr, ids)
-      end
-
       def all
-        find(:all)
+        ids = find(:all)
+        find_movie_by(:all_ids, ids)
       end
 
       def keys
         find(:keys)
       end
 
-      # IMDb current limits are 40 requests every 10
-      # seconds and are limited by IP address, not API key.
-      def check_rate_limit(ids)
-        if ids.length >= 40
-          MovieDB::Support::Reporting.warn(<<-MSG.strip!)
-          Reduce the amount of IMDb ids. \nYou have exceeded the rate limit.
-          MSG
-        else
-          MovieDB::Support::Reporting.silenced
-        end
+      def values
+        find(:values)
       end
 
       def fetch_data(method, ids = nil)
+
         if ids.nil?
-          return MovieDB::DataStore.get_data(method)
+            MovieDB::DataStore.get_data(method)
         else
-          ids.flatten!.each do |id|
-            return MovieDB::DataStore.get_data(method, id)
+          ids.each do |id|
+            MovieDB::DataStore.get_data(method, id)
           end
         end
       end
 
       private
 
-        def check_argument(method, *args) # :nodoc:
-          if args.flatten!.empty?
+        def check_argument(method, ids) # :nodoc:
+          if ids.flatten!.empty?
             raise ArgumentError, "The method #{method}() must contain arguments."
+          end
+        end
+
+        # IMDb current limits are 40 requests every 10
+        # seconds and are limited by IP address, not API key.
+        def check_rate_limit(ids)
+          if ids.length >= 40
+            MovieDB::Support::Reporting.warn(<<-MSG.strip!)
+            Reduce the amount of IMDb ids. \nYou have exceeded the rate limit.
+            MSG
+          else
+            MovieDB::Support::Reporting.silenced
           end
         end
     end
