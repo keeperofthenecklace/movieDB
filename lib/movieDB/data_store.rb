@@ -52,6 +52,8 @@ module MovieDB
           return @redis_db.scan 0
         when :flushall
           @redis_db.flushall
+        when :get
+          $data = @redis_db.hgetall("#{id}")
       else
         raise ArgumentError, "The method #{method} is invalid."
       end

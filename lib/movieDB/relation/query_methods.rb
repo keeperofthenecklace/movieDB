@@ -18,6 +18,12 @@ module MovieDB
         end
       end
 
+      def get(*ids)
+        ids.each do |id|
+          return MovieDB::DataStore.get_data(:get, id)
+        end
+      end
+
       def movie_exists?(id)
         !mgetall(id).empty?
       end

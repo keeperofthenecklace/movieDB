@@ -61,7 +61,7 @@ require 'movieDB'
 
 ## Usage - Add movie data.
 
-There are several ways to add movie data.
+There are several ways to fetch movie data from IMDb.
 Initial redis.
 
 ``` ruby
@@ -97,6 +97,15 @@ Delete all imdb ids in your redis database
 ``` ruby
 m.delete_all
 # => []
+```
+
+Get imdb record
+
+``` ruby
+m.get("0133093")
+
+{"adult"=>false, "backdrop_path"=>"/7u3pxc0K1wx32IleAkLv78MKgrw.jpg", "belongs_to_collection"=>{"id"=>2344, "name"=>"The Matrix Collection", "poster_path"=>"/lh4aGpd3U9rm9B8Oqr6CUgQLtZL.jpg", "backdrop_path"=>"/bRm2DEgUiYciDw3myHuYFInD7la.jpg"}, "budget"=>63000000, "genres"=>[{"id"=>12, "name"=>"Adventure"}, {"id"=>28, "name"=>"Action"}, {"id"=>53, "name"=>"Thriller"}, {"id"=>878, "name"=>"Science Fiction"}], "homepage"=>"http://www.warnerbros
+
 ```
 
 ## Printing document.
