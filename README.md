@@ -1,13 +1,14 @@
-## MovieDB
+# MovieDB
 
  MovieDB is a multi-threaded ruby wrapper for fetching raw Movie or TV Data from IMDb and performing a variety of high-level statistics.
  The objective and usage of this tool is to allow media producers to collect raw film data to make logical business decisions.
 
- SciRuby is the tool used for all statistical and scientific computations.
- Redis is used to store all data with an expiration time of 1800 seconds for all cached objects.
- IMDb is where we collect a chunk of the film data.
- TMDb is where we collect the film revenues.
- BoxOfficeMojo is where we will be scraping future film data.
+## Technology
+* SciRuby is the tool used for all statistical and scientific computations.
+* Redis is used to store all data with an expiration time of 1800 seconds for all cached objects.
+* IMDb is where we collect a chunk of the film data.
+* TMDb is where we collect the film revenues.
+* BoxOfficeMojo is where we will be scraping future film data.
 
   - [![PullReview stats](https://www.pullreview.com/github/keeperofthenecklace/movieDB/badges/master.svg?)](https://www.pullreview.com/github/keeperofthenecklace/movieDB/reviews/master)
   - [![Dependency Status](https://gemnasium.com/keeperofthenecklace/movieDB.svg)](https://gemnasium.com/keeperofthenecklace/movieDB)
@@ -51,7 +52,7 @@ gem install movieDB
 $ irb
 ```
 
-# Require the gem
+## Require the gem
 
 ```ruby
 require 'movieDB'
@@ -97,27 +98,28 @@ m.delete_all
 # => []
 ```
 
-## Print - Outputting a Hash movie data.
-    By default When you fetch the movie data, movieDB
-    prints the results to screen as Hash.
+## Printing document.
 
+By default When you fetch the movie data, movieDB
+prints the results to screen as Hash.
+
+``` ruby
     {"adult"=>false, "backdrop_path"=>"/dkMD5qlogeRMiEixC4YNPUvax2T.jpg",
     "belongs_to_collection"=>{"id"=>328,
     "name"=>"Jurassic Park Collection",
     "poster_path"=>"/jcUXVtJ6s0NG0EaxllQCAUtqdr0.jpg",
     "backdrop_path"=>"/pJjIH9QN0OkHFV9eue6XfRVnPkr.jpg"},
     ...
+```
 
-## Print - Outputting a JSON movie data.
-    # You can have movieDB print out your results
-     to screen as JSON.
+You can have movieDB print out your results to screen as JSON.
 
-        m = MovieDB::Movie.new
+``` ruby
+m.find = ["0369610"]
 
-        m.imdb_id = ["0369610", "3079380"]
+m.json
 
-        m.json
-
+```
     {
       "adult": false,
       "backdrop_path": "/dkMD5qlogeRMiEixC4YNPUvax2T.jpg",
