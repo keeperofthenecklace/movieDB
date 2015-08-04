@@ -3,13 +3,7 @@
  MovieDB is a multi-threaded ruby wrapper for fetching raw Movie or TV Data from IMDb and performing a variety of high-level statistics.
  The objective and usage of this tool is to allow media producers to collect raw film data to make logical business decisions.
 
-## Technology
-* SciRuby is the tool used for all statistical and scientific computations.
-* Redis is used to store all data with an expiration time of 1800 seconds for all cached objects.
-* IMDb is where we collect a chunk of the film data.
-* TMDb is where we collect the film revenues.
-* BoxOfficeMojo is where we will be scraping future film data.
-
+## Badges
   - [![PullReview stats](https://www.pullreview.com/github/keeperofthenecklace/movieDB/badges/master.svg?)](https://www.pullreview.com/github/keeperofthenecklace/movieDB/reviews/master)
   - [![Dependency Status](https://gemnasium.com/keeperofthenecklace/movieDB.svg)](https://gemnasium.com/keeperofthenecklace/movieDB)
   - [![Join the chat at https://gitter.im/keeperofthenecklace/movieDB](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/keeperofthenecklace/movieDB?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -17,6 +11,13 @@
   - [![Code Climate](https://codeclimate.com/github/keeperofthenecklace/movieDB.png)](https://codeclimate.com/github/keeperofthenecklace/movieDB)
   - [![Gem Version](https://badge.fury.io/rb/movieDB.png)](http://badge.fury.io/rb/movieDB)
   - [![Build Status](https://secure.travis-ci.org/keeperofthenecklace/movieDB.png?branch=master)](http://travis-ci.org/keeperofthenecklace/movieDB)
+
+## Technology
+* SciRuby is the tool used for all statistical and scientific computations.
+* Redis is used to store all data with an expiration time of 1800 seconds for all cached objects.
+* IMDb is where we collect a chunk of the film data.
+* TMDb is where we collect the film revenues.
+* BoxOfficeMojo is where we will be scraping future film data.
 
 ## Installation
 
@@ -100,7 +101,7 @@ m.delete_all
 
 ## Printing document.
 
-By default When you fetch the movie data, movieDB
+By default when you fetch the movie data, movieDB
 prints the results to screen as Hash.
 
 ``` ruby
