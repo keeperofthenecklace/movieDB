@@ -21,9 +21,9 @@ module MovieDB
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
         options.each_pair do |k, v|
-          @redis_db.hset "#{options[:id]}", k, v
+          return true if @redis_db.hset "#{options[:id]}", k, v
         end
-      else
+      else[]
         puts "I am not a hash"
         options[:imdb_tmdb]
       end

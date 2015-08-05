@@ -8,8 +8,6 @@ require "MovieDB/base"
 require "MovieDB/relation/print_methods"
 require "MovieDB/relation/query_methods"
 
-
-
 unless defined? MovieDB::Movie
   module MovieDB
 
@@ -64,14 +62,3 @@ unless defined? MovieDB::Movie
     end
   end
 end
-
-m = MovieDB::Movie.new
-ids = [ "3079380", "0369610", "0133093"]
-m.imdb_id = ids
-# m.delete_all
-# m.all_ids
-m.get("0133093")
-# m.json
-# m.keys
-# m.pretty_json
-# m.select(attr: ["title", "revenue"], ids: ['0120338', '2488496'] )

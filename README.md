@@ -1,7 +1,7 @@
 # MovieDB
 
  MovieDB is a multi-threaded ruby wrapper for fetching raw Movie or TV Data from IMDb and performing a variety of high-level statistics.
- The objective and usage of this tool is to allow media producers to collect raw film data to make logical business decisions.
+ The objective and usage of this tool is to allow media producers to collect raw IMDb data to make logical business decisions.
 
 ## Badges
   - [![PullReview stats](https://www.pullreview.com/github/keeperofthenecklace/movieDB/badges/master.svg?)](https://www.pullreview.com/github/keeperofthenecklace/movieDB/reviews/master)
@@ -18,6 +18,13 @@
 * IMDb is where we collect a chunk of the film data.
 * TMDb is where we collect the film revenues.
 * BoxOfficeMojo is where we will be scraping future film data.
+
+## Category
+movieDB is broken down into 3 components. They are as follows:
+
+* Statistics
+* Visualizations
+* DataFrames and Vectors
 
 ## Installation
 
@@ -58,15 +65,23 @@ $ irb
 ```ruby
 require 'movieDB'
 ```
+## General Steps
+movieDB requires only 2 parts to performing and calculating statistics.
 
-## Usage - Add movie data.
+First you fetch the data from IMDb.
+
+Then, you run the statistics you want.
+
+It is that simple!
+
+## Part 1 - Fetch Data
 
 There are several ways to fetch movie data from IMDb.
-Initial redis.
 
 ``` ruby
 m = MovieDB::Movie.new
 ```
+
 Add using a string objects in an array.
 ``` ruby
 m.imdb_id = ["0369610", "3079380"]
@@ -82,8 +97,13 @@ Add using mixed values.
 m.imdb_id = "0369610", 3079380
 ```
 
+## Part 2 - Run statistics.
+
+    a.) Data Analysis: Basic data manipulation and plotting
+
+
 ## Usage - Query data
-Fetch all imdb ids in your redis database
+Find all imdb ids in your redis database
 
 ``` ruby
 m = MovieDB::Movie.new

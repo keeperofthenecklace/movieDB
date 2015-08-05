@@ -10,16 +10,6 @@ module MovieDB
     module AnalysisOfVariance
       module LeastSquares
         module Statistic_rename_this
-          def basic_statistic(directory_name)
-
-
-            if check_imdb_count == true
-              Logger.new('movieDB.log', 5 * 1024 * 1024, 'daily').error "Error. A minimum of 2 Imdb id's are required."
-            else
-              perform_computation
-              insert_data_to_existing_xls_file
-            end
-          end
 
           # Consider refactoring this Complex method.
           #

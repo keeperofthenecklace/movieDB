@@ -10,9 +10,9 @@ module MovieDB
         data.each do |d|
           d.each do |e|
             next if e.length <= 20
-              JSON.pretty_generate(eval(e)) if options[:print] == 'pretty_json'
-            puts  JSON.generate(eval(e)) if options[:print] == 'json'
-            puts  eval(e) if options[:print] == 'hash'
+            puts JSON.pretty_generate(eval(e)) if options[:print] == 'pretty_json'
+            puts JSON.generate(eval(e)) if options[:print] == 'json'
+            puts eval(e) if options[:print] == 'hash'
           end
         end
 
