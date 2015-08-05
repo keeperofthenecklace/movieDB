@@ -1,12 +1,20 @@
 require 'redis'
 require 'json'
+require 'imdb'
+
 require "MovieDB/support/print"
+
+
 
 # Movie data fetched from IMDb is stored as a hash data type in redis.
 # The key and values are written into a spreadsheet for later data analysis.
 module MovieDB
   module DataStore
     include MovieDB::Support
+
+    IMDB_METHODS = [:title, :also_known_as, :cast_members, :cast_characters, :cast_members_characters,
+                    :director, :writers, :trailer_url, :genres, :languages, :countries, :length, :company, :plot, :plot_synopsis,
+                    :plot_summary, :poster, :rating, :votes, :tagline, :mpaa_rating, :year, :release_date, :filming_locations]
 
     # Create a redis instance.
     def self.initialize_redis
@@ -21,11 +29,12 @@ module MovieDB
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
         options.each_pair do |k, v|
-          return true if @redis_db.hset "#{options[:id]}", k, v
+          # @redis_db.hsetnx "#{options[:id]}", k, v
         end
-      else[]
-        puts "I am not a hash"
-        options[:imdb_tmdb]
+      else
+        MovieDB::DataStore::IMDB_METHODS.each do |method|
+          @redis_db.hsetnx "#{options[:imdb_tmdb].id}", method.to_s, "#{options[:imdb_tmdb].send(method)}"
+        end
       end
 
       @redis_db.expire "#{options[:id]}", 1800

@@ -34,9 +34,7 @@ Redis Installation
   You will find that information at: http://redis.io/topics/quickstart
 
 
-movieDB is available through [Rubygems](http://rubygems.org/gems/movieDB) and can be installed via:
-
-Add this line to your application's Gemfile:
+movieDB is available through [Rubygems](http://rubygems.org/gems/movieDB) and can be installed via Gemfile.
 
 ``` ruby
 gem 'movieDB'
@@ -175,15 +173,6 @@ m.json
 * Exploratory Data Analysis
 * Confirmatory Data Analysis
 * More to come...
-
-### IMDb Statistics
-    Currently, the following statistic can be performed
-
-    `:Median`
-    `:Mean`
-    `:Mode`
-    `:Average`
-
 
 ## Usage - Analyzing Data From IMDb.
 

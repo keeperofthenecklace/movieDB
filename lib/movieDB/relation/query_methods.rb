@@ -2,19 +2,20 @@ require "MovieDB/data_store"
 require "MovieDB/support/reporting"
 require "imdb"
 require "themoviedb"
-require "MovieDB/secret"
+# require "MovieDB/secret"
+load "/Users/albertmckeever/Sites/movieDB/lib/movieDB/secret.rb"
+
 
 module MovieDB
   module Relation
     module QueryMethods
+      extend MovieDB::Secret::Lock
 
       def store_data(ids)
         check_rate_limit(ids)
 
         ids.each do |id|
-          imdb_tmdb_lookup(id) unless movie_exists?(id)
-          mset(@tmdb_record, id) unless movie_exists?(id)
-          mset(@imdb_record, id) unless movie_exists?(id)
+          movie_exists?(id) ? true : imdb_tmdb_lookup(id)
         end
       end
 
@@ -25,7 +26,7 @@ module MovieDB
       end
 
       def movie_exists?(id)
-        !mgetall(id).empty?
+       !mgetall(id).empty?
       end
 
       def mgetall(id)
@@ -37,7 +38,7 @@ module MovieDB
       end
 
       def all_ids
-        p MovieDB::DataStore.get_data(:scan).flatten.delete_if{ |n| n == "0" }
+        MovieDB::DataStore.get_data(:scan).flatten.delete_if{ |n| n == "0" }
       end
 
       def delete_all
@@ -45,6 +46,7 @@ module MovieDB
       end
 
       def imdb_tmdb_lookup(id) # :nodoc:
+        query_imdb(id)
         query_tmdb(id)
       end
 
@@ -55,24 +57,28 @@ module MovieDB
       #
       # Reference https://github.com/skozilla/BoxOfficeMojo/tree/master/boxofficemojoAPI
       # for the api.
-      def query_imdb(imdb_id)
+      def query_imdb(id)
         # Query IMDb
-        imdb = Imdb::Movie.new(imdb_id)
+        imdb = Imdb::Movie.new(id)
 
-        raise NameError, "#{imdb_id} is an invalid IMDb id." if imdb.title.nil?
+        raise NameError, "#{id} is an invalid IMDb id." if imdb.title.nil?
 
-        @imdb_record = imdb
+        mset(imdb, id)
       end
 
-      def query_tmdb(imdb_id) # :nodoc:
-        Tmdb::Api.key(Movie.key)
-        @tmdb_record = Tmdb::Movie.detail("tt#{imdb_id}")
+      def query_tmdb(id) # :nodoc:
+        Tmdb::Api.key(MovieDB::Secret::Lock.key)
+
+        tmdb = Tmdb::Movie.detail("tt#{id}")
+
+        raise NameError, "#{id} is an invalid TMDb id." if tmdb.nil?
+
+        mset(tmdb, id)
       end
 
       def fetch_data(method, ids = nil)
-
         if ids.nil?
-            MovieDB::DataStore.get_data(method)
+          MovieDB::DataStore.get_data(method)
         else
           ids.each do |id|
             MovieDB::DataStore.get_data(method, id)
