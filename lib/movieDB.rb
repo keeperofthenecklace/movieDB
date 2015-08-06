@@ -59,8 +59,7 @@ module MovieDB
   end
 end
 
-m = MovieDB::Movie.new
-m.imdb_id = ["0369610", "3079380"]
-# m.imdb_id = ["ffffff610", "hhhhhh9380"]
-
- # m.delete_all
+m =  MovieDB::Movie.new
+ m.imdb_id = ["0369610", "3079380"]
+# m.delete_all
+p m.get("0369610", "3079380")

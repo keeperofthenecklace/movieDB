@@ -28,8 +28,14 @@ module MovieDB
     # We get that info from TMDb.
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
+       mid =  options[:imdb_tmdb]["imdb_id"].delete('tt')
+
         options.each_pair do |k, v|
-          # @redis_db.hsetnx "#{options[:id]}", k, v
+          if v.is_a? Hash
+            v.each_pair do |j, w|
+              @redis_db.hsetnx "#{mid}", "#{j}", "#{w}"
+            end
+          end
         end
       else
         MovieDB::DataStore::IMDB_METHODS.each do |method|
