@@ -18,6 +18,7 @@
 * IMDb is where we collect a chunk of the film data.
 * TMDb is where we collect the film revenues.
 * BoxOfficeMojo is where we will be scraping future film data.
+* IMDB IDs can be found at http://www.imdb.com/
 
 ## Category
 movieDB is broken down into 3 components. They are as follows:
@@ -25,6 +26,8 @@ movieDB is broken down into 3 components. They are as follows:
 * Statistics
 * Visualizations
 * DataFrames and Vectors
+
+# Statistics
 
 ## Installation
 
@@ -63,45 +66,123 @@ $ irb
 ```ruby
 require 'movieDB'
 ```
-## General Steps
-movieDB requires only 2 parts to performing and calculating statistics.
 
-First you fetch the data from IMDb.
-
-Then, you run the statistics you want.
-
-It is that simple!
-
-## Part 1 - Fetch Data
-
-There are several ways to fetch movie data from IMDb.
+## Initialize MovieDB
 
 ``` ruby
 m = MovieDB::Movie.new
 ```
+## General Steps
 
-Add using a string objects in an array.
+Fetching and analysing movie / tv data using movieDB is a simple 2 step process.
+
+First, fetch the data from IMDb.
+
+Next, run your choice of statistic.
+
+That's it! It is that simple.
+
+## Part 1 - Fetch Data from IMDb.
+The following movie ids are used for our example.
+
+We get that data from http://www.imdb.com
+
+When you search for a movie, IMDb displays a url like this:
+
 ``` ruby
-m.imdb_id = ["0369610", "3079380"]
+http://www.imdb.com/title/tt0369610/
+```
+0369610 is the IMDB id movieDB uses to fetch data.
+
+Below are some IMDb example we will be using in this tutorial.
+
+* Ant Man - 0369610
+* Jurassic World - 079380
+* Spy - 0478970
+
+``` ruby
+m.fetch("0369610", "3079380", "0478970")
+```
+## Part 2 - Run the statistic.
+
+Here we use the mean statistic method.
+
+``` ruby
+m.mean
+```
+Below is the result generated.
+
+``` ruby
+                             mean
+       ant-man  576.8444444444444
+jurassic_world  512.5111111111111
+           spy 369.73333333333335
+```
+movieDB provides you with additional statistic methods.
+
+Feel free to try them out.
+
+* std
+* sum
+* count
+* max
+* min
+* product
+* standardize
+* describe
+* covariance
+* correlation
+
+movieDb allows you to view all your fields in a worksheet template style.
+
+``` ruby
+m.worksheet
+```
+Below is the result generated.
+
+``` ruby
+              ant-man jurassic_w        spy
+production        177        128         40
+belongs_to          0        151          0
+plot_synop       9083          0       9629
+   company         14         18         21
+     title          7         14          3
+filming_lo        267       1037        530
+cast_chara       4094       5894       1001
+trailer_ur          0         46         45
+cast_membe       2833       3452        939
+     votes          5          6          5
+     adult          5          5          5
+also_known        928       1601       1195
+  director         15         19         13
+plot_summa        373        298        311
+ countries          7         16          7
+       ...        ...        ...        ...
 ```
 
-Add using numeric objects in an array.
+## Filters
+
+movieDB comes with 2 filters that you to select fields you want to perform statistics on.
+* only
+* except
+
+Below we find the standard deviation ONLY:
+
 ``` ruby
-m.imdb_id = [0369610, 3079380]
+m.std only: [:budget, :revenue, :length, :vote_average]
+
+# =>                             std
+           ant-man 64999979.33335541
+     jurassic_world 735172842.3334398
+               spy 32499978.83337986
+```
+``` ruby
+                            std
+      ant-man 64999979.33335541
+jurassic_world 735172842.3334398
+          spy 32499978.83337986
 ```
 
-Add using mixed values.
-``` ruby
-m.imdb_id = "0369610", 3079380
-```
-
-## Part 2 - Run statistics.
-
-    a.) Data Analysis: Basic data manipulation and plotting
-
-
-## Usage - Query data
-Find all imdb ids in your redis database
 
 ``` ruby
 m = MovieDB::Movie.new
@@ -117,95 +198,9 @@ m.delete_all
 # => []
 ```
 
-## Printing document.
+# Visualizations
 
-``` ruby
-m.get("0133093")
-```
-
-By default when you fetch the movie data, movieDB
-prints the results to screen as Hash.
-
-``` ruby
-{"adult"=>false, "backdrop_path"=>"/7u3pxc0K1wx32IleAkLv78MKgrw.jpg",
-"belongs_to_collection"=>{"id"=>2344, "name"=>"The Matrix Collection",
-"poster_path"=>"/lh4aGpd3U9rm9B8Oqr6CUgQLtZL.jpg",
-"backdrop_path"=>"/bRm2DEgUiYciDw3myHuYFInD7la.jpg"},
-"budget"=>63000000, "genres"=>[{"id"=>12, "name"=>"Adventure"},
-{"id"=>28, "name"=>"Action"}, {"id"=>53, "name"=>"Thriller"},
-{"id"=>878, "name"=>"Science Fiction"}],
-"homepage"=>"http://www.warnerbros ...
-```
-You can have movieDB print out your results to screen as JSON.
-
-``` ruby
-m.find = ["0369610"]
-
-m.json
-
-```
-    {
-      "adult": false,
-      "backdrop_path": "/dkMD5qlogeRMiEixC4YNPUvax2T.jpg",
-      "belongs_to_collection": {
-        "id": 328,
-        "name": "Jurassic Park Collection",
-        "poster_path": "/jcUXVtJ6s0NG0EaxllQCAUtqdr0.jpg",
-        "backdrop_path": "/pJjIH9QN0OkHFV9eue6XfRVnPkr.jpg"
-      },
-      "budget": 150000000,
-      ...
-
-## Print - Outputting an XML movie data.
-    # You can have movieDB print out your results
-     to screen as XML.
-
-        m = MovieDB::Movie.new
-
-        m.imdb_id = ["0369610", "3079380"]
-
-        m.xml
-
-  /* YOU CAN ADD AS MANY IMDB IDs AS YOU LIKE. BUT DO NOT EXCEED THE MAXIMUM REQUEST RATE. */
-## Basic functions and Data Analysis:
-
-* Data Analysis
-* Exploratory Data Analysis
-* Confirmatory Data Analysis
-* More to come...
-
-## Usage - Analyzing Data From IMDb.
-
-    irb
-
-    require 'MovieDB/data_analysis'
-
-    require 'MovieDB/data_process'
-
-    MovieDB::DataProcess.send(:basic_statistic, 'imdb_JurassicWorld_Spy_.xls')
-
-A statistical computation is performed and the results are written in JSON format and stored
-  in redis.
-
-
-You can open movieDB directory from your terminal.
-
-Assuming you are using vim as your IDE,
-
-    EDITOR=vi bundle open movieDB
-
-Inside the reports directory you will find this file.
-
-    Statistic_imdb_JurassicWorld_Spy.xls
-
-## What's Next
-
-##### More statistical computations coming soon:
-
-`:GaussNewtonAlgorithm`
-`:EstimationOfDensity`
-`:ExploratoryDataAnalysis`
-
+# DataFrames and Vectors
 ## Contact me
 
 If you'd like to collaborate, please feel free to fork source code on github.
@@ -213,3 +208,6 @@ If you'd like to collaborate, please feel free to fork source code on github.
 You can also contact me at albertmck@gmail.com
 
 ###### Copyright (c) 2013 - 2015 Albert McKeever, released under MIT license
+
+list of available movie attributes
+http://www.imdb.com/title/tt0133093/?ref_=fn_al_tt_1
