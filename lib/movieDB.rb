@@ -1,11 +1,13 @@
-require "rubygems"
-require "open-uri"
-require "nokogiri"
-require "MovieDB/data_store"
-require "MovieDB/base"
-require "MovieDB/relation/print_methods"
+require 'rubygems'
+require 'open-uri'
+require 'nokogiri'
+require 'MovieDB/data_store'
+require 'MovieDB/base'
+require 'MovieDB/relation/print_methods'
 # require "MovieDB/relation/query_methods"
-load "/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb"
+load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb'
+# require 'MovieDB/data_analysis'
+load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/data_analysis/statistics.rb'
 
 
 module MovieDB
@@ -26,16 +28,7 @@ module MovieDB
 
     include MovieDB::Relation::QueryMethods
     include MovieDB::Relation::PrintMethods
-
-    # You can fetch IMDb movie data like this:
-    #   ids = ["2024544", "1800241"]
-    #
-    #   m = MovieDB::Movie.new
-    #   m.imdb_id = ids
-    def imdb_id=(ids)
-      @imdb_id = ids_to_array(ids)
-      store_data(@imdb_id)
-    end
+    include MovieDB::DataAnalysis::Statistics
 
     def ids_to_array(ids)
       arr ||= []
@@ -60,6 +53,13 @@ module MovieDB
 end
 
 m =  MovieDB::Movie.new
- m.imdb_id = ["0369610", "3079380"]
+m.get("0369610", "3079380","0478970")
+# m.correlation only: [:revenue, :title]
+# m.correlation except: [:revenue, :title]
+# m.worksheet only: [:budget, :revenue, :title]
+p m.mean only: [:budget, :revenue, :title]
+
+
 # m.delete_all
-p m.get("0369610", "3079380")
+
+

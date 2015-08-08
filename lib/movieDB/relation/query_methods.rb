@@ -20,21 +20,23 @@ module MovieDB
       end
 
       def get(*ids)
-        ids.each do |id|
-          return MovieDB::DataStore.get_data(:get, id)
-        end
-      end
+        store_data(ids_to_array(ids))
 
-      def movie_exists?(id)
-       !mgetall(id).empty?
+          arr = []
+
+        ids.each do |id|
+          arr << (mgetall(id))
+        end
+
+        $movie_data = arr
       end
 
       def mgetall(id)
-        return MovieDB::DataStore.get_data(:all, id)
+        movie = MovieDB::DataStore.get_data(:all, id)
       end
 
       def mset(record, id)
-        return MovieDB::DataStore.write_data(imdb_tmdb: record, id: id)
+        MovieDB::DataStore.write_data(imdb_tmdb: record, id: id)
       end
 
       def all_ids
@@ -42,7 +44,13 @@ module MovieDB
       end
 
       def delete_all
+        $get_data.clear
         return MovieDB::DataStore.get_data(:flushall)
+
+      end
+
+      def movie_exists?(id)
+        !mgetall(id).empty?
       end
 
       def imdb_tmdb_lookup(id) # :nodoc:

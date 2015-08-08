@@ -3,17 +3,17 @@ require 'MovieDB'
 require 'facter'
 
 module MovieDB
-  class Data_Analysis < MovieDB::Movie
+  module DataAnalysis
     module Statistics
 
       # Calculate mean of movies.
-      def mean
-        compute_stats :mean
+      def mean(**options)
+        dataframes_stats(:mean, options)
       end
 
       # Calculate sample standard deviation of movies.
-      def std
-        compute_stats :std
+      def std(**options)
+        dataframes_stats(:std, options)
       end
 
       # Calculate sum of movies
@@ -22,63 +22,102 @@ module MovieDB
       end
 
       # Count the number of non-nil values in each vector.
-      def count
-        compute_stats :count
+      def count(**options)
+        dataframes_stats(:count, options)
       end
 
       # Calculate the maximum value of each movie.
-      def max
-        compute_stats :max
+      def max(**options)
+        dataframes_stats(:max, options)
       end
 
       # Calculate the minimmum value of each movie.
-      def min
-        compute_stats :min
+      def min(**options)
+        dataframes_stats(:min, options)
       end
 
       # Compute the product of each movie.
-      def product
-        compute_stats :product
+      def product(**options)
+        dataframes_stats(:product, options)
       end
 
-      def standardize
-
+      def standardize(**options)
+        dataframes_stats(:standardize, options)
       end
 
-      def describe
-
+      def describe(**options)
+        dataframes_stats(:describe, options)
       end
 
       # Calculate sample variance-covariance between the movies.
-      def covariance
-
+      def covariance(**options)
+        dataframes_stats(:covariance, options)
       end
 
       alias :cov :covariance
 
       # Calculate the correlation between the movies.
-      def correlation
-
+      def correlation(**options)
+        dataframes_stats(:correlation, options)
       end
 
       alias :corr :correlation
 
+      # Prints out columns and rows  between the movies.
+      def worksheet(**options)
+        dataframes_stats(:worksheet, options)
+      end
+
       private
 
-        def compute_stats method
-          raise ArgumentError, 'Please provide 2 or more IMDd ids.' if @imdb_ids.length <= 1
-          Daru::Maths::Statistics
-          df = Daru::DataFrame.new({
-                                       a: ['foo'  ,  'foo',  'foo',  'foo',  'foo',  'bar',  'bar',  'bar',  'bar'],
-                                       b: ['one'  ,  'one',  'one',  'two',  'two',  'one',  'one',  'two',  'two'],
-                                       c: ['small','large','large','small','small','large','small','large','small'],
-                                       matrix: [1,2,2,3,3,4,5,6,7],
-                                       spy: [2,4,4,6,6,8,10,12,14],
-                                       lotr: [10,20,20,30,30,40,50,60,70]
-                                   },name: :movie, index: [:title, :revenue, :cast, :cloak, :shoes, :blue, :green, :yello, :brown])
+      def dataframes_stats(method, filters = {})
+        raise ArgumentError, 'Please provide 2 or more IMDd ids.' if $movie_data.length <= 1
+        @data_key = {}
+        @index = []
 
-          p df.mean
+        if filters.empty?
+          $movie_data.each_with_index do |movie, _|
+            value_count = []
+
+            movie.each_pair do |k, v|
+              @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << v.chars.count
+              @index << k.to_sym
+            end
+          end
+        else
+          case filters.keys[0]
+            when :only
+              $movie_data.each_with_index do |movie, _|
+
+                filters.values.flatten.each do |filter|
+                  mr = movie.reject { |k, _| k != filter.to_s }
+                  value_count = []
+
+                  mr.each_pair do |k, v|
+                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << v.chars.count
+                    @index << k.to_sym
+                  end
+                end
+              end
+            when :except
+              puts 'im except'
+            else
+              raise ArgumentError, "#{filters.keys[0]} is not a valid filter."
+          end
         end
+
+        index = @index.uniq
+
+        compute_stats(method, @data_key, index )
+      end
+
+        def compute_stats(method, movie, index)
+          df = Daru::DataFrame.new(eval(movie.to_s.gsub!('=>', ': ')),
+                                   name: :movie, index: index)
+
+          method == :worksheet ? df: df.send(method)
+        end
+
     end
   end
 end

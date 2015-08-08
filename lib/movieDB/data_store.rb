@@ -66,18 +66,18 @@ module MovieDB
         when :scan
           return @redis_db.scan 0
         when :flushall
-          @redis_db.flushall
+          return @redis_db.flushall
         when :get
-          $data = @redis_db.hgetall("#{id}")
+          return @redis_db.hgetall("#{id}")
       else
         raise ArgumentError, "The method #{method} is invalid."
       end
 
-      send_to_print unless $data.nil?
+      # send_to_print unless $data.nil?
     end
 
     def self.send_to_print
-      MovieDB::Support::Print.print_document($data, print: 'hash')
+      # MovieDB::Support::Print.print_document($data, print: 'hash')
     end
   end
 end
