@@ -2,16 +2,10 @@ require 'redis'
 require 'json'
 require 'imdb'
 
-require "MovieDB/support/print"
-
-
-
 # Movie data fetched from IMDb is stored as a hash data type in redis.
 # The key and values are written into a spreadsheet for later data analysis.
 module MovieDB
   module DataStore
-    include MovieDB::Support
-
     IMDB_METHODS = [:title, :also_known_as, :cast_members, :cast_characters, :cast_members_characters,
                     :director, :writers, :trailer_url, :genres, :languages, :countries, :length, :company, :plot, :plot_synopsis,
                     :plot_summary, :poster, :rating, :votes, :tagline, :mpaa_rating, :year, :release_date, :filming_locations]
@@ -61,8 +55,10 @@ module MovieDB
       case method
         when :all
           return @redis_db.hgetall "#{id}"
-        when :keys
-          return @redis_db.keys
+        when :hkeys
+          return @redis_db.hkeys "#{id}"
+        when :hvals
+          return @redis_db.hvals "#{id}"
         when :scan
           return @redis_db.scan 0
         when :flushall
@@ -72,12 +68,6 @@ module MovieDB
       else
         raise ArgumentError, "The method #{method} is invalid."
       end
-
-      # send_to_print unless $data.nil?
-    end
-
-    def self.send_to_print
-      # MovieDB::Support::Print.print_document($data, print: 'hash')
     end
   end
 end

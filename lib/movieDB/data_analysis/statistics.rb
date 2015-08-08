@@ -70,22 +70,23 @@ module MovieDB
 
       private
 
-      def dataframes_stats(method, filters = {})
-        raise ArgumentError, 'Please provide 2 or more IMDd ids.' if $movie_data.length <= 1
-        @data_key = {}
-        @index = []
+        def dataframes_stats(method, filters = {})
+          raise ArgumentError, 'Please provide 2 or more IMDd ids.' if $movie_data.length <= 1
 
-        if filters.empty?
-          $movie_data.each_with_index do |movie, _|
-            value_count = []
+          @data_key = {}
+          @index = []
 
-            movie.each_pair do |k, v|
-              @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << v.chars.count
-              @index << k.to_sym
+          if filters.empty?
+            $movie_data.each_with_index do |movie, _|
+              value_count = []
+
+              movie.each_pair do |k, v|
+                @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << v.chars.count
+                @index << k.to_sym
+              end
             end
-          end
-        else
-          case filters.keys[0]
+          else
+            case filters.keys[0]
             when :only
               $movie_data.each_with_index do |movie, _|
 
@@ -100,22 +101,33 @@ module MovieDB
                 end
               end
             when :except
-              puts 'im except'
+              $movie_data.each_with_index do |movie, _|
+
+                filters.values.flatten.each do |filter|
+                  mr = movie.reject { |k, _| k == filter.to_s }
+                  value_count = []
+
+                  mr.each_pair do |k, v|
+                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << v.chars.count
+                    @index << k.to_sym
+                  end
+                end
+              end
             else
               raise ArgumentError, "#{filters.keys[0]} is not a valid filter."
+            end
           end
+
+          index = @index.uniq
+
+          compute_stats(method, @data_key, index )
         end
-
-        index = @index.uniq
-
-        compute_stats(method, @data_key, index )
-      end
 
         def compute_stats(method, movie, index)
           df = Daru::DataFrame.new(eval(movie.to_s.gsub!('=>', ': ')),
                                    name: :movie, index: index)
 
-          method == :worksheet ? df: df.send(method)
+          method == :worksheet ? df : df.send(method)
         end
 
     end

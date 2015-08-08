@@ -53,11 +53,18 @@ module MovieDB
 end
 
 m =  MovieDB::Movie.new
-m.get("0369610", "3079380","0478970")
+ m.fetch("0369610", "3079380","0478970")
+# m.all_ids
+
+# m.hgetall("0369610")
+p m.hkeys("0369610")
+# m.hvals("0369610")
+
 # m.correlation only: [:revenue, :title]
 # m.correlation except: [:revenue, :title]
-# m.worksheet only: [:budget, :revenue, :title]
-p m.mean only: [:budget, :revenue, :title]
+# m.worksheet only: [:, :revenue, :title]
+# m.worksheet except: [:title, :belongs_to]
+# m.mean only: [:budget, :revenue, :title]
 
 
 # m.delete_all
