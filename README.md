@@ -99,11 +99,9 @@ To find IMDb id for a movie, you must go to:
 ```bash
 http://www.imdb.com
 ```
-There, search for your movie of choice.
+There, search for your movie of choice. Once you do, IMDb redirects you to the movie's page.
 
-IMDb will redirect you to the movie page.
-
-You can then find the IMDb id in the URL.
+The URL for the redirect page includes the IMDB id.
 
 ``` ruby
 http://www.imdb.com/title/tt0369610/
