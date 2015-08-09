@@ -161,7 +161,7 @@ Feel free to try them out.
 * covariance
 * correlation
 
-movieDb allows you to view all your data fields in a worksheet template style layout.
+movieDB allows you to view all your data fields in a worksheet template style layout.
 
 ``` ruby
 m.worksheet

@@ -51,22 +51,3 @@ module MovieDB
     end
   end
 end
-
-m =  MovieDB::Movie.new
-p m.fetch("0369610", "3079380","0478970")
-# m.all_ids
-
-# p m.hgetall("3079380")
-# p m.hkeys("0369610")
-#  m.hvals("3155320")
-
-# m.correlation only: [:revenue, :title]
-# m.correlation only: [:revenue, :title]
-# m.correlation except: [:revenue, :title]
-# p m.std only: [:budget, :revenue, :length, :vote_average]
-# p m.describe only: [:budget, :revenue, :length, :vote_average]
-# p m.worksheet
-# p m.std #only: [:title, :budget, :revenue, :length, :vote_average]
-# m.delete_all
-# print m. hvals("0369610")
-
