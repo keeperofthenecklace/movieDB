@@ -88,19 +88,27 @@ That's it! It is that simple.
 
 ## Part 1 - Fetch Data from IMDb
 
-In this example, we fetch movie ids.
+In this example, we use movie data for all computations.
 
-Note. you can also use t.v ids.
+You can also TV data if you want.
 
+### Finding IMDb ids
 
-We get that data from http://www.imdb.com
+To find IMDb id for a movie, you must go to:
 
-When you search for a movie, IMDb displays a url like this:
+```bash
+http://www.imdb.com
+```
+There, search for your movie of choice.
+
+IMDb will redirect you to the movie page.
+
+You can then find the IMDb id in the URL.
 
 ``` ruby
 http://www.imdb.com/title/tt0369610/
 ```
-0369610 is the id movieDB uses to fetch data from IMDb.
+0369610 is the IMDb id.
 
 Below, we've collect 3 ids which we use as examples.
 
