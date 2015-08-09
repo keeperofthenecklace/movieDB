@@ -18,16 +18,21 @@
 * IMDb is where we collect a chunk of the film data.
 * TMDb is where we collect the film revenues.
 * BoxOfficeMojo is where we will be scraping future film data.
-* IMDB IDs can be found at http://www.imdb.com/
 
 ## Category
-movieDB is broken down into 3 components. They are as follows:
+
+movieDB is broken down into 3 components namely:
 
 * Statistics
 * Visualizations
-* DataFrames and Vectors
+* DataMining
 
 # Statistics
+
+Simple statistical analysis on numeric data.
+The corresponding computation is performed on
+both numeric and non-mumeric vectors within the
+collected data.
 
 ## Installation
 
@@ -35,7 +40,6 @@ Redis Installation
 
   This tutorial doesn't cover redis installation.
   You will find that information at: http://redis.io/topics/quickstart
-
 
 movieDB is available through [Rubygems](http://rubygems.org/gems/movieDB) and can be installed via Gemfile.
 
@@ -72,7 +76,7 @@ require 'movieDB'
 ``` ruby
 m = MovieDB::Movie.new
 ```
-## General Steps
+## 2 Step Process
 
 Fetching and analysing movie / tv data using movieDB is a simple 2 step process.
 
@@ -82,8 +86,12 @@ Next, run your choice of statistic.
 
 That's it! It is that simple.
 
-## Part 1 - Fetch Data from IMDb.
-The following movie ids are used for our example.
+## Part 1 - Fetch Data from IMDb
+
+In this example, we fetch movie ids.
+
+Note. you can also use t.v ids.
+
 
 We get that data from http://www.imdb.com
 
@@ -138,7 +146,7 @@ movieDb allows you to view all your fields in a worksheet template style.
 ``` ruby
 m.worksheet
 ```
-Below is the result generated.
+Below is are values for each attribute .
 
 ``` ruby
               ant-man jurassic_w        spy
@@ -166,15 +174,12 @@ movieDB comes with 2 filters that you to select fields you want to perform stati
 * only
 * except
 
-Below we find the standard deviation ONLY:
+Below find the standard deviation using only budget, revenue,
+length and vote average values.
 
 ``` ruby
 m.std only: [:budget, :revenue, :length, :vote_average]
 
-# =>                             std
-           ant-man 64999979.33335541
-     jurassic_world 735172842.3334398
-               spy 32499978.83337986
 ```
 ``` ruby
                             std
