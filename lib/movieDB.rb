@@ -53,7 +53,7 @@ module MovieDB
 end
 
 m =  MovieDB::Movie.new
-m.fetch("0369610", "3079380","0478970")
+p m.fetch("0369610", "3079380","0478970")
 # m.all_ids
 
 # p m.hgetall("3079380")
@@ -68,5 +68,5 @@ m.fetch("0369610", "3079380","0478970")
 # p m.worksheet
 # p m.std #only: [:title, :budget, :revenue, :length, :vote_average]
 # m.delete_all
-print m. hvals("0369610")
+# print m. hvals("0369610")
 

@@ -108,14 +108,28 @@ http://www.imdb.com/title/tt0369610/
 ```
 0369610 is the IMDb id.
 
-Below, we've collect 3 ids which we use as examples.
+Below, we've collected 3 ids to use as examples.
 
 * Ant Man - 0369610
 * Jurassic World - 079380
 * Spy - 0478970
 
+### Get Movie Data
+
 ``` ruby
 m.fetch("0369610", "3079380", "0478970")
+```
+This queries both IMDb and TMDb. To see the returned data invoke ruby's 'puts' method.
+
+``` ruby
+puts m.fetch("0369610", "3079380", "0478970")
+```
+movieDB prints out the data in a hash.
+
+``` ruby
+[{"production_companies"=>"[{\"name\"=>\"Universal Studios\", \"id\"=>13},
+{\"name\"=>\"Amblin Entertainment\", \"id\"=>56},
+{\"name\"=>\"Legendary Pictures\", \"id\"=>923}]",... }]
 ```
 ## Part 2 - Run the statistic.
 
