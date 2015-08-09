@@ -63,11 +63,10 @@ m.fetch("0369610", "3079380","0478970")
 # m.correlation only: [:revenue, :title]
 # m.correlation only: [:revenue, :title]
 # m.correlation except: [:revenue, :title]
-p m.std only: [:budget, :revenue, :length, :vote_average]
+# p m.std only: [:budget, :revenue, :length, :vote_average]
+# p m.describe only: [:budget, :revenue, :length, :vote_average]
 # p m.worksheet
 # p m.std #only: [:title, :budget, :revenue, :length, :vote_average]
-
-
 # m.delete_all
-
+print m. hvals("0369610")
 

@@ -100,9 +100,9 @@ When you search for a movie, IMDb displays a url like this:
 ``` ruby
 http://www.imdb.com/title/tt0369610/
 ```
-0369610 is the IMDB id movieDB uses to fetch data.
+0369610 is the id movieDB uses to fetch data from IMDb.
 
-Below are some IMDb example we will be using in this tutorial.
+Below, we've collect 3 ids which we use as examples.
 
 * Ant Man - 0369610
 * Jurassic World - 079380
@@ -141,7 +141,7 @@ Feel free to try them out.
 * covariance
 * correlation
 
-movieDb allows you to view all your fields in a worksheet template style.
+movieDb allows you to view all your data fields in a worksheet template style layout.
 
 ``` ruby
 m.worksheet
@@ -170,42 +170,75 @@ plot_summa        373        298        311
 
 ## Filters
 
-movieDB comes with 2 filters that you to select fields you want to perform statistics on.
+By default, movieDB processes all values returned from IMDb.
+You can customize what fields you want to process with
+the following filters:
+
 * only
 * except
 
-Below find the standard deviation using only budget, revenue,
-length and vote average values.
+'only' processes the provided fields you supply.
+
+'Except' is the inverse of 'only.
 
 ``` ruby
 m.std only: [:budget, :revenue, :length, :vote_average]
 
 ```
+Processes only budget, revenue, length and vote_average values.
 ``` ruby
-                            std
-      ant-man 64999979.33335541
-jurassic_world 735172842.3334398
-          spy 32499978.83337986
+              ant-man jurassic_w        spy
+    budget 1.49999999 -0.3616594 1.49999999
+   revenue -0.5000006 1.49304559 -0.5000013
+    length -0.4999988 -0.5656929 -0.4999976
+vote_avera -0.5000005 -0.5656931 -0.5000010
+```
+# Commands
+
+movieDB comes with commands to help you query or manipulate stored objects in redis.
+
+* HGETALL key
+Get all the fields and values in a hash of the movie
+
+``` ruby
+m.hgetall(["0369610"])
+# => {"production_companies"=>"[{\"name\"=>\"Universal Studios\", \"id\"=>13},...}
+```
+HKEYS key
+Get all the fields in a hash of the movie
+
+``` ruby
+m.hkeys
+# => ["production_companies", "belongs_to_collection", "plot_synopsis", "company", "title",...]
 ```
 
+HVALS key
+Get all the values in a hash of the movie
 
 ``` ruby
-m = MovieDB::Movie.new
+m.hvals
+# => ["[{\"name\"=>\"Universal Studios\", \"id\"=>13}, {\"name\"=>\"Amblin Entertainment\",...]
+```
 
+ALL_IDS key
+Get all the id of movies
+
+``` ruby
 m.all_ids
-# => ["0369610", "3079380"]
+# => ["0369610", "3079380"...]
 ```
 
-Delete all imdb ids in your redis database
+DELETE_ALL key
+deletes all movies stored in redis.
 
 ``` ruby
 m.delete_all
 # => []
 ```
-
 # Visualizations
 
 # DataFrames and Vectors
+
 ## Contact me
 
 If you'd like to collaborate, please feel free to fork source code on github.
@@ -213,6 +246,3 @@ If you'd like to collaborate, please feel free to fork source code on github.
 You can also contact me at albertmck@gmail.com
 
 ###### Copyright (c) 2013 - 2015 Albert McKeever, released under MIT license
-
-list of available movie attributes
-http://www.imdb.com/title/tt0133093/?ref_=fn_al_tt_1
