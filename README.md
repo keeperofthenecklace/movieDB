@@ -202,7 +202,7 @@ the following filters:
 'Except' is the inverse of 'only.
 
 ``` ruby
-m.std only: [:budget, :revenue, :length, :vote_average]
+m.standardize only: [:budget, :revenue, :length, :vote_average]
 
 ```
 Processes only budget, revenue, length and vote_average values.
