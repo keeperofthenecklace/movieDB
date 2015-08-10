@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'redis'
   spec.add_dependency 'statsample'
   spec.add_dependency 'facter'
-  spec.add_dependency 'gyoku'
   spec.add_dependency 'imdb'
   spec.add_dependency 'json'
 end

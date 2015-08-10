@@ -5,7 +5,12 @@ require 'facter'
 module MovieDB
   module DataAnalysis
     module Statistics
-      NumericKeys = %w(votes budget rating revenue length year mpaa_rating popularity vote_count vote_average runtime)
+      # Attributes that have integers values.
+      def numeric_vals
+        %w(votes budget rating revenue length year mpaa_rating popularity vote_count vote_average runtime)
+      end
+
+      module_function :numeric_vals
 
       # Calculate mean of movies.
       def mean(**options)
@@ -82,7 +87,7 @@ module MovieDB
               value_count = []
 
               movie.each_pair do |k, v|
-                @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics::NumericKeys.any? { |word| word == k } ? v.to_i : v.chars.count)
+                @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.chars.count)
                 @index << k.to_sym
               end
             end
@@ -97,7 +102,7 @@ module MovieDB
                   mr = movie.reject { |k, _| k != filter.to_s }
 
                   mr.each_pair do |k, v|
-                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics::NumericKeys.any? { |word| word == k } ? v.to_i : v.chars.count)
+                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.chars.count)
                     @index << k.to_sym
                   end
                 end
@@ -110,7 +115,7 @@ module MovieDB
                   value_count = []
 
                   mr.each_pair do |k, v|
-                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics::NumericKeys.any? { |word| word == k } ? v.to_i : v.chars.count)
+                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.chars.count)
                     @index << k.to_sym
                   end
                 end

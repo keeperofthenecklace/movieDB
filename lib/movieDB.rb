@@ -3,10 +3,9 @@ require 'open-uri'
 require 'nokogiri'
 require 'MovieDB/data_store'
 require 'MovieDB/base'
-require 'MovieDB/relation/print_methods'
 # require "MovieDB/relation/query_methods"
 load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb'
-# require 'MovieDB/data_analysis'
+# require 'MovieDB/data_analysis/statistics'
 load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/data_analysis/statistics.rb'
 
 
@@ -27,17 +26,10 @@ module MovieDB
   class Movie < MovieDB::Base
 
     include MovieDB::Relation::QueryMethods
-    include MovieDB::Relation::PrintMethods
     include MovieDB::DataAnalysis::Statistics
 
     def ids_to_array(ids)
       arr ||= []
-
-      if ids.is_a? Array
-        ids.each do |n|
-          arr << n.to_s
-        end
-      end
 
       if ids.is_a? String
         arr << ids
@@ -47,7 +39,15 @@ module MovieDB
         arr << ids.to_s
       end
 
+      if ids.is_a? Array
+        ids.each do |n|
+          arr << n.to_s
+        end
+      end
+
       return arr.flatten
     end
   end
 end
+
+

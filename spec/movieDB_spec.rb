@@ -2,34 +2,22 @@ require 'spec_helper'
 require 'MovieDB'
 
 describe MovieDB do
-  describe "#imdb=" do
+  describe "#ids_to_array" do
+
     let(:m) { MovieDB::Movie.new }
 
-    it "should return data from imdb" do
+    context "When fetching movie data" do
+      it "takes a string value and converts it to an array." do
+        expect(m.ids_to_array("0369610")).to eql(["0369610"])
+      end
 
-    end
+      it "takes a numeric value and converts it to an array." do
+        expect(m.ids_to_array(3079380)).to eql(["3079380"])
+      end
 
-    it "should raise error if id is invalid" do
-
-    end
-
-    it "should return TV data" do
-
-    end
-
-    it "should return Movie data" do
-
-    end
-
-    it "return true if imdb ids are stored" do
-      ids = [ "3079380", "0369610", "0133093"]
-
-      expect(m.imdb_id=ids).to be_truthy
-    end
-
-    it "raise an error if imdb id doesn't exist" do
-      ids = [ "0001W", "0002W", "0003T"]
-      expect { m.imdb_id=ids }.to raise_error
+      it "keeps a numeric value in an array." do
+        expect(m.ids_to_array(["3079380"])).to eql(["3079380"])
+      end
     end
   end
 end

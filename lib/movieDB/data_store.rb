@@ -12,7 +12,7 @@ module MovieDB
 
     # Create a redis instance.
     def self.initialize_redis
-      @redis_db ||= Redis.new
+      @redis_db ||= Redis.new(:connect_timeout => 20, :timeout => 20)
     end
 
     # Store to Redis for 30 minutes.
