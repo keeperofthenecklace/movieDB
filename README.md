@@ -18,6 +18,10 @@
 * IMDb is where we collect a chunk of the film data.
 * TMDb is where we collect the film revenues.
 * BoxOfficeMojo is where we will be scraping future film data.
+* Celluloid is used to build fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
+multithreading won't work since these types of interpreters have Global Interpreter Lock (GIL) mechanism.
+Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and they do support real parallel threading.
+
 
 ## Category
 

@@ -1,77 +1,26 @@
 require 'daru'
 require 'MovieDB'
-require 'facter'
+require 'celluloid/current'
 
 module MovieDB
   module DataAnalysis
     module Statistics
-      # Attributes that have integers values.
+
+      include Celluloid
+
       def numeric_vals
         %w(votes budget rating revenue length year mpaa_rating popularity vote_count vote_average runtime)
       end
 
       module_function :numeric_vals
 
-      # Calculate mean of movies.
-      def mean(**options)
-        dataframes_stats(:mean, options)
-      end
+      stats = [:mean, :std, :sum, :count, :max, :min, :min, :product, :standardize, :covariance, :correlation, :worksheet]
 
-      # Calculate sample standard deviation of movies.
-      def std(**options)
-        dataframes_stats(:std, options)
-      end
+      stats.each do |method_name|
+        define_method method_name do |**args|
+          dataframes_stats(method_name, args)
+        end
 
-      # Calculate sum of movies
-      def sum(**options)
-        dataframes_stats(:sum, options)
-      end
-
-      # Count the number of non-nil values in each vector.
-      def count(**options)
-        dataframes_stats(:count, options)
-      end
-
-      # Calculate the maximum value of each movie.
-      def max(**options)
-        dataframes_stats(:max, options)
-      end
-
-      # Calculate the minimmum value of each movie.
-      def min(**options)
-        dataframes_stats(:min, options)
-      end
-
-      # Compute the product of each movie.
-      def product(**options)
-        dataframes_stats(:product, options)
-      end
-
-      def standardize(**options)
-        dataframes_stats(:standardize, options)
-      end
-
-      def describe(**options)
-        dataframes_stats(:describe, options)
-      end
-
-      # Calculate sample variance-covariance between the movies.
-      def covariance(**options)
-        dataframes_stats(:covariance, options)
-      end
-
-      alias :cov :covariance
-
-      # Calculate the correlation between the movies.
-      def correlation(**options)
-        dataframes_stats(:correlation, options)
-      end
-
-      alias :corr :correlation
-
-      # Prints out columns and rows  between the movies.
-      def worksheet(**options)
-        dataframes_stats(:worksheet, options)
       end
 
       private
@@ -132,11 +81,9 @@ module MovieDB
 
         def compute_stats(method, movie, index)
           df = Daru::DataFrame.new(eval(movie.to_s.gsub!('=>', ': ')),
-                                   name: :movie, index: index)
-
+                                       name: :movie, index: index)
           method == :worksheet ? df : df.send(method)
         end
-
     end
   end
 end
