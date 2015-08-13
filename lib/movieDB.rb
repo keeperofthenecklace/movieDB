@@ -51,5 +51,4 @@ module MovieDB
   end
 end
 
-
-
+m = MovieDB::Movie.pool(size: 1)

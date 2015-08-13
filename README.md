@@ -98,7 +98,7 @@ There are 2 ways to find IMDb ids.
 
 * Finding random IMDb ids.
 
-### Fetching specific IMDb ids via http://www.imdb.com
+### Fetching specific IMDb ids
 
 To find IMDb id for specific movies, you must go to:
 
@@ -114,7 +114,7 @@ http://www.imdb.com/title/tt0369610/
 ```
 0369610 is the IMDb id.
 
-### Fetching random IMDb ids.
+### Fetching random IMDb ids
 
 ``` ruby
 r = Random.new
@@ -123,13 +123,7 @@ r = Random.new
   sleep(20)
 end
 ```
-movieDB will throw an error if the IMDb id is invalid.
-
-Below, we've collected 3 specific IMDb ids to use for our examples.
-
-* Ant Man - 0369610
-* Jurassic World - 079380
-* Spy - 0478970
+Note that, movieDB will throw an error you randomly generate a wrong IMDb id.
 
 ### Get Movie Data (multi-thread setup)
 
@@ -145,6 +139,12 @@ Asynchronous calls will never raise an exception, even if an exception occurs wh
 
 ## Part 2 - Run the statistic.
 
+Below, we've collected 3 specific IMDb ids to use for our statistics examples.
+
+* Ant Man - 0369610
+* Jurassic World - 079380
+* Spy - 0478970
+
 Finding the Mean value.
 ```ruby
 m.mean
@@ -157,7 +157,7 @@ Below is the result generated.
 jurassic_world  512.5111111111111
            spy 369.73333333333335
 ```
-movieDB provides you with additional statistic methods.
+Below are more statistic methods you can invoke on your objects.
 
 Feel free to try them out.
 
@@ -172,12 +172,14 @@ Feel free to try them out.
 * covariance
 * correlation
 
-movieDB allows you to view all your data fields in a worksheet template style layout.
+### Layout and Template
+
+movieDB allows you to view all your data fields in a worksheetstyle layout.
 
 ``` ruby
 m.worksheet
 ```
-Below is are values for each attribute .
+A total of 45 fields are printed out.
 
 ``` ruby
               ant-man jurassic_w        spy
@@ -198,6 +200,8 @@ plot_summa        373        298        311
  countries          7         16          7
        ...        ...        ...        ...
 ```
+
+In the example above, we've truncated the parts of the results.
 
 ## Filters
 
