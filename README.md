@@ -1,7 +1,7 @@
 # MovieDB
 
- MovieDB is a multi-threaded ruby wrapper for fetching raw Movie or TV Data from IMDb and performing a variety of high-level statistics.
- The objective and usage of this tool is to allow media producers to collect raw IMDb data to make logical business decisions.
+ MovieDB is a multi-threaded ruby wrapper for performing high-level statistical computation and data analysis Movie or TV Data from IMDb.
+ The objective and usage of this tool is to allow producers, directors, writers to make logical business decisions that will generate profitable ROI.
 
 ## Badges
   - [![PullReview stats](https://www.pullreview.com/github/keeperofthenecklace/movieDB/badges/master.svg?)](https://www.pullreview.com/github/keeperofthenecklace/movieDB/reviews/master)
