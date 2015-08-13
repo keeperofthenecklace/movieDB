@@ -52,7 +52,3 @@ module MovieDB
     end
   end
 end
-
-m = MovieDB::Movie.new
- # m.fetch("0369610", "3079380", "0478970")
-p m.delete_all("0369610")
