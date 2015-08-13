@@ -139,14 +139,14 @@ Asynchronous calls will never raise an exception, even if an exception occurs wh
 
 ### Redis - caching objects
 
-By default, any movie fetched from IMDb is stored in redis for 1800 seconds (30 minutes).
+By default, any movie fetched from IMDb is stored in redis and has an expiration time of 1800 seconds (30 minutes).
 
-But, you have the option of changing expiration time.
+But you can change this expiration time.
 
 ```ruby
-m.async.fetch("0369610", "3079380", "0478970", expire: 86400)
+m.async.fetch("0369610", "3079380", expire: 86400)
 ```
-Here, I set the expiration to 86400 seconds which is equivalent to 24 hours.
+Here, I set the expiration time to 86400 seconds which is equivalent to 24 hours.
 
 ## Part 2 - Run the statistic
 
