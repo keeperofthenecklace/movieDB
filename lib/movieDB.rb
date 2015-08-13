@@ -4,12 +4,8 @@ require 'nokogiri'
 require 'MovieDB/data_store'
 require 'MovieDB/base'
 require 'celluloid/current'
-# require "MovieDB/relation/query_methods"
-# require 'MovieDB/data_analysis/statistics'
-
-load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb'
-load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/data_analysis/statistics.rb'
-
+require 'MovieDB/relation/query_methods'
+require 'MovieDB/data_analysis/statistics'
 
 module MovieDB
 

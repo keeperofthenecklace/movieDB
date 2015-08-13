@@ -3,23 +3,23 @@ require 'json'
 require 'imdb'
 
 # Movie data fetched from IMDb is stored as a hash data type in redis.
-# The key and values are written into a spreadsheet for later data analysis.
 module MovieDB
   module DataStore
     IMDB_METHODS = [:title, :also_known_as, :cast_members, :cast_characters, :cast_members_characters,
                     :director, :writers, :trailer_url, :genres, :languages, :countries, :length, :company, :plot, :plot_synopsis,
                     :plot_summary, :poster, :rating, :votes, :tagline, :mpaa_rating, :year, :release_date, :filming_locations]
 
-    # Create a redis instance.
+    # Create a redis instance
+    # with timeouts.
     def self.initialize_redis
       @redis_db ||= Redis.new(connect_timeout: 20, timeout: 20)
     end
 
-    # Store to Redis for 30 minutes.
-    # Traverse hash for values and write to redis.
-    # Checking if revenue attribute exists.
-    # since, IMDb do not provide the Gross Profit,
-    # We get that info from TMDb.
+    # The options returns with 3 keys
+    # options[:imdb_tmdb], contains the movie data
+    # options[:id], contains the IMDb id.
+    # options[:expire] contains the expiration time for redis.
+
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
        mid =  options[:imdb_tmdb]["imdb_id"].delete('tt')
