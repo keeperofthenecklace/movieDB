@@ -137,9 +137,20 @@ The concurrent object receiving the message will then process the method call in
 
 Asynchronous calls will never raise an exception, even if an exception occurs when the receiver is processing it.
 
-## Part 2 - Run the statistic.
+### Redis - caching objects
 
-Below, we've collected 3 specific IMDb ids to use for our statistics examples.
+By default, any movie fetched from IMDb is stored in redis for 1800 seconds (30 minutes).
+
+But, you have the option of changing expiration time.
+
+```ruby
+m.async.fetch("0369610", "3079380", "0478970", expire: 86400)
+```
+Here, I set the expiration to 86400 seconds which is equivalent to 24 hours.
+
+## Part 2 - Run the statistic
+
+Below, we've collected 3 specific IMDb ids to analyze.
 
 * Ant Man - 0369610
 * Jurassic World - 079380
@@ -238,7 +249,7 @@ Get all the fields and values in a hash of the movie
 m.hgetall(["0369610"])
 # => {"production_companies"=>"[{\"name\"=>\"Universal Studios\", \"id\"=>13},...}
 ```
-HKEYS key
+* HKEYS key
 Get all the fields in a hash of the movie
 
 ``` ruby
@@ -246,7 +257,7 @@ m.hkeys
 # => ["production_companies", "belongs_to_collection", "plot_synopsis", "company", "title",...]
 ```
 
-HVALS key
+* HVALS key
 Get all the values in a hash of the movie
 
 ``` ruby
@@ -254,7 +265,7 @@ m.hvals
 # => ["[{\"name\"=>\"Universal Studios\", \"id\"=>13}, {\"name\"=>\"Amblin Entertainment\",...]
 ```
 
-ALL_IDS key
+* ALL_IDS key
 Get all the id of movies
 
 ``` ruby
@@ -262,8 +273,16 @@ m.all_ids
 # => ["0369610", "3079380"...]
 ```
 
-DELETE_ALL key
-deletes all movies stored in redis.
+* TTL key
+Gets the remaining time to live of a movie.
+
+``` ruby
+m.ttl("0369610)
+# => 120
+```
+
+* DELETE_ALL key
+deletes all movie objects stored in redis.
 
 ``` ruby
 m.delete_all

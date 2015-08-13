@@ -12,7 +12,7 @@ module MovieDB
 
     # Create a redis instance.
     def self.initialize_redis
-      @redis_db ||= Redis.new(:connect_timeout => 20, :timeout => 20)
+      @redis_db ||= Redis.new(connect_timeout: 20, timeout: 20)
     end
 
     # Store to Redis for 30 minutes.
@@ -37,18 +37,18 @@ module MovieDB
         end
       end
 
-      @redis_db.expire "#{options[:id]}", 1800
+      @redis_db.expire "#{options[:id]}", "#{options[:expire]}"
     end
 
     # You can fetch one data at at a time.
     # Do not send an array of arguments.
     #
     # Example the following is accepted.
-    #     get_data('0369610')
+    #
+    #   MovieDB::Movie.get_data('0369610')
     #
     # Not accepted:
-    # get_data(['0369610', 3079380])
-    # An ArgumentError will be raised.
+    #    MovieDB::Movie.get_data(['0369610', 3079380])
     def self.get_data(method, id = nil)
       initialize_redis
 
@@ -65,6 +65,8 @@ module MovieDB
           return @redis_db.flushall
         when :get
           return @redis_db.hgetall("#{id}")
+        when :ttl
+          return @redis_db.ttl("#{id}")
       else
         raise ArgumentError, "The method #{method} is invalid."
       end

@@ -3,11 +3,13 @@ require 'open-uri'
 require 'nokogiri'
 require 'MovieDB/data_store'
 require 'MovieDB/base'
-require "MovieDB/relation/query_methods"
-# load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb'
-require 'MovieDB/data_analysis/statistics'
-# load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/data_analysis/statistics.rb'
 require 'celluloid/current'
+# require "MovieDB/relation/query_methods"
+# require 'MovieDB/data_analysis/statistics'
+
+load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb'
+load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/data_analysis/statistics.rb'
+
 
 module MovieDB
 
@@ -51,4 +53,9 @@ module MovieDB
   end
 end
 
-m = MovieDB::Movie.pool(size: 1)
+m = MovieDB::Movie.new
+# m.fetch("3079380", expire: 2400)
+# p m.delete_all
+# p m.all_ids
+p m.ttl("3079380")
+

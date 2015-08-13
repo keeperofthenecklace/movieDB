@@ -11,24 +11,27 @@ module MovieDB
     module QueryMethods
       extend MovieDB::Secret::Lock
 
-      def store_data(ids)
-        check_rate_limit(ids)
+      # Fetch data from IMDb.
+      # Default expiration time for stored object in redis is 1800 seconds.
+      def fetch(*ids, expire: 1800)
+        store_data(ids_to_array(ids), expire)
 
-        ids.each do |id|
-          movie_exists?(id) ? true : imdb_tmdb_lookup(id)
-        end
-      end
-
-      def fetch(*ids)
-        store_data(ids_to_array(ids))
-
-          arr = []
+        # Collect all fetched data and assign to global variable
+        arr = []
 
         ids.each do |id|
           arr << (hgetall(id))
         end
 
         $movie_data = arr
+      end
+
+      def store_data(ids, expire)
+        check_rate_limit(ids)
+
+        ids.each do |id|
+          movie_exists?(id) ? true : imdb_tmdb_lookup(id, expire)
+        end
       end
 
       def hgetall(id)
@@ -43,26 +46,29 @@ module MovieDB
         MovieDB::DataStore.get_data(:hvals, id)
       end
 
-      def mset(record, id)
-        MovieDB::DataStore.write_data(imdb_tmdb: record, id: id)
+      def mset(record, id, expire)
+        MovieDB::DataStore.write_data(imdb_tmdb: record, id: id, expire: expire)
       end
 
       def all_ids
-       return MovieDB::DataStore.get_data(:scan).flatten.delete_if{ |n| n == "0" }
+       return MovieDB::DataStore.get_data(:scan).flatten.delete_if { |n| n == "0" }
       end
 
       def delete_all
-        $get_data.clear
         return MovieDB::DataStore.get_data(:flushall)
+      end
+
+      def ttl(id)
+        MovieDB::DataStore.get_data(:ttl, id)
       end
 
       def movie_exists?(id)
         !hgetall(id).empty?
       end
 
-      def imdb_tmdb_lookup(id) # :nodoc:
-        query_imdb(id)
-        query_tmdb(id)
+      def imdb_tmdb_lookup(id, expire) # :nodoc:
+        query_imdb(id, expire)
+        query_tmdb(id, expire)
       end
 
       # Fetch the movie from both IMDb and TMDb repositories.
@@ -72,23 +78,23 @@ module MovieDB
       #
       # Reference https://github.com/skozilla/BoxOfficeMojo/tree/master/boxofficemojoAPI
       # for the api.
-      def query_imdb(id)
+      def query_imdb(id, expire)
         # Query IMDb
         imdb = Imdb::Movie.new(id)
 
         raise NameError, "#{id} is an invalid IMDb id." if imdb.title.nil?
 
-        mset(imdb, id)
+        mset(imdb, id, expire)
       end
 
-      def query_tmdb(id) # :nodoc:
+      def query_tmdb(id, expire) # :nodoc:
         Tmdb::Api.key(MovieDB::Secret::Lock.key)
 
         tmdb = Tmdb::Movie.detail("tt#{id}")
 
         raise NameError, "#{id} is an invalid TMDb id." if tmdb.nil?
 
-        mset(tmdb, id)
+        mset(tmdb, id, expire)
       end
 
       def fetch_data(method, ids = nil)
