@@ -80,9 +80,9 @@ require 'movieDB'
 ``` ruby
 m = MovieDB::Movie.pool(size: 10)
 ```
-## 2 Step Process
+## Step Process
 
-Fetching and analysing movie / tv data using movieDB is a simple 2 step process.
+Fetching and analysing movie / TV data using movieDB is a simple 2 step process.
 
 First, fetch the data from IMDb.
 
@@ -114,8 +114,8 @@ http://www.imdb.com/title/tt0369610/
 ```
 0369610 is the IMDb id.
 
-### Fetching random IMDb ids
-
+### Fetching random IMDb ids (multi-thread setup)
+In this example, I start of with anIMDb id of 0369000. And then add onto it.
 ``` ruby
 r = Random.new
 500.times do |i|
@@ -123,9 +123,9 @@ r = Random.new
   sleep(20)
 end
 ```
-Note that, movieDB will throw an error you randomly generate a wrong IMDb id.
+Note that, movieDB will throw an error if your randomly generated IMDb id is not a valid number.
 
-### Get Movie Data (multi-thread setup)
+### Get Movie Data
 
 ``` ruby
 m.async.fetch("0369610", "3079380", "0478970")
