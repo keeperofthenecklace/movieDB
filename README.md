@@ -13,11 +13,10 @@
   - [![Build Status](https://secure.travis-ci.org/keeperofthenecklace/movieDB.png?branch=master)](http://travis-ci.org/keeperofthenecklace/movieDB)
 
 ## Technology
-* SciRuby is the tool used for all statistical and scientific computations.
-* Redis is used to store all data with an expiration time of 1800 seconds for all cached objects.
-* IMDb is where we collect a chunk of the film data.
-* TMDb is where we collect the film revenues.
-* BoxOfficeMojo is where we will be scraping future film data.
+* SciRuby is used for all statistical and scientific computations.
+* Redis is used to store all data.
+* IMDb and TMDb is the source for all film / TV data.
+* BoxOfficeMojo is where we will be scraping future film / TV data.
 * Celluloid is used to build fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
 multithreading won't work since these types of interpreters have Global Interpreter Lock (GIL).
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
