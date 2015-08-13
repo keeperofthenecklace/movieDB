@@ -174,12 +174,12 @@ Feel free to try them out.
 
 ### Layout and Template
 
-movieDB allows you to view all your data fields in a worksheetstyle layout.
+movieDB allows you to view all your data fields in a worksheet style layout.
 
 ``` ruby
 m.worksheet
 ```
-A total of 45 fields are printed out. But, we've truncated the result for ease of reading
+A total of 45 fields are printed out. But, we've truncated the result for ease of reading.
 
 
 ``` ruby
@@ -204,16 +204,16 @@ plot_summa        373        298        311
 
 ## Filters
 
-By default, movieDB processes all values returned from IMDb.
-You can customize what fields you want to process with
-the following filters:
+When performing statistics on an object, movieDB by default processes all fields.
+
+Contrary, to this default approach, you now have the option of filtering what fields you want processed with the following 2 filters.
 
 * only
 * except
 
-'only' processes the provided fields you supply.
+'only' analyzes the fields you provide.
 
-'Except' is the inverse of 'only.
+'Except' is the inverse of 'only'. It analyzes all the fields you did not provide.
 
 ``` ruby
 m.standardize only: [:budget, :revenue, :length, :vote_average]
