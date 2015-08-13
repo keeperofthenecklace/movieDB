@@ -179,7 +179,8 @@ movieDB allows you to view all your data fields in a worksheetstyle layout.
 ``` ruby
 m.worksheet
 ```
-A total of 45 fields are printed out.
+A total of 45 fields are printed out. But, we've truncated the result for ease of reading
+
 
 ``` ruby
               ant-man jurassic_w        spy
@@ -200,8 +201,6 @@ plot_summa        373        298        311
  countries          7         16          7
        ...        ...        ...        ...
 ```
-
-In the example above, we've truncated the parts of the results.
 
 ## Filters
 
