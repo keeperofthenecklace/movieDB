@@ -131,7 +131,7 @@ Below, we've collected 3 specific IMDb ids to use for our examples.
 * Jurassic World - 079380
 * Spy - 0478970
 
-### Get Movie Data(multi-thread setup)
+### Get Movie Data (multi-thread setup)
 
 ``` ruby
 m.async.fetch("0369610", "3079380", "0478970")
@@ -143,16 +143,15 @@ The concurrent object receiving the message will then process the method call in
 
 Asynchronous calls will never raise an exception, even if an exception occurs when the receiver is processing it.
 
-```
 ## Part 2 - Run the statistic.
 
 Finding the Mean value.
-``` ruby
+```ruby
 m.mean
 ```
 Below is the result generated.
 
-``` ruby
+```ruby
                              mean
        ant-man  576.8444444444444
 jurassic_world  512.5111111111111
