@@ -231,13 +231,6 @@ movieDB comes with commands to help you query or manipulate stored objects in re
 * HGETALL key
 Get all the fields and values in a hash of the movie
 
-movieDB prints out the data in a hash.
-
-``` ruby
-[{"production_companies"=>"[{\"name\"=>\"Universal Studios\", \"id\"=>13},
-{\"name\"=>\"Amblin Entertainment\", \"id\"=>56},
-{\"name\"=>\"Legendary Pictures\", \"id\"=>923}]",... }]
-
 ``` ruby
 m.hgetall(["0369610"])
 # => {"production_companies"=>"[{\"name\"=>\"Universal Studios\", \"id\"=>13},...}
