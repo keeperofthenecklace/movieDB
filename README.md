@@ -17,7 +17,7 @@
 * Redis is used to store all data.
 * IMDb and TMDb is the source for all film / TV data.
 * BoxOfficeMojo is where we will be scraping future film / TV data.
-* Celluloid is used to build fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
+* Celluloid is used to build the fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
 multithreading won't work since these types of interpreters have Global Interpreter Lock (GIL).
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
 
@@ -27,8 +27,8 @@ Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and su
 movieDB is broken down into 3 components namely:
 
 * Statistics
-* Visualizations
-* DataMining
+* Visualizations (Work in progress)
+* DataMining (Work in progress)
 
 # Statistics
 
