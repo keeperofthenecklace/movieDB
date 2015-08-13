@@ -34,32 +34,31 @@ module MovieDB
         end
       end
 
-      def hgetall(id)
-        MovieDB::DataStore.get_data(:all, id)
+      # Modifying and manipulating redis objects.
+      #  Example:
+      #
+      #   m = MovieDB::Movie.new
+      #
+      #   m.fetch("0369610", "3079380", "0478970")
+      #
+      #   m.hgetall("0369610")
+      [:all, :hkeys, :hvals, :flushall, :ttl].each do |method_name|
+        define_method method_name do |arg|
+          MovieDB::DataStore.get_data(method_name, arg)
+        end
       end
 
-      def hkeys(id)
-        MovieDB::DataStore.get_data(:hkeys, id)
-      end
+      alias hgetall all
+      alias delete_all flushall
 
-      def hvals(id)
-        MovieDB::DataStore.get_data(:hvals, id)
-      end
-
-      def mset(record, id, expire)
-        MovieDB::DataStore.write_data(imdb_tmdb: record, id: id, expire: expire)
-      end
-
-      def all_ids
+      def scan
        return MovieDB::DataStore.get_data(:scan).flatten.delete_if { |n| n == "0" }
       end
 
-      def delete_all
-        return MovieDB::DataStore.get_data(:flushall)
-      end
+      alias all_ids scan
 
-      def ttl(id)
-        MovieDB::DataStore.get_data(:ttl, id)
+      def mset(record, id, expire)
+        MovieDB::DataStore.write_data(imdb_tmdb: record, id: id, expire: expire)
       end
 
       def movie_exists?(id)

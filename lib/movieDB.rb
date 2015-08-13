@@ -54,8 +54,5 @@ module MovieDB
 end
 
 m = MovieDB::Movie.new
-# m.fetch("3079380", expire: 2400)
-# p m.delete_all
-# p m.all_ids
-p m.ttl("3079380")
-
+ # m.fetch("0369610", "3079380", "0478970")
+p m.delete_all("0369610")
