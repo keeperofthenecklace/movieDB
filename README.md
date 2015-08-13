@@ -289,9 +289,10 @@ m.delete_all
 ```
 # Visualizations
 
-This
+(Work in progress)
 
-# DataFrames and Vectors
+# Datamining
+(Work in progress)
 
 ## Contact me
 
