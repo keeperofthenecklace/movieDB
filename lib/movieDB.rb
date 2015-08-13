@@ -3,11 +3,11 @@ require 'open-uri'
 require 'nokogiri'
 require 'MovieDB/data_store'
 require 'MovieDB/base'
-# require "MovieDB/relation/query_methods"
-load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb'
-# require 'MovieDB/data_analysis/statistics'
-load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/data_analysis/statistics.rb'
-
+require "MovieDB/relation/query_methods"
+# load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/relation/query_methods.rb'
+require 'MovieDB/data_analysis/statistics'
+# load '/Users/albertmckeever/Sites/movieDB/lib/movieDB/data_analysis/statistics.rb'
+require 'celluloid/current'
 
 module MovieDB
 
@@ -25,6 +25,7 @@ module MovieDB
   #
   class Movie < MovieDB::Base
 
+    include Celluloid
     include MovieDB::Relation::QueryMethods
     include MovieDB::DataAnalysis::Statistics
 
@@ -49,5 +50,6 @@ module MovieDB
     end
   end
 end
+
 
 

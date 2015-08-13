@@ -1,12 +1,9 @@
 require 'daru'
 require 'MovieDB'
-require 'celluloid/current'
 
 module MovieDB
   module DataAnalysis
     module Statistics
-
-      include Celluloid
 
       def numeric_vals
         %w(votes budget rating revenue length year mpaa_rating popularity vote_count vote_average runtime)
@@ -87,3 +84,4 @@ module MovieDB
     end
   end
 end
+

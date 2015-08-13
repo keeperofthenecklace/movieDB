@@ -19,8 +19,8 @@
 * TMDb is where we collect the film revenues.
 * BoxOfficeMojo is where we will be scraping future film data.
 * Celluloid is used to build fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
-multithreading won't work since these types of interpreters have Global Interpreter Lock (GIL) mechanism.
-Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and they do support real parallel threading.
+multithreading won't work since these types of interpreters have Global Interpreter Lock (GIL).
+Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
 
 
 ## Category
@@ -75,10 +75,10 @@ $ irb
 require 'movieDB'
 ```
 
-## Initialize MovieDB
+## Initialize MovieDB (multi-thread setup)
 
 ``` ruby
-m = MovieDB::Movie.new
+m = MovieDB::Movie.pool(size: 10)
 ```
 ## 2 Step Process
 
@@ -92,18 +92,20 @@ That's it! It is that simple.
 
 ## Part 1 - Fetch Data from IMDb
 
-In this example, we use movie data for all computations.
+There are 2 ways to find IMDb ids.
 
-You can also TV data if you want.
+* Finding specific IMDb ids
 
-### Finding IMDb ids
+* Finding random IMDb ids.
 
-To find IMDb id for a movie, you must go to:
+### Fetching specific IMDb ids via http://www.imdb.com
+
+To find IMDb id for specific movies, you must go to:
 
 ```bash
 http://www.imdb.com
 ```
-There, search for your movie of choice. Once you do, IMDb redirects you to the movie's page.
+Search for your movie of choice. Once you do, IMDb redirects you to the movie's page.
 
 The URL for the redirect page includes the IMDB id.
 
@@ -112,33 +114,39 @@ http://www.imdb.com/title/tt0369610/
 ```
 0369610 is the IMDb id.
 
-Below, we've collected 3 ids to use as examples.
+### Fetching random IMDb ids.
+
+``` ruby
+r = Random.new
+500.times do |i|
+  m.async.fetch(("0" + (369000 + r.rand(900)).to_s))
+  sleep(20)
+end
+```
+movieDB will throw an error if the IMDb id is invalid.
+
+Below, we've collected 3 specific IMDb ids to use for our examples.
 
 * Ant Man - 0369610
 * Jurassic World - 079380
 * Spy - 0478970
 
-### Get Movie Data
+### Get Movie Data(multi-thread setup)
 
 ``` ruby
-m.fetch("0369610", "3079380", "0478970")
+m.async.fetch("0369610", "3079380", "0478970")
 ```
-This queries both IMDb and TMDb. To see the returned data invoke ruby's 'puts' method.
+By calling m.async, this instructs Celluloid that you would like for the given method to be called asynchronously.
+This means that rather than the caller waiting for a response of querying both IMDb and TMDb, the caller sends a
+message to the concurrent object that you'd like the given method invoked, and then the caller proceeds without waiting for a response.
+The concurrent object receiving the message will then process the method call in the background.
 
-``` ruby
-puts m.fetch("0369610", "3079380", "0478970")
-```
-movieDB prints out the data in a hash.
+Asynchronous calls will never raise an exception, even if an exception occurs when the receiver is processing it.
 
-``` ruby
-[{"production_companies"=>"[{\"name\"=>\"Universal Studios\", \"id\"=>13},
-{\"name\"=>\"Amblin Entertainment\", \"id\"=>56},
-{\"name\"=>\"Legendary Pictures\", \"id\"=>923}]",... }]
 ```
 ## Part 2 - Run the statistic.
 
-Here we use the mean statistic method.
-
+Finding the Mean value.
 ``` ruby
 m.mean
 ```
@@ -223,6 +231,13 @@ movieDB comes with commands to help you query or manipulate stored objects in re
 
 * HGETALL key
 Get all the fields and values in a hash of the movie
+
+movieDB prints out the data in a hash.
+
+``` ruby
+[{"production_companies"=>"[{\"name\"=>\"Universal Studios\", \"id\"=>13},
+{\"name\"=>\"Amblin Entertainment\", \"id\"=>56},
+{\"name\"=>\"Legendary Pictures\", \"id\"=>923}]",... }]
 
 ``` ruby
 m.hgetall(["0369610"])
