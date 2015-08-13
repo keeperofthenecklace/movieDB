@@ -1,6 +1,6 @@
 # MovieDB
 
- MovieDB is a multi-threaded ruby wrapper for performing high-level statistical computation and data analysis Movie on TV Data from IMDb.
+ MovieDB is a multi-threaded ruby wrapper for performing advance statistical computation and high-level data analysis on Movie or TV Data from IMDb.
  The objective and usage of this tool is to allow producers, directors, writers to make logical business decisions that will generate profitable ROI.
 
 ## Badges
