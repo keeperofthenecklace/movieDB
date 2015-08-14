@@ -1,15 +1,13 @@
+require "MovieDB/secret"
 require "MovieDB/data_store"
 require "MovieDB/support/reporting"
 require "imdb"
 require "themoviedb"
-# require "MovieDB/secret"
-load "/Users/albertmckeever/Sites/movieDB/lib/movieDB/secret.rb"
-
 
 module MovieDB
   module Relation
     module QueryMethods
-      extend MovieDB::Secret::Lock
+      extend MovieDB::Secret
 
       # Fetch data from IMDb.
       # Default expiration time for stored object in redis is 1800 seconds.
@@ -52,7 +50,7 @@ module MovieDB
       alias delete_all flushall
 
       def scan
-       return MovieDB::DataStore.get_data(:scan).flatten.delete_if { |n| n == "0" }
+        return MovieDB::DataStore.get_data(:scan).flatten.delete_if { |n| n == "0" }
       end
 
       alias all_ids scan
@@ -87,7 +85,7 @@ module MovieDB
       end
 
       def query_tmdb(id, expire) # :nodoc:
-        Tmdb::Api.key(MovieDB::Secret::Lock.key)
+        Tmdb::Api.key(MovieDB::Secret.key)
 
         tmdb = Tmdb::Movie.detail("tt#{id}")
 
@@ -108,23 +106,23 @@ module MovieDB
 
       private
 
-        def check_argument(method, ids) # :nodoc:
-          if ids.flatten!.empty?
-            raise ArgumentError, "The method #{method}() must contain arguments."
-          end
+      def check_argument(method, ids) # :nodoc:
+        if ids.flatten!.empty?
+          raise ArgumentError, "The method #{method}() must contain arguments."
         end
+      end
 
-        # IMDb current limits are 40 requests every 10
-        # seconds and are limited by IP address, not API key.
-        def check_rate_limit(ids)
-          if ids.length >= 40
-            MovieDB::Support::Reporting.warn(<<-MSG.strip!)
+      # IMDb current limits are 40 requests every 10
+      # seconds and are limited by IP address, not API key.
+      def check_rate_limit(ids)
+        if ids.length >= 40
+          MovieDB::Support::Reporting.warn(<<-MSG.strip!)
             Reduce the amount of IMDb ids. \nYou have exceeded the rate limit.
-            MSG
-          else
-            MovieDB::Support::Reporting.silenced
-          end
+          MSG
+        else
+          MovieDB::Support::Reporting.silenced
         end
+      end
     end
   end
 end

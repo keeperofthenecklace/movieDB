@@ -1,6 +1,4 @@
 require 'redis'
-require 'json'
-require 'imdb'
 
 # Movie data fetched from IMDb is stored as a hash data type in redis.
 module MovieDB

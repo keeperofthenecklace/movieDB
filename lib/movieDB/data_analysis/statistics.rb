@@ -1,10 +1,8 @@
 require 'daru'
-require 'MovieDB'
 
 module MovieDB
   module DataAnalysis
     module Statistics
-
       def numeric_vals
         %w(votes budget rating revenue length year mpaa_rating popularity vote_count vote_average runtime)
       end
