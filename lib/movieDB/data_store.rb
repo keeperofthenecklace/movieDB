@@ -3,15 +3,19 @@ require 'redis'
 # Movie data fetched from IMDb is stored as a hash data type in redis.
 module MovieDB
   module DataStore
-    IMDB_METHODS = [:title, :also_known_as, :cast_members, :cast_characters, :cast_members_characters,
-                    :director, :writers, :trailer_url, :genres, :languages, :countries, :length, :company, :plot, :plot_synopsis,
-                    :plot_summary, :poster, :rating, :votes, :tagline, :mpaa_rating, :year, :release_date, :filming_locations]
-
     # Create a redis instance
     # with timeouts.
     def self.initialize_redis
       @redis_db ||= Redis.new(connect_timeout: 20, timeout: 20)
     end
+
+    def imdb_methods
+      [:title, :also_known_as, :cast_members, :cast_characters, :cast_members_characters,
+       :director, :writers, :trailer_url, :genres, :languages, :countries, :length, :company, :plot, :plot_synopsis,
+       :plot_summary, :poster, :rating, :votes, :tagline, :mpaa_rating, :year, :release_date, :filming_locations]
+    end
+
+    module_function :imdb_methods
 
     # The options returns with 3 keys
     # options[:imdb_tmdb], contains the movie data
@@ -30,7 +34,7 @@ module MovieDB
           end
         end
       else
-        MovieDB::DataStore::IMDB_METHODS.each do |method|
+        imdb_methods.each do |method|
           @redis_db.hsetnx "#{options[:imdb_tmdb].id}", method.to_s, "#{options[:imdb_tmdb].send(method)}"
         end
       end

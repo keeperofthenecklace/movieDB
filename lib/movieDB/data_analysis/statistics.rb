@@ -15,7 +15,6 @@ module MovieDB
         define_method method_name do |**args|
           dataframes_stats(method_name, args)
         end
-
       end
 
       private

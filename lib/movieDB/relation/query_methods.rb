@@ -47,13 +47,16 @@ module MovieDB
       end
 
       alias hgetall all
-      alias delete_all flushall
 
-      def scan
-        return MovieDB::DataStore.get_data(:scan).flatten.delete_if { |n| n == "0" }
+      [:scan, :flushall].each do |method_name|
+        define_method method_name do
+         mn = MovieDB::DataStore.get_data(method_name)
+          mn.flatten.delete_if { |n| n == "0" } if method_name == :scan
+        end
       end
 
       alias all_ids scan
+      alias delete_all flushall
 
       def mset(record, id, expire)
         MovieDB::DataStore.write_data(imdb_tmdb: record, id: id, expire: expire)
@@ -63,11 +66,6 @@ module MovieDB
         !hgetall(id).empty?
       end
 
-      def imdb_tmdb_lookup(id, expire) # :nodoc:
-        query_imdb(id, expire)
-        query_tmdb(id, expire)
-      end
-
       # Fetch the movie from both IMDb and TMDb repositories.
       #
       # Future release of this software will scrap IMDb data from boxofficemojoAPI.com
@@ -75,7 +73,12 @@ module MovieDB
       #
       # Reference https://github.com/skozilla/BoxOfficeMojo/tree/master/boxofficemojoAPI
       # for the api.
-      def query_imdb(id, expire)
+      def imdb_tmdb_lookup(id, expire) # :nodoc:
+        query_imdb(id, expire)
+        query_tmdb(id, expire)
+      end
+
+      def query_imdb(id, expire) # :nodoc:
         # Query IMDb
         imdb = Imdb::Movie.new(id)
 
