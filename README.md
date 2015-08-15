@@ -21,9 +21,14 @@
 multithreading won't work since these types of interpreters have Global Interpreter Lock (GIL).
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
 
+## Requirements
+ruby-2.2.2
+jruby-9.0.0.0
+
+As of this writing JRuby 9.0.0.0 is the first stable release of the 9k series that supports ruby-2.2.2. Please
+check the website http://jruby.org for any future updates.
 
 ## Category
-
 movieDB is broken down into 3 components namely:
 
 * Statistics
@@ -288,7 +293,6 @@ m.delete_all
 # => []
 ```
 # Visualizations
-
 (Work in progress)
 
 # Datamining
@@ -299,5 +303,8 @@ m.delete_all
 If you'd like to collaborate, please feel free to fork source code on github.
 
 You can also contact me at albertmck@gmail.com
+
+## Disclaimer
+This software is provided “as is” and without any express or implied warranties, including, without limitation, the implied warranties of merchantibility and fitness for a particular purpose.
 
 ###### Copyright (c) 2013 - 2015 Albert McKeever, released under MIT license
