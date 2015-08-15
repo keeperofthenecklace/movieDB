@@ -22,11 +22,13 @@ multithreading won't work since these types of interpreters have Global Interpre
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
 
 ## Requirements
-ruby-2.2.2
+ruby-2.2.2 or higher.
 jruby-9.0.0.0
 
-As of this writing JRuby 9.0.0.0 is the first stable release of the 9k series that supports ruby-2.2.2. Please
-check the website http://jruby.org for any future updates.
+As of this writing, JRuby 9.0.0.0 is the first stable release of the 9k series that supports ruby-2.2.2.
+unfortunately, this release crashes with movieDB when you perform statistics computation using SciRuby.
+So, jruby can not be used at the moment.
+Please check the website http://jruby.org for any future updates.c
 
 ## Category
 movieDB is broken down into 3 components namely:
@@ -39,7 +41,7 @@ movieDB is broken down into 3 components namely:
 
 Simple statistical analysis on numeric data.
 The corresponding computation is performed on
-both numeric and non-mumeric vectors within the
+both numeric and string vectors within the
 collected data.
 
 ## Installation
@@ -82,7 +84,7 @@ require 'movieDB'
 ## Initialize MovieDB (multi-thread setup)
 
 ``` ruby
-m = MovieDB::Movie.pool(size: 10)
+m = MovieDB::Movie.pool(size: 2)
 ```
 ## Step Process
 
@@ -122,12 +124,18 @@ http://www.imdb.com/title/tt0369610/
 In this example, I start of with anIMDb id of 0369000. And then add onto it.
 ``` ruby
 r = Random.new
-500.times do |i|
-  m.async.fetch(("0" + (369000 + r.rand(900)).to_s))
-  sleep(20)
+
+20.times do |i|
+  m.async.fetch(sprintf '%07d', r.rand(300000))
 end
+
+sleep(11)
 ```
-Note that, movieDB will throw an error if your randomly generated IMDb id is not a valid number.
+Note: IMDB has a rate limit of 40 requests every 10 seconds and are limited by IP address, not API key.
+If you exceed the limit, you will receive a 429 HTTP status with a 'Retry-After' header.
+As soon your cool down period expires, you are free to continue making requests.
+
+Also, movieDB will throw an error if you randomly generate an invalid IMDb id.
 
 ### Get Movie Data
 

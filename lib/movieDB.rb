@@ -3,7 +3,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'MovieDB/data_store'
 require 'MovieDB/base'
-require 'celluloid/current'
+# require 'celluloid/current'
 require 'MovieDB/relation/query_methods'
 require 'MovieDB/data_analysis/statistics'
 
@@ -23,7 +23,7 @@ module MovieDB
   #
   class Movie < MovieDB::Base
 
-    include Celluloid
+    # include Celluloid
     include MovieDB::Relation::QueryMethods
     include MovieDB::DataAnalysis::Statistics
 
