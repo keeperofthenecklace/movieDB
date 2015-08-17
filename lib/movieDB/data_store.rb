@@ -21,17 +21,22 @@ module MovieDB
     # options[:imdb_tmdb], contains the movie data
     # options[:id], contains the IMDb id.
     # options[:expire] contains the expiration time for redis.
+    #
+    # IMDb return a status code of 34 if the resource can not be found.
 
     def self.write_data(**options)
       if options[:imdb_tmdb].is_a? Hash
-       mid =  options[:imdb_tmdb]["imdb_id"].delete('tt')
 
         options.each_pair do |k, v|
-          if v.is_a? Hash
-            v.each_pair do |j, w|
-              @redis_db.hsetnx "#{mid}", "#{j}", "#{w}"
+            if v.is_a? Hash
+              if v["status_code"] == "34"
+                puts "#{options[:id]} is an invalid IMDb id."
+              else
+                v.each_pair do |j, w|
+                    @redis_db.hsetnx "#{options[:id]}", "#{j}", "#{w}"
+                end
+              end
             end
-          end
         end
       else
         imdb_methods.each do |method|

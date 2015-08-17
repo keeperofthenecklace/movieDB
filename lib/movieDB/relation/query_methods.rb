@@ -11,6 +11,14 @@ module MovieDB
 
       # Fetch data from IMDb.
       # Default expiration time for stored object in redis is 1800 seconds.
+      # You can set this value to what ever you like.
+      #
+      # Example:
+      #
+      #   m = MovieDB::Movie.new
+      #
+      #   m.fetch("0369324", "0369662", expire: 84600)
+      #
       def fetch(*ids, expire: 1800)
         store_data(ids_to_array(ids), expire)
 

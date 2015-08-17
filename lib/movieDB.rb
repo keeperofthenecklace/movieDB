@@ -40,7 +40,7 @@ module MovieDB
 
       if ids.is_a? Array
         ids.each do |n|
-          arr << n.to_s
+          arr << n
         end
       end
 
@@ -48,3 +48,4 @@ module MovieDB
     end
   end
 end
+

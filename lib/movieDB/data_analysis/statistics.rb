@@ -9,7 +9,7 @@ module MovieDB
 
       module_function :numeric_vals
 
-      stats = [:mean, :std, :sum, :count, :max, :min, :min, :product, :standardize, :covariance, :correlation, :worksheet]
+      stats = [:mean, :std, :sum, :count, :max, :min, :min, :product, :standardize, :describe, :covariance, :correlation, :worksheet]
 
       stats.each do |method_name|
         define_method method_name do |**args|
@@ -30,7 +30,7 @@ module MovieDB
               value_count = []
 
               movie.each_pair do |k, v|
-                @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.chars.count)
+                @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.split(' ').count)
                 @index << k.to_sym
               end
             end
@@ -45,7 +45,7 @@ module MovieDB
                   mr = movie.reject { |k, _| k != filter.to_s }
 
                   mr.each_pair do |k, v|
-                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.chars.count)
+                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.join(' ').split(' ').count)
                     @index << k.to_sym
                   end
                 end
@@ -58,7 +58,7 @@ module MovieDB
                   value_count = []
 
                   mr.each_pair do |k, v|
-                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.chars.count)
+                    @data_key[(movie['title'].sub(" ", "_").downcase)] = value_count << (MovieDB::DataAnalysis::Statistics.numeric_vals.any? { |word| word == k } ? v.to_i : v.join(' ').split(' ').count)
                     @index << k.to_sym
                   end
                 end
