@@ -25,10 +25,9 @@ Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and su
 ruby-2.2.2 or higher.
 jruby-9.0.0.0
 
-As of this writing, JRuby 9.0.0.0 is the first stable release of the 9k series that supports ruby-2.2.2.
-unfortunately, this release crashes with movieDB when you perform statistics computation using SciRuby.
-So, jruby can not be used at the moment.
-Please check the website http://jruby.org for any future updates.c
+As of this writing, jruby-9.0.0.0.pre1 crashes with movieDB when perform statistics computation.
+So, since this is not a stable release, jruby can not be used at this moment.
+Please check the website http://jruby.org for any future updates.
 
 ## Category
 movieDB is broken down into 3 components namely:

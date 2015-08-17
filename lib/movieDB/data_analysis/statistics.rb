@@ -70,11 +70,12 @@ module MovieDB
 
           index = @index.uniq
 
-          compute_stats(method, @data_key, index )
+          movie_numeric_vector = Hash[@data_key.map { |k, v| [k.to_s.gsub('-', '_').to_sym, v] }]
+          compute_stats(method, movie_numeric_vector, index )
         end
 
         def compute_stats(method, movie, index)
-          df = Daru::DataFrame.new(eval(movie.to_s.gsub!('=>', ': ')),
+          df = Daru::DataFrame.new(movie,
                                        name: :movie, index: index)
           method == :worksheet ? df : df.send(method)
         end
