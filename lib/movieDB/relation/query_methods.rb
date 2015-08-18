@@ -1,8 +1,8 @@
 require "MovieDB/secret"
 require "MovieDB/data_store"
 require "MovieDB/support/reporting"
-require "imdb"
 require "themoviedb"
+require "imdb"
 
 module MovieDB
   module Relation

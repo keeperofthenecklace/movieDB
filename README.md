@@ -25,10 +25,6 @@ Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and su
 ruby-2.2.2 or higher.
 jruby-9.0.0.0
 
-As of this writing, jruby-9.0.0.0.pre1 crashes with movieDB when perform statistics computation.
-So, since this is not a stable release, jruby can not be used at this moment.
-Please check the website http://jruby.org for any future updates.
-
 ## Category
 movieDB is broken down into 3 components namely:
 
@@ -120,21 +116,23 @@ http://www.imdb.com/title/tt0369610/
 0369610 is the IMDb id.
 
 ### Fetching random IMDb ids (multi-thread setup)
-In this example, I start of with anIMDb id of 0369000. And then add onto it.
+You can fetch IMDb ids random.
+
 ``` ruby
 r = Random.new
 
-20.times do |i|
+39.times do |i|
   m.async.fetch(sprintf '%07d', r.rand(300000))
+  sleep(4)
 end
 
-sleep(11)
+sleep(10)
 ```
 Note: IMDB has a rate limit of 40 requests every 10 seconds and are limited by IP address, not API key.
 If you exceed the limit, you will receive a 429 HTTP status with a 'Retry-After' header.
 As soon your cool down period expires, you are free to continue making requests.
 
-Also, movieDB will throw an error if you randomly generate an invalid IMDb id.
+Also, movieDB will throw a NameError if the randomly generated IMDb id in invalid.
 
 ### Get Movie Data
 

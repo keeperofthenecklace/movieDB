@@ -1,12 +1,10 @@
-require 'rubygems'
-require 'MovieDB/data_store'
 require 'MovieDB/base'
-require 'celluloid/current'
-require 'MovieDB/relation/query_methods'
+require 'MovieDB/data_store'
 require 'MovieDB/data_analysis/statistics'
+require 'MovieDB/relation/query_methods'
+require 'celluloid/current'
 
 module MovieDB
-
   # Create a new movie record. The values are stored in the key-value data store.
   #
   # Default values are supplement during the instantiation of the class.
@@ -20,7 +18,6 @@ module MovieDB
   # You can raise a MovieError like this:
   #
   class Movie < MovieDB::Base
-
     include Celluloid
     include MovieDB::Relation::QueryMethods
     include MovieDB::DataAnalysis::Statistics
