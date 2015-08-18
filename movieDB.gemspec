@@ -26,5 +26,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'imdb'
   spec.add_dependency 'json'
   spec.add_dependency 'celluloid'
-  spec.add_dependency 'nokogiri'
 end
