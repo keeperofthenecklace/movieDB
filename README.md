@@ -22,7 +22,8 @@ multi-threading won't work since these types of interpreters have Global Interpr
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
 
 ## Requirements
-ruby-2.2.2 or higher.
+ruby-2.2.2 or higher
+
 jruby-9.0.0.0
 
 ## Category
