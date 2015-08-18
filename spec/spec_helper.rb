@@ -15,9 +15,9 @@ SimpleCov.start do
 end
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
-require "rspec"
-require "imdb"
-require "redis"
+require 'rspec'
+require 'imdb'
+require 'redis'
 require 'fileutils'
 require 'movieDB'
 

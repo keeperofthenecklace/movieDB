@@ -18,7 +18,7 @@
 * IMDb and TMDb is the source for all film / TV data.
 * BoxOfficeMojo is where we will be scraping future film / TV data.
 * Celluloid is used to build the fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
-multithreading won't work since these types of interpreters have Global Interpreter Lock (GIL).
+multi-threading won't work since these types of interpreters have Global Interpreter Lock (GIL).
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
 
 ## Requirements
@@ -300,7 +300,7 @@ m.delete_all
 # Visualizations
 (Work in progress)
 
-# Datamining
+# Data mining
 (Work in progress)
 
 ## Contact me
