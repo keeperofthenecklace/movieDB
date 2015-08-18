@@ -1,6 +1,4 @@
 require 'rubygems'
-require 'open-uri'
-require 'nokogiri'
 require 'MovieDB/data_store'
 require 'MovieDB/base'
 require 'celluloid/current'
