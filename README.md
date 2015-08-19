@@ -227,7 +227,7 @@ plot_summa        373        298        311
 
 When performing statistics on an object, movieDB by default processes all fields.
 
-Contrary, to this default approach, you now have the option of filtering what fields you want processed with the following 2 filters.
+However, you now have the option of filtering what fields you want processed using the following filters:
 
 * only
 * except
