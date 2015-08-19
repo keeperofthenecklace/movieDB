@@ -133,7 +133,7 @@ Note: IMDB has a rate limit of 40 requests every 10 seconds and are limited by I
 If you exceed the limit, you will receive a 429 HTTP status with a 'Retry-After' header.
 As soon your cool down period expires, you are free to continue making requests.
 
-Also, movieDB will throw a NameError if the randomly generated IMDb id in invalid.
+Also, movieDB will throw a NameError if the randomly generated IMDb id is invalid.
 
 ### Get Movie Data
 
@@ -299,7 +299,9 @@ m.delete_all
 # => []
 ```
 # Visualizations
-(Work in progress)
+
+## Installation
+ Install gnuplot. If you have brew
 
 # Data mining
 (Work in progress)
