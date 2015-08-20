@@ -324,7 +324,7 @@ m.graph(type: :bar, name: 'vote_length')
 
 When plotting a graph, you need to specify the type of graph and the name you wish to save it.
 
-In the example below, we graph a Bar Chart and save it as vote_length.
+In the example above, we graph a Bar Chart and save it as vote_length.
 
 Note: The file is saved as a HTML document in your local directory.
 
