@@ -48,7 +48,7 @@ module MovieDB
       #   m.fetch("0369610", "3079380", "0478970")
       #
       #   m.hgetall("0369610")
-      [:all, :hkeys, :hvals, :flushall, :ttl].each do |method_name|
+      [:all, :hkeys, :hvals, :flushall, :ttl, :del].each do |method_name|
         define_method method_name do |arg|
           MovieDB::DataStore.get_data(method_name, arg)
         end
@@ -56,6 +56,7 @@ module MovieDB
 
       alias hgetall all
 
+      # No argument is required.
       [:scan, :flushall].each do |method_name|
         define_method method_name do
          mn = MovieDB::DataStore.get_data(method_name)

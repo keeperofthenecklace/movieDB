@@ -74,6 +74,8 @@ module MovieDB
           return @redis_db.hgetall("#{id}")
         when :ttl
           return @redis_db.ttl("#{id}")
+        when :del
+          return @redis_db.del("#{id}")
       else
         raise ArgumentError, "The method #{method} is invalid."
       end

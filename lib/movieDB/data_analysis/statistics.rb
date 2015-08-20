@@ -1,4 +1,5 @@
 require 'daru'
+require 'json'
 
 module MovieDB
   module DataAnalysis

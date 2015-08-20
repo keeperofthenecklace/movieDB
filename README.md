@@ -1,6 +1,6 @@
 # MovieDB
 
- MovieDB is a multi-threaded ruby wrapper for performing advance statistical computation and high-level data analysis on Movie or TV Data from IMDb.
+ MovieDB is a multi-threaded ruby wrapper for performing advance statistical computation and high-level data analysis on Movie Data from IMDb.
  The objective and usage of this tool is to allow producers, directors, writers to make logical business decisions that will generate profitable ROI.
 
 ## Badges
@@ -15,8 +15,8 @@
 ## Technology
 * SciRuby is used for all statistical and scientific computations.
 * Redis is used to store all data.
-* IMDb and TMDb is the source for all film / TV data.
-* BoxOfficeMojo is where we will be scraping future film / TV data.
+* IMDb and TMDb is the source for all film.
+* BoxOfficeMojo is where we will be scraping future film.
 * Celluloid is used to build the fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
 multi-threading won't work since these types of interpreters have Global Interpreter Lock (GIL).
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
@@ -25,20 +25,6 @@ Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and su
 ruby-2.2.2 or higher
 
 jruby-9.0.0.0
-
-## Category
-movieDB is broken down into 3 components namely:
-
-* Statistics
-* Visualizations (Work in progress)
-* DataMining (Work in progress)
-
-# Statistics
-
-Simple statistical analysis on numeric data.
-The corresponding computation is performed on
-both numeric and string vectors within the
-collected data.
 
 ## Installation
 
@@ -84,7 +70,7 @@ m = MovieDB::Movie.pool(size: 2)
 ```
 ## Step Process
 
-Fetching and analysing movie / TV data using movieDB is a simple 2 step process.
+Fetching and analysing movie data using movieDB is a simple 2 step process.
 
 First, fetch the data from IMDb.
 
@@ -96,11 +82,31 @@ That's it! It is that simple.
 
 There are 2 ways to find IMDb ids.
 
-* Finding specific IMDb ids
+* Search IMDb id via API
 
-* Finding random IMDb ids.
+* Search IMDb id via Website
 
-### Fetching specific IMDb ids
+* Generate random IMDb ids.
+
+### Search IMDb id via API
+
+You can read the [documentation](http://rubydoc.info/github/ariejan/imdb/master/frames) for IMDb API to see all that you can do with this gem.
+
+``` ruby
+i = Imdb::Search.new("Star Trek")
+
+i.movies.size  #=> 97
+```
+This will return 97 objects related to 'Star Trek'
+
+To collect all the IMDb ids
+
+``` ruby
+ids = i.movies.collect(&:id).uniq
+
+#=> ["0796366", "0060028", "0079945" ...]
+```
+### Search IMDb id via Website
 
 To find IMDb id for specific movies, you must go to:
 
@@ -116,8 +122,9 @@ http://www.imdb.com/title/tt0369610/
 ```
 0369610 is the IMDb id.
 
-### Fetching random IMDb ids (multi-thread setup)
-You can fetch IMDb ids random.
+### Generate random IMDb ids (multi-thread setup)
+
+You can fetch IMDb ids random. This approach will probably run you into some problems, see Disclaimer.
 
 ``` ruby
 r = Random.new
@@ -287,8 +294,16 @@ m.all_ids
 Gets the remaining time to live of a movie.
 
 ``` ruby
-m.ttl("0369610)
+m.ttl("0369610")
 # => 120
+```
+
+* DELETE key
+deletes a single movie object stored in redis.
+
+``` ruby
+m.del("0369610")
+# => # => ["3079380"...]
 ```
 
 * DELETE_ALL key
@@ -298,49 +313,6 @@ deletes all movie objects stored in redis.
 m.delete_all
 # => []
 ```
-# Visualizations
-
-* Initialize MovieDB (multi-thread setup)
-
-``` ruby
-m = MovieDB::Movie.pool(size: 2)
-```
-
-* Get Movie Data
-
-``` ruby
-m.async.fetch("0369610", "3079380", "0478970")
-```
-* Run the statistics
-
-```ruby
-m.mean only: [:length, :vote_average]
-```
-* Plot graph chart
-
-```ruby
-m.graph(type: :bar, name: 'vote_length')
-```
-
-When plotting a graph, you need to specify the type of graph and the name you wish to save it.
-
-In the example above, we graph a Bar Chart and save it as vote_length.
-
-Note: The file is saved as a HTML document in your local directory.
-
-![Alt text](https://github.com/keeperofthenecklace/movieDB/blob/master/images/sampbar.png?raw=true "Bar Graph")
-
-Below are more graph types you can plot on your objects.
-
-* Bar
-* Line
-* Scatter + Line
-* Histogram
-* Box plot
-* 2D- Histogram
-
-# Data mining
-(Work in progress)
 
 ## Contact me
 
@@ -350,5 +322,10 @@ You can also contact me at albertmck@gmail.com
 
 ## Disclaimer
 This software is provided “as is” and without any express or implied warranties, including, without limitation, the implied warranties of merchantibility and fitness for a particular purpose.
+Neither I, nor any developer who contributed to this project, accept any kind of liability for your use of this library.
+
+IMDB does not permit use of its data by third parties without their consent.
+
+Using this library for anything other than limited personal use may result in an IP ban to the IMDB website.
 
 ###### Copyright (c) 2013 - 2015 Albert McKeever, released under MIT license
