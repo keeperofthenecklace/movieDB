@@ -300,14 +300,43 @@ m.delete_all
 ```
 # Visualizations
 
-  m =  MovieDB::Movie.new
+* Initialize MovieDB (multi-thread setup)
 
-  m.mean only: [:length, :vote_average]
+``` ruby
+m = MovieDB::Movie.pool(size: 2)
+```
 
-  m.graph(type: :bar, name: 'vote_length')
+* Get Movie Data
+
+``` ruby
+m.async.fetch("0369610", "3079380", "0478970")
+```
+* Run the statistics
+
+```ruby
+m.mean only: [:length, :vote_average]
+```
+* Plot graph chart
+When plotting a graph, you need specify the type and the name you wish to save the file.
+
+In the example below, we graph a Bar Chart and save it as vote_length.
+
+The file is saved as a HTML document in your local directory.
+
+```ruby
+m.graph(type: :bar, name: 'vote_length')
+```
 
 ![Alt text](https://github.com/keeperofthenecklace/movieDB/blob/master/images/sampbar.png?raw=true "Bar Graph")
 
+Below are more graph types you can plot on your objects.
+
+* Bar
+* Line
+* Scatter + Line
+* Histogram
+* Box plot
+* 2D- Histogram
 
 # Data mining
 (Work in progress)
