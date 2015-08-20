@@ -300,7 +300,13 @@ m.delete_all
 ```
 # Visualizations
 
-## Installation
+  m =  MovieDB::Movie.new
+
+  m.mean only: [:length, :vote_average]
+
+  m.graph(type: :bar, name: 'vote_length')
+
+![Alt text](https://github.com/keeperofthenecklace/movieDB/blob/master/images/sampbar.png?raw=true "Bar Graph")
 
 
 # Data mining
