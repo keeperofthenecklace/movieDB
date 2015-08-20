@@ -9,8 +9,8 @@ describe MovieDB  do
 
     context '#mean' do
        it 'should calculate mean of all values' do
-         # expect(m.mean.round(2)).to eq(Daru::Vector.new([ 2891127.4, 36972648.98, 1445963.96],
-         #                                                 index: ['ant-man', :jurassic_world, :spy]))
+         expect(m.mean.round(2)).to eq(Daru::Vector.new([ 2891127.4, 36972648.98, 1445963.96],
+                                                         index: ['ant-man', :jurassic_world, :spy]))
        end
     end
 

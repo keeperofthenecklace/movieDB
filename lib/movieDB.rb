@@ -3,6 +3,7 @@ require 'MovieDB/data_store'
 require 'MovieDB/data_analysis/statistics'
 require 'MovieDB/relation/query_methods'
 require 'celluloid/current'
+require 'MovieDB/graph/nyaplot_basic'
 
 module MovieDB
   # Create a new movie record. The values are stored in the key-value data store.
@@ -19,6 +20,7 @@ module MovieDB
   #
   class Movie < MovieDB::Base
     include Celluloid
+    include MovieDB::Graph::NyaplotBasic
     include MovieDB::Relation::QueryMethods
     include MovieDB::DataAnalysis::Statistics
 
@@ -43,4 +45,3 @@ module MovieDB
     end
   end
 end
-
