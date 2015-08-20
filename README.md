@@ -80,7 +80,7 @@ That's it! It is that simple.
 
 ## Part 1 - Fetch Data from IMDb
 
-There are 2 ways to find IMDb ids.
+There are 3 ways to find IMDb ids.
 
 * Search IMDb id via API
 
