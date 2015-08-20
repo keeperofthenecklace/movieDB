@@ -1,4 +1,7 @@
 ## Change Log
+Below is a complete listing of changes for each revision of movieDB.
+### 1.0.1
+* Implemented SciRuby for all statistics computations.
 
 Below is a complete listing of changes for each revision of movieDB.
 ### 0.3.4
