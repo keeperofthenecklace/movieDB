@@ -29,7 +29,7 @@ module MovieDB
           response = RestClient.get 'https://www.kimonolabs.com/api/chlrt5sq?apikey=m9VP32kuvgnuVGS9fXOa2tsP0xEj5zbu'
         end
 
-        # persist the data to the database
+        # Persist the data to the database
         def save
           JSON.parse(response)['results']['domestic_gross'].each do |e|
             if e['title']['text'] != 'Movie Title (click to view)'
