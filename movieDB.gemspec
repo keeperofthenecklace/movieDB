@@ -28,4 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'celluloid'
   spec.add_dependency 'activerecord'
   spec.add_dependency 'mysql2'
+  spec.add_dependency 'treat'
+  spec.add_dependency 'open-nlp'
+  spec.add_dependency 'stanford-core-nlp'
 end

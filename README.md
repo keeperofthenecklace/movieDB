@@ -15,8 +15,9 @@
 ## Technology
 * SciRuby is used for all statistical and scientific computations.
 * Redis is used to store all data.
-* IMDb and TMDb is the source for all film.
-* BoxOfficeMojo is where we will be scraping future film.
+* IMDb and TMDb is the source for all film metadata.
+* BoxOfficeMojo is used to scrape box office revenue.
+* Treat is used for processing the language and computational linguistics of the film scripts.
 * Celluloid is used to build the fault-tolerant concurrent programs. Note, if you are using MRI or YARV,
 multi-threading won't work since these types of interpreters have Global Interpreter Lock (GIL).
 Fortunately, you can use JRuby or Rubinius, since they don’t have a GIL and support real parallel threading.
