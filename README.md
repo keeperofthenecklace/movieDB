@@ -328,4 +328,4 @@ IMDB does not permit use of its data by third parties without their consent.
 
 Using this library for anything other than limited personal use may result in an IP ban to the IMDB website.
 
-###### Copyright (c) 2013 - 2015 Albert McKeever, released under MIT license
+###### Copyright (c) 2013 - 2016 Albert McKeever, released under MIT license
