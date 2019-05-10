@@ -1,6 +1,9 @@
+
 ## Change Log
 Below is a complete listing of changes for each revision of movieDB.
-
+### 1.0.2
+* Removed broken pullreview
+* 
 ### 1.0.1
 * Implemented SciRuby gems for all statistics computations.
 
